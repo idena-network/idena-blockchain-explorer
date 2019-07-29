@@ -45,7 +45,7 @@ app.get('/', function (req, res, next) {
 })
 
 app.get('/epoch', function (req, res, next) {
-  const file = path.join(compiler.outputPath, 'confirmed.html')
+  const file = path.join(compiler.outputPath, 'epoch.html')
 
   compiler.outputFileSystem.readFile(file,  (err, result) => {
     if (err) {

@@ -63,6 +63,16 @@ const commonConfig = {
       template: path.resolve(__dirname, './src/index.html'),
       hash: false,
       filename: 'index.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/epoch.html'),
+      hash: false,
+      filename: 'epoch.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/404.html'),
+      hash: false,
+      filename: '404.html',
     })
   ]
 }
