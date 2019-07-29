@@ -1,0 +1,27 @@
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+$primary: #0278FF;
+@import '~bootstrap/scss/mixins';
+@import "~bootstrap/scss/utilities";
+@import '~bootstrap/scss/reboot';
+@import '~bootstrap/scss/type';
+@import '~bootstrap/scss/grid';
+@import '~bootstrap/scss/buttons';
+@import '~bootstrap/scss/forms';
+@import '~bootstrap/scss/tooltip';
+@import '~bootstrap/scss/transitions';
+
+@import 'common/mixins';
+@import 'common/variables';
+@import 'partials/functions';
+@import 'partials/overrides';
+@import 'partials/icons';
+@import 'partials/fonts';
+@import 'partials/header';
+@import 'partials/social';
+@import 'partials/footer';
+@import 'partials/sections';
+
+a {
+  transition: color $transition;
+}

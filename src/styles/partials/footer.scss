@@ -1,0 +1,20 @@
+.footer {
+  text-align: center;
+  padding: rem(100px) 0 rem(140px);
+
+  @media (#{$max_phones--big}) {
+    padding-bottom: 120px;
+    padding-top: 0;
+  }
+}
+
+.copy {
+  font-size: rem(15px);
+  line-height: rem(24px);
+  color: #979797;
+
+  @media (#{$max_phones--big}) {
+    font-size: 10px;
+    line-height: 24px;
+  }
+}

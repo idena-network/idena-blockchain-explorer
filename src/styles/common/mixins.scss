@@ -1,0 +1,51 @@
+@mixin fontantialias ($on) {
+  @if $on == true {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @else {
+    -webkit-font-smoothing: subpixel-antialiased;
+    -moz-osx-font-smoothing: auto;
+  }
+}
+
+@mixin clearfix {
+  &:after {
+    content: " ";
+    visibility: hidden;
+    display: block;
+    height: 0;
+    clear: both;
+  }
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {@content}
+  &:-moz-placeholder           {@content}
+  &::-moz-placeholder          {@content}
+  &:-ms-input-placeholder      {@content}
+}
+
+@mixin clear_list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+@mixin no_webkit_flickering {
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000px;
+}
+
+@mixin GPU_acceleration {
+  transform: translateZ(0);
+}
+
+@mixin clear_link {
+  &{
+    text-decoration: none;
+  }
+  &:hover{
+    color: inherit;
+  }
+}

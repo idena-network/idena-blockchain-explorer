@@ -1,0 +1,14 @@
+.header {
+  padding: rem(8px) 0;
+  margin-bottom: rem(64px);
+  overflow: hidden;
+  z-index: 200;
+
+  @media (#{$max_phones--big}) {
+
+  }
+}
+
+.header_logo {
+  font-size: 0;
+}

@@ -1,0 +1,29 @@
+.social_list {
+  font-size: rem(30px);
+  margin-bottom: rem(25px);
+
+  &__item {
+    padding: rem(8px);
+    color: inherit;
+    text-decoration: none !important;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 0;
+
+    &:hover {
+      color: #0467D8;
+    }
+
+    .icon {
+      margin-right: 0;
+    }
+  }
+
+  @media (#{$max_phones--big}) {
+    font-size: 24px;
+
+    &__item {
+      padding: 8px;
+    }
+  }
+}
