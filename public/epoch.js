@@ -1,5 +1,4 @@
 
-
 function initEpoch(currEpoch){
   var nextEpoch=currEpoch*1+1;
   var prevEpoch=currEpoch-1;
@@ -235,9 +234,6 @@ function getEpochData(epoch){
 
 
 
-
-
-
 function updateEpochFlipsData(data){
     var table=$("#FlipsTable");
     table.find('td').parent().remove();
@@ -288,7 +284,7 @@ function updateEpochFlipSubmissionsData(data){
         var td=$("<td/>");
             td.append('<div class="user-pic"><img src="./images/flip_icn.png" alt="pic"width="44"></div>');
             var cid=data.result[i].cid;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./flip/"+cid+"'>" + cid.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./flip?flip="+cid+"'>" + cid.substr(0, 15) + "...</a></div>");
         tr.append(td);
         var td=$("<td/>");
             var author=data.result[i].author;
@@ -304,7 +300,7 @@ function updateEpochFlipSubmissionsData(data){
 
 function updateEpochInvitesSummaryData(data){
     if (data.result == null)  { return }
-    $("#EpochInvitations")[0].textContent=data.result.allCount + ' / '+data.result.usedCount;
+    $("#EpochInvitations")[0].textContent=data.result.usedCount + ' / ' + data.result.allCount;
 }
 
 function updateEpochCountData(data, epoch){
@@ -326,16 +322,29 @@ function updateEpochInvitationsData(data){
     for (var i = 0; i < data.result.length; i++) {
         var tr = $('<tr/>');
         var td=$("<td/>");
-            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].id.toLowerCase()+'" alt="pic"width="32"></div>');
-            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].id+"'>" + data.result[i].id.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./txs?tx="+data.result[i].hash+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
         tr.append(td);
         var td=$("<td/>");
             td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].author.toLowerCase()+'" alt="pic"width="32"></div>');
             td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].author+"'>" + data.result[i].author.substr(0, 15) + "...</a></div>");
         tr.append(td);
-        tr.append("<td>" + data.result[i].createTimestamp + "</td>");
-        tr.append("<td>" + data.result[i].status + "</td>");
-        tr.append("<td>" + (data.result[i].status==''?'':data.result[i].activateTimestamp) + "</td>");
+//        tr.append("<td>" + data.result[i].timestamp + "</td>");
+
+        var activation=data.result[i].activationHash;
+        if (activation!=""){
+          var td=$("<td/>");
+              td.append("<div class='text_block text_block--ellipsis'><a href='./txs?tx="+activation+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
+          tr.append(td);
+
+          var td=$("<td/>");
+              td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].activationAuthor.toLowerCase()+'" alt="pic"width="32"></div>');
+              td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].activationAuthor+"'>" + data.result[i].activationAuthor.substr(0, 15) + "...</a></div>");
+          tr.append(td);
+
+        }else{
+          tr.append("<td>Not activated</td>");
+          tr.append("<td>-</td>");
+        }
         table.append(tr);
     }
 }
@@ -359,80 +368,6 @@ function updateEpochIdentityStatesSummaryData(data){
   }
 }
 
-function updateValidationIdentitiesData(data){
-
-    var valid_identities_table=$("#IdentitiesTable");
-    var failed_identities_table=$("#FailedIdentities");    
-    valid_identities_table.find('td').parent().remove();
-    failed_identities_table.find('td').parent().remove();
-    if (data.result == null)  { return }
-
-    var FailedValidationCount=0;
-    var MissedValidationCount=0;
-
-    for (var i = 0; i < data.result.length; i++) {
-        var tr = $('<tr/>');
-        var td=$("<td/>");
-            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].address.toLowerCase()+'" alt="pic"width="32"></div>');
-            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].address+"'>" + data.result[i].address.substr(0, 15) + "...</a></div>");
-        tr.append(td);
-
-
-      var longScoreTxt='-', shortScoreTxt='-', totalScoreTxt='-';
-      if (data.result[i].longAnswers.flipsCount>0)
-        longScoreTxt=data.result[i].longAnswers.point +" out of "+data.result[i].longAnswers.flipsCount +" ("+precise2(data.result[i].longAnswers.point/data.result[i].longAnswers.flipsCount*100) + "%)";
-      if (data.result[i].shortAnswers.flipsCount>0)
-        shortScoreTxt=data.result[i].shortAnswers.point +" out of "+data.result[i].shortAnswers.flipsCount +" ("+precise2(data.result[i].shortAnswers.point/data.result[i].shortAnswers.flipsCount*100) + "%)";
-      if (data.result[i].totalShortAnswers.flipsCount>0)
-        totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
-
-      if(data.result[i].state!="Undefined"){
-
-        tr.append("<td>" + data.result[i].prevState+ "</td>");
-        tr.append("<td>" + data.result[i].state + "</td>");
-        tr.append("<td>" + shortScoreTxt + "</td>");
-
-        if (data.result[i].prevState=="Candidate") 
-          tr.append("<td>" + longScoreTxt + "</td>");
-        else
-          tr.append("<td>" + longScoreTxt + "</td>");
-        tr.append("<td></td>");//Age
-      } else {
-        tr.append("<td>" + data.result[i].prevState+ "</td>");
-        //todo authorScore:        tr.append("<td>" + precise2(data.result[i].authorScore*100) + "%</td>"); 
-
-        if (data.result[i].prevState=="Invite") {
-          tr.append("<td>-</td>");
-          tr.append("<td>-</td>");
-          tr.append("<td>" + "Not activated" + "</td>")
-        } else {
-
-          tr.append("<td>" + shortScoreTxt + "</td>");
-          tr.append("<td>" + longScoreTxt + "</td>");
-
-          if (data.result[i].missed){
-
-            if (data.result[i].shortAnswers.flipsCount>0) 
-              tr.append("<td>Late submission</td>");
-            else
-              tr.append("<td>Missed validation</td>");
-            MissedValidationCount++;
-          }else{
-            tr.append("<td>Wrong answers</td>");
-            FailedValidationCount++;
-          }
-        }
-      }
-
-      if(data.result[i].state!="Undefined"){
-        valid_identities_table.append(tr);
-      } else {
-        failed_identities_table.append(tr);
-      }
-    }
-    $("#FailedValidationIdentities")[0].textContent=FailedValidationCount;
-    $("#MissedValidationIdentities")[0].textContent=MissedValidationCount;
-}
 
 
 function updateEpochIdentitiesData(data){
