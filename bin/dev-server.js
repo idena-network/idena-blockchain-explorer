@@ -72,6 +72,19 @@ app.get('/validation', function (req, res, next) {
   })
 })
 
+app.get('/flip', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'flip.html')
+
+  compiler.outputFileSystem.readFile(file,  (err, result) => {
+    if (err) {
+      return next(err)
+    }
+
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
 
 app.get('/identity', function (req, res, next) {
   const file = path.join(compiler.outputPath, 'identity.html')

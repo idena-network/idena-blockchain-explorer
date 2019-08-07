@@ -70,6 +70,11 @@ const commonConfig = {
       filename: 'validation.html',
     }),
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/flip.html'),
+      hash: false,
+      filename: 'flip.html',
+    }),
+    new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/epoch.html'),
       hash: false,
       filename: 'epoch.html',
