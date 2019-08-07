@@ -58,6 +58,34 @@ app.get('/epoch', function (req, res, next) {
   })
 })
 
+app.get('/epoch-identities', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'epoch-identities.html')
+
+  compiler.outputFileSystem.readFile(file,  (err, result) => {
+    if (err) {
+      return next(err)
+    }
+
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
+
+app.get('/validation-results', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'validation-results.html')
+
+  compiler.outputFileSystem.readFile(file,  (err, result) => {
+    if (err) {
+      return next(err)
+    }
+
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
+
 app.get('/404', function (req, res, next) {
   const file = path.join(compiler.outputPath, '404.html')
 

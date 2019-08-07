@@ -22,60 +22,30 @@
           <span>Next epoch</span>
           <i class="icon icon--thin_arrow_right"></i>
         </a>
-        <a href="#" class="btn btn-secondary btn-small">
-          <i class="icon icon--report"></i>
-          <span>Validation report</span>
-        </a>
       </div>
     </section>
 
     <section class="section section_details">
       <h3>Details</h3>
-      <div class="card">
-        <div class="row">
-          <div class="col-12 col-sm-6">
-            <div class="section__group">
-              <div class="control-label">Epoche number</div>
-              <div class="text_block text_block--break">#2</div>
-              <hr>
-              <div class="control-label">Validation block height</div>
-              <div class="text_block">576142</div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6">
-            <div class="section__group">
-              <div class="control-label">Start</div>
-              <div class="text_block">05.08.2019, 13:15</div>
-              <hr>
-              <div class="control-label">End</div>
-              <div class="text_block">05.08.2019, 13:30</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section_details">
-      <h3>Epoch data</h3>
 
       <div class="card">
         <div class="info_block">
           <div class="row">
             <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent">4</h3>
+              <h3 class="info_block__accent">180,464</h3>
+              <div class="control-label">Validated identities</div>
+            </div>
+            <div class="col-12 col-sm-3 bordered-col">
+              <h3 class="info_block__accent">182,683</h3>
               <div class="control-label">Mined blocks</div>
             </div>
             <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent">42</h3>
-              <div class="control-label">Transactions</div>
+              <h3 class="info_block__accent">1,642/1,234</h3>
+              <div class="control-label">Flips created/qualified</div>
             </div>
             <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent">8</h3>
-              <div class="control-label">Invited issued</div>
-            </div>
-            <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent">64</h3>
-              <div class="control-label">Flips created</div>
+              <h3 class="info_block__accent">1,200</h3>
+              <div class="control-label">Solved flips</div>
             </div>
           </div>
         </div>
@@ -91,27 +61,14 @@
                 <li class="nav-item">
                   <a
                     class="nav-link active"
-                    id="identities-tab"
+                    id="validation-tab"
                     data-toggle="tab"
-                    href="#identities"
+                    href="#validation"
                     role="tab"
-                    aria-controls="identities"
+                    aria-controls="validation"
                     aria-selected="true"
                   >
-                    <h3>Identities</h3>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="invitations-tab"
-                    data-toggle="tab"
-                    href="#invitations"
-                    role="tab"
-                    aria-controls="invitations"
-                    aria-selected="false"
-                  >
-                    <h3>Invitations</h3>
+                    <h3>Validation results</h3>
                   </a>
                 </li>
                 <li class="nav-item">
@@ -130,27 +87,14 @@
                 <li class="nav-item">
                   <a
                     class="nav-link"
-                    id="blocks-tab"
+                    id="killed-tab"
                     data-toggle="tab"
-                    href="#blocks"
+                    href="#killed"
                     role="tab"
-                    aria-controls="blocks"
+                    aria-controls="killed"
                     aria-selected="false"
                   >
-                    <h3>Flips</h3>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="transactions-tab"
-                    data-toggle="tab"
-                    href="#transactions"
-                    role="tab"
-                    aria-controls="transactions"
-                    aria-selected="false"
-                  >
-                    <h3>Transactions</h3>
+                    <h3>Killed identity</h3>
                   </a>
                 </li>
               </ul>
@@ -158,7 +102,7 @@
           </div>
         </div>
         <div class="tab-content">
-          <div class="tab-pane active" id="identities" role="tabpanel" aria-labelledby="identities-tab">
+          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
@@ -191,40 +135,24 @@
                   </table>
                 </div>
               </div>
-            </div>
-          </div>
-          <div class="tab-pane" id="invitations" role="tabpanel" aria-labelledby="invitations-tab">
-            <div class="card">
-              <div class="table-responsive">
-                <table class="table">
-                  <tr>
-                    <th>ID of invite</th>
-                    <th>ID of addresser</th>
-                    <th style="width: 160px;">Status</th>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+                    <div class="col-auto small-col">
+                      <div class="control-label">1–20 of 42</div>
+                    </div>
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
                       </div>
-                    </td>
-                    <td>
-                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                      </div>
-                    </td>
-                    <td>Not activated</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                      </div>
-                    </td>
-                    <td>Not activated</td>
-                  </tr>
-                </table>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -282,23 +210,33 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="blocks" role="tabpanel" aria-labelledby="blocks-tab">
+          <div class="tab-pane" id="killed" role="tabpanel" aria-labelledby="killed-tab">
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
                   <table class="table">
                     <tr>
-                      <th style="width: 70%;">ID of block</th>
-                      <th>Time stamp</th>
-                      <th style="width: 100px;">Transactions</th>
+                      <th>ID of identity</th>
                     </tr>
                     <tr>
                       <td>
-                        <div class="text_block text_block--ellipsis"><a href="">00000000000000000000aefbea7b51a1afe74f7005d1cae317338934342099c3</a>
+                        <div class="user-pic">
+                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
                         </div>
                       </td>
-                      <td>24-Jun-2019 10:43</td>
-                      <td>42</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="user-pic">
+                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                        </div>
+                      </td>
                     </tr>
                   </table>
                 </div>
@@ -324,7 +262,48 @@
               </div>
             </div>
           </div>
-          <div class="tab-pane" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
+        </div>
+      </div>
+    </section>
+
+    <section class="section section_tabs">
+      <div class="tabs" data-tabs="true">
+        <div class="section__header">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="transactions-tab"
+                    data-toggle="tab"
+                    href="#transactions"
+                    role="tab"
+                    aria-controls="transactions"
+                    aria-selected="true"
+                  >
+                    <h3>Transactions</h3>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="blocks-tab"
+                    data-toggle="tab"
+                    href="#blocks"
+                    role="tab"
+                    aria-controls="blocks"
+                    aria-selected="false"
+                  >
+                    <h3>Blocks</h3>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane active" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
             <div class="section__group">
               <div class="card">
                 <div class="transaction_block">
@@ -399,6 +378,179 @@
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="blocks" role="tabpanel" aria-labelledby="blocks-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table">
+                    <tr>
+                      <th style="width: 70%;">ID of block</th>
+                      <th>Time stamp</th>
+                      <th style="width: 100px;">Transactions</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="text_block text_block--ellipsis"><a href="">00000000000000000000aefbea7b51a1afe74f7005d1cae317338934342099c3</a>
+                        </div>
+                      </td>
+                      <td>24-Jun-2019 10:43</td>
+                      <td>42</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+                    <div class="col-auto small-col">
+                      <div class="control-label">1–20 of 42</div>
+                    </div>
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section_tabs">
+      <div class="tabs" data-tabs="true">
+        <div class="section__header">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="submissions-tab"
+                    data-toggle="tab"
+                    href="#submissions"
+                    role="tab"
+                    aria-controls="submissions"
+                    aria-selected="true"
+                  >
+                    <h3>Flips submissions</h3>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="invitations-tab"
+                    data-toggle="tab"
+                    href="#invitations"
+                    role="tab"
+                    aria-controls="invitations"
+                    aria-selected="false"
+                  >
+                    <h3>Invitations</h3>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane active" id="submissions" role="tabpanel" aria-labelledby="submissions-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table">
+                    <tr>
+                      <th>ID of flip</th>
+                      <th>Author</th>
+                      <th style="width: 120px;">Resolve on  <br>short session</th>
+                      <th style="width: 120px;">Resolve on <br> long session</th>
+                      <th style="width: 80px;">Flip qualified</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="user-flip">
+                          <img src="http://lorempixel.com/44/44/" alt="pic"
+                                                     width="44">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
+                        </div>
+                      </td>
+                      <td>3</td>
+                      <td>180,236</td>
+                      <td>Yes</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+                    <div class="col-auto small-col">
+                      <div class="control-label">1–20 of 42</div>
+                    </div>
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="invitations" role="tabpanel" aria-labelledby="invitations-tab">
+            <div class="card">
+              <div class="table-responsive">
+                <table class="table">
+                  <tr>
+                    <th>ID of invite</th>
+                    <th>ID of addresser</th>
+                    <th style="width: 160px;">Status</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                      </div>
+                    </td>
+                    <td>Not activated</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                      </div>
+                    </td>
+                    <td>Not activated</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>

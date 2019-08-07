@@ -60,6 +60,11 @@ const commonConfig = {
       }
     }),
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/404.html'),
+      hash: false,
+      filename: '404.html',
+    }),
+    new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/index.html'),
       hash: false,
       filename: 'index.html',
@@ -70,9 +75,14 @@ const commonConfig = {
       filename: 'epoch.html',
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/404.html'),
+      template: path.resolve(__dirname, './src/epoch-identities.html'),
       hash: false,
-      filename: '404.html',
+      filename: 'epoch-identities.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/validation-results.html'),
+      hash: false,
+      filename: 'validation-results.html',
     })
   ]
 }

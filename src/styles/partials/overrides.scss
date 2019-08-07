@@ -202,19 +202,20 @@ p {
 
   .icon {
     margin: rem(-5px -4px -3px);
-    font-size: rem(20px);
+    font-size: rem(24px);
     line-height: rem(18px);
     vertical-align: middle;
     display: inline-block;
     font-weight: normal;
+    opacity: .6;
 
     ~ span {
-      margin-left: rem(10px);
+      margin-left: rem(6px);
     }
   }
 
   span ~ .icon {
-    margin-left: rem(8px);
+    margin-left: rem(6px);
   }
 }
 
@@ -254,6 +255,7 @@ p {
 
   .icon {
     font-size: inherit;
+    opacity: 1;
   }
 
   &:hover,
@@ -340,7 +342,7 @@ p {
 
 .lead {
   font-size: rem(22px);
-  line-height: rem(40px);
+  line-height: rem(28px);
   font-weight: 400;
 
   @media (#{$max_phones--big}) {
@@ -531,10 +533,12 @@ p {
   font-weight: $font-weight-medium;
   font-size: rem(14px);
   line-height: 1.6;
+}
 
-  [data-toggle=tooltip] {
-    border-bottom: 1px dotted $grey;
-  }
+.tooltip-control {
+  cursor: help;
+  display: inline-block;
+  border-bottom: 1px dotted $grey;
 }
 
 .pager {
@@ -554,4 +558,8 @@ p {
   > .active {
     display: block;
   }
+}
+
+.tooltip {
+  font-size: rem(12px);
 }
