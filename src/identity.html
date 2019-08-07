@@ -11,21 +11,27 @@
       <section class="section section_main">
         <div class="row">
           <div class="col-auto">
-            <div class="section_main__image">
-              <img src="http://lorempixel.com/160/160/" alt="pic" width="160">
-              <div class="verified_sign"><i class="icon icon--status"></i></div>
+            <div class="section_main__image" id="IdentityAvatar">
+              <img src="" alt="pic" width="160">
+              <div class="verified_sign">
+<!--
+                </i class="icon icon--status">
+-->
+              </div>
             </div>
           </div>
           <div class="col">
             <div class="section_main__group">
-              <h1 class="section_main__title">
-                a0xSF12FEJ320DWF3FFa0xaDWF3FFa0xaDWF3FFa0x
+              <h1 class="section_main__title" id="IdentityAddress">
+                0x...
               </h1>
-              <div class="section_main__subtitle">qwerty@earth</div>
+              <div class="section_main__subtitle"></div>
             </div>
+<!--
             <button type="button" class="btn btn-small btn-primary">
               <i class="icon icon--send"></i><span>Message</span>
             </button>
+-->
           </div>
         </div>
       </section>
@@ -37,19 +43,19 @@
             <div class="col-12 col-sm-6">
               <div class="section__group">
                 <div class="control-label">ID</div>
-                <div class="text_block text_block--break">a0xSF12FEJ320DWF3FFa0xaDWF3FFa0xaDWF3FFa0x</div>
+                <div class="text_block text_block--break" id="IdentityId">-</div>
                 <hr>
                 <div class="control-label">Username</div>
-                <div class="text_block">qwerty@earth</div>
+                <div class="text_block">...</div>
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <div class="section__group">
                 <div class="control-label">Age</div>
-                <div class="text_block">24 epochs</div>
+                <div class="text_block" id="IdentityAge">-</div>
                 <hr>
                 <div class="control-label">Status</div>
-                <div class="text_block">Idena</div>
+                <div class="text_block" id="IdentityStatus">-</div>
               </div>
             </div>
           </div>
@@ -64,37 +70,37 @@
               <div class="info_block">
                 <div class="row">
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">14</h3>
-                    <div class="control-label">Solved flips</div>
+                    <h3 class="info_block__accent" id="IdentitySolvedFlips">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Total flips solved">Solved flips</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">13</h3>
-                    <div class="control-label">Right answers</div>
+                    <h3 class="info_block__accent" id="IdentityRightAnswers">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Total right answers">Right answers</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">82%</h3>
-                    <div class="control-label" data-toggle="tooltip" data-label="Total good flips / created flips">Score</div>
+                    <h3 class="info_block__accent" id="IdentityScore">-</h3>
+                    <div class="control-label">Score</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="col-12 col-sm-6">
-            <h3>Flips</h3>
+            <h3>Flips created</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row">
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">5</h3>
-                    <div class="control-label">Flips created</div>
+                    <h3 class="info_block__accent" id="IdentityFlipsCreated">-</h3>
+                    <div class="control-label data-toggle="tooltip" data-label="Qualified / Total flips"">Total flips</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">2</h3>
-                    <div class="control-label">Good flips</div>
+                    <h3 class="info_block__accent" id="IdentityQualifiedFlips">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Strong / Weak / No consensus">Flips quality</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent">50%</h3>
-                    <div class="control-label" data-toggle="tooltip" data-label="Total good flips / created flips">Score</div>
+                    <h3 class="info_block__accent" id="IdentityInappropriateFlips">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Flips with inappropriate content">Inappropriate</div>
                   </div>
                 </div>
               </div>
@@ -102,6 +108,8 @@
           </div>
         </div>
       </section>
+
+
   
       <section class="section section_tabs">
         <div class="tabs">
@@ -122,6 +130,8 @@
                       <h3>Epochs</h3>
                     </a>
                   </li>
+
+<!--
                   <li class="nav-item">
                     <a
                       class="nav-link"
@@ -135,6 +145,7 @@
                       <h3>Transactions</h3>
                     </a>
                   </li>
+-->
                 </ul>
               </div>
             </div>
@@ -143,36 +154,15 @@
             <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
               <div class="card">
                 <div class="table-responsive">
-                  <table class="table">
+                  <table class="table" id="IdentityEpochsTable">
                     <tr>
-                      <th>ID of epoch</th>
-                      <th>Validation  <br>score</th>
-                      <th>Validation answers <br>submitted in time</th>
-                      <th>Qualification <br>score</th>
-                      <th>Qualification answers <br>submitted in time</th>
-                      <th>Author <br>score</th>
-                      <th>Status <br>of identity</th>
-                      <th>Information</th>
-                    </tr>
-                    <tr>
-                      <td>000000008</td>
-                      <td>76%</td>
-                      <td>Yes</td>
-                      <td>50%</td>
-                      <td>Yes</td>
-                      <td>50%</td>
-                      <td>Idena</td>
-                      <td><a href="">See more</a></td>
-                    </tr>
-                    <tr>
-                      <td>000000008</td>
-                      <td>76%</td>
-                      <td>Yes</td>
-                      <td>50%</td>
-                      <td>Yes</td>
-                      <td>50%</td>
-                      <td>Idena</td>
-                      <td><a href="">See more</a></td>
+                      <th style="width: 100px;">Epoch</th>
+                      <th data-toggle="tooltip" title="Identity status before the validation">Previous<br>status</th>
+                      <th data-toggle="tooltip" title="Identity validation status">Status</th>
+                      <th>Validation score</th>
+                      <th style="width: 100px;">Qualification score</th>
+                      <th style="width: 100px;">Validated</th>
+                      <th style="width: 90px;">Answers</th>
                     </tr>
                   </table>
                 </div>
@@ -259,7 +249,9 @@
           </div>
         </div>
       </section>
-  
+
+
+<!--
       <section class="section section_tabs">
         <div class="tabs" data-tabs="true">
           <div class="section__header">
@@ -384,7 +376,7 @@
           </div>
         </div>
       </section>
-  
+-->  
     </div>
   </main>
 

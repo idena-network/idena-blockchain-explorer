@@ -58,8 +58,8 @@ app.get('/epoch', function (req, res, next) {
   })
 })
 
-app.get('/epoch-identities', function (req, res, next) {
-  const file = path.join(compiler.outputPath, 'epoch-identities.html')
+app.get('/validation', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'validation.html')
 
   compiler.outputFileSystem.readFile(file,  (err, result) => {
     if (err) {
@@ -72,8 +72,9 @@ app.get('/epoch-identities', function (req, res, next) {
   })
 })
 
-app.get('/validation-results', function (req, res, next) {
-  const file = path.join(compiler.outputPath, 'validation-results.html')
+
+app.get('/identity', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'identity.html')
 
   compiler.outputFileSystem.readFile(file,  (err, result) => {
     if (err) {
@@ -85,6 +86,7 @@ app.get('/validation-results', function (req, res, next) {
     res.end()
   })
 })
+
 
 app.get('/404', function (req, res, next) {
   const file = path.join(compiler.outputPath, '404.html')

@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<%= require('html-loader?attrs=false!./partials/head.html') %>
+
+<body>
+<%= require('html-loader?attrs=false!./partials/header.html') %>
+
+<main class="main">
+  <div class="container">
+
+    <section class="section">
+
+      <div class="section_main__group">
+        <h1 class="section_main__title">Validation results</h1>
+        <h3 class="section_main__subtitle">for Epoch #<span id="EpochId">...</span></h3>
+      </div>
+
+      <div class="button-group">
+
+        <a href="#" class="btn btn-secondary btn-small" id="EpochPageLink">
+          <i class="icon icon--back"></i>
+          <span>Back to epoch</span>
+        </a>
+
+      </div>
+    </section>
+
+<!--
+
+      <section class="section section_details">
+        <h3>Details</h3>
+        <div class="card">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Epoch number:</div>
+                <div class="text_block text_block--break" id="DetailsEpochId">-</div>
+                <hr>
+                <div class="control-label">Validation block height:</div>
+                <div class="text_block" id="FirstBlock">-</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Start:</div>
+                <div class="text_block" id="EpochStart">-</div>
+                <hr>
+                <div class="control-label">End:</div>
+                <div class="text_block" id="EpochEnd">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+-->
+
+    <section class="section section_info">
+      <div class="row">
+        <div class="col-12 col-sm-6">
+          <h3>Validation summary</h3>
+          <div class="card">
+            <div class="info_block">
+              <div class="row">
+                <div class="col-12 col-sm-4 bordered-col">
+                  <h3 class="info_block__accent" id="ValidatedIdentities">-</h3>
+                  <div class="control-label" data-toggle="tooltip" title="Successfully validated identities">Total validated</div>
+                </div>
+                <div class="col-12 col-sm-4 bordered-col">
+                  <h3 class="info_block__accent" id="FailedValidationIdentities">-</h3>
+                  <div class="control-label" data-toggle="tooltip" title="Identities given wrong answers">Failed validation</div>
+                </div>
+                <div class="col-12 col-sm-4 bordered-col">
+                  <h3 class="info_block__accent" id="MissedValidationIdentities">-</h3>
+                  <div class="control-label" data-toggle="tooltip" title="Identities missed validation or submitted too late">Missed validation</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6">
+          <h3>Flips consensus</h3>
+          <div class="card">
+            <div class="info_block">
+              <div class="row">
+                <div class="col-12 col-sm-4 bordered-col">
+            <h3 class="info_block__accent" id="TotalFlips">-</h3>
+            <div class="control-label" data-toggle="tooltip" title="Total flips used for validation">Total</div>
+                </div>
+                <div class="col-12 col-sm-4 bordered-col">
+            <h3 class="info_block__accent" id="FlipsConsensus">- / - / -</h3>
+            <div class="control-label" data-toggle="tooltip" title="Strong / Weak / No consensus">Consensus</div>
+                </div>
+                <div class="col-12 col-sm-4 bordered-col">
+            <h3 class="info_block__accent" id="AbuseFlips">-</h3>
+            <div class="control-label" data-toggle="tooltip" title="Flips with inappropriate content">Inappropriate</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section class="section section_tabs">
+      <div class="tabs" data-tabs="true">
+        <div class="section__header">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="validation-tab"
+                    data-toggle="tab"
+                    href="#validation"
+                    role="tab"
+                    aria-controls="validation"
+                    aria-selected="true"
+                  >
+                    <h3>Identities</h3>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="killed-tab"
+                    data-toggle="tab"
+                    href="#killed"
+                    role="tab"
+                    aria-controls="killed"
+                    aria-selected="false"
+                  >
+                    <h3>Failed identities</h3>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="flips-tab"
+                    data-toggle="tab"
+                    href="#flips"
+                    role="tab"
+                    aria-controls="flips"
+                    aria-selected="false"
+                  >
+                    <h3>Flips consensus</h3>
+                  </a>
+                </li>
+
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="IdentitiesTable">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;">Previous status</th>
+                      <th style="width: 190px;">Status</th>
+                      <th style="width: 140px;">Validation<br/>score</th>
+                      <th style="width: 140px;">Qualification<br/>score</th>
+                    </tr>
+<!--
+                    <tr>
+                      <td>
+                        <div class="user-pic"><img src="http://lorempixel.com/32/32/" alt="pic"width="32"></div>
+                        <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                        </div>
+                      </td>
+                      <td>76%</td>
+                      <td>50%</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="user-pic"><img src="http://lorempixel.com/32/32/" alt="pic"
+                                                   width="32"></div>
+                        <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                        </div>
+                      </td>
+                      <td>76%</td>
+                      <td>50%</td>
+                    </tr>
+-->
+                  </table>
+                </div>
+              </div>
+
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+<!--
+                    <div class="col-auto small-col">
+                      <div class="control-label">1-10 out of 123</div>
+                    </div>
+-->
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="tab-pane" id="flips" role="tabpanel" aria-labelledby="flips-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FlipsTable">
+                    <tr>
+                      <th>Flip</th>
+                      <th>Author</th>
+                      <th style="width: 120px;" data-toggle="tooltip" title="Number of identities being challenged with the flip">Challenged  <br>identities</th>
+                      <th style="width: 120px;" data-toggle="tooltip" title="Number of identities qualified the flip">Qualification <br> committee</th>
+                      <th style="width: 100px;" data-toggle="tooltip" title="Agreed answer">Answer</th>
+                      <th style="width: 80px;" data-toggle="tooltip" title="Qualification committee consensus about the flip">Consensus</th>
+                    </tr>
+                    <tr>
+<!--
+                      <td>
+                        <div class="user-flip">
+                          <img src="http://lorempixel.com/44/44/" alt="pic" width="44">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
+                        </div>
+                      </td>
+                      <td>3</td>
+                      <td>180,236</td>
+                      <td>Yes</td>
+                    </tr>
+-->
+                  </table>
+                </div>
+              </div>
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+<!--
+                    <div class="col-auto small-col">
+                      <div class="control-label">1–10 of 40</div>
+                    </div>
+-->
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="killed" role="tabpanel" aria-labelledby="killed-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FailedIdentities">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;">Status</th>
+                      <th style="width: 140px;">Validation<br>score</th>
+                      <th style="width: 140px;">Qualification<br>score</th>
+                      <th style="width: 190px;">Failure reason</th>
+                    </tr>
+<!--
+                    <tr>
+                      <td>
+                        <div class="user-pic">
+                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="user-pic">
+                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
+                        </div>
+                        <div class="text_block text_block--ellipsis">
+                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
+                        </div>
+                      </td>
+                    </tr>
+-->
+                  </table>
+                </div>
+              </div>
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+<!--
+                    <div class="col-auto small-col">
+                      <div class="control-label">20–30 of 90</div>
+                    </div>
+-->
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+                 
+<%= require('html-loader?attrs=false!./partials/scripts.html') %>
+</body>
+</html>
+
