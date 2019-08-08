@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<%= require('html-loader?attrs=false!./partials/head.html') %>
+
+<body>
+<%= require('html-loader?attrs=false!./partials/header.html') %>
+
+  <main class="main">
+    <div class="container">
+  
+      <section class="section section_main">
+        <div class="row">
+          <div class="col-auto">
+
+            <div class="section_main__image" id="IdentityAvatar">
+              <img src="" alt="pic" width="160">
+              <div class="verified_sign">
+                </i class="icon icon--status">
+              </div>
+            </div>
+
+          </div>
+          <div class="col">
+            <div class="section_main__group">
+              <h1 class="section_main__title" >
+                <span>Identity validation for epoch </span><span id="EpochId">...</span>
+              </h1>
+              <div class="section_main__subtitle"><span id="IdentityAddress">...</span></div>
+
+              <div class="section_main__subtitle" id="ValidationStatus">...</div>
+            </div>
+<!--
+            <button type="button" class="btn btn-small btn-primary">
+              <i class="icon icon--back"></i><span>Back to identity</span>
+            </button>
+            <a href="#" class="btn btn-secondary btn-small" id="ValidationResult">
+              <i class="icon icon--report"></i>
+              <span>Epoch validation results</span>
+            </a>
+-->
+
+          </div>
+        </div>
+      </section>
+  
+
+
+      <section class="section section_details">
+        <h3>Details</h3>
+        <div class="card">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Identity:</div>
+                <div class="text_block text_block--break"><a href="" id="DetailsIdentityId">-</a></div>
+                <hr>
+                <div class="control-label">Validation results for epoch:</div>
+                <div class="text_block"><a href="" id="DetailsEpochId">-</a></div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Validation answers tx:</div>
+                <div class="text_block" id="ValidationTx">-</div>
+                <hr>
+                <div class="control-label">Qualification answers tx:</div>
+                <div class="text_block" id="QualificationTx">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  
+      <section class="section section_info">
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <h3>Validation answers</h3>
+            <div class="card">
+              <div class="info_block">
+                <div class="row">
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="IdentityShortAnswers">- / -</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Right answers / Solved">Right answers</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="IdentityShortScore">-</h3>
+                    <div class="control-label">Score</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="ShortInTime">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Whether the answers submitted in time or not">Submission</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6">
+            <h3>Qualification answers</h3>
+            <div class="card">
+              <div class="info_block">
+                <div class="row">
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="IdentityLongAnswers">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Right answers / Solved">Right answers</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="IdentityLongScore">-</h3>
+                    <div class="control-label">Score</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="LongInTime">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Whether the answers submitted in time or not">Submission</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+  
+      <section class="section section_tabs">
+        <div class="tabs">
+          <div class="section__header">
+            <div class="row align-items-center justify-content-between">
+              <div class="col">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="epochs-tab"
+                      data-toggle="tab"
+                      href="#epochs"
+                      role="tab"
+                      aria-controls="epochs"
+                      aria-selected="true"
+                    >
+                      <h3>Validation answers</h3>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="qualification-tab"
+                      data-toggle="tab"
+                      href="#qualification"
+                      role="tab"
+                      aria-controls="qualification"
+                      aria-selected="false"
+                    >
+                      <h3>Qualification answers</h3>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="ShortAnswersTable">
+                    <tr>
+                      <th>Flip</th>
+                      <th style="width: 130px;" data-toggle="tooltip" title="Answer agreed by qualification committee">Right<br>answer</th>
+                      <th style="width: 150px;" data-toggle="tooltip" title="Qualification committee consensus about the right answer">Consensus</th>
+                      <th style="width: 140px;">Answer</th>
+                      <th style="width: 100px;">Score</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="qualification" role="tabpanel" aria-labelledby="qualification-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="LongAnswersTable">
+                    <tr>
+                      <th>Flip</th>
+                      <th style="width: 130px;" data-toggle="tooltip" title="Answer agreed by qualification committee">Right<br>answer</th>
+                      <th style="width: 150px;" data-toggle="tooltip" title="Qualification committee consensus about the right answer">Consensus</th>
+                      <th style="width: 140px;">Answer</th>
+                      <th style="width: 100px;">Score</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+      </section>
+
+
+    </div>
+  </main>
+
+  <%= require('html-loader?attrs=false!./partials/scripts.html') %>
+</body>
+</html>
+

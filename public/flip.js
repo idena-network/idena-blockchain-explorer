@@ -1,10 +1,13 @@
+var FlipEpoch;
+
+
 function initFlip(flip){
   $("#FlipId")[0].textContent=flip;
-  getFlipData(flip);
+  prepareFlipData(flip);
 }
 
 
-function getFlipData(flip){
+function prepareFlipData(flip){
 
     var u=url+'Flip/'+flip;
     $.ajax({
@@ -13,14 +16,18 @@ function getFlipData(flip){
       dataType:'json',
       success: function (data) {
         updateFlipData(data);
+        getFlipData(flip);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
       }
     });
+}
 
 
-    u=url+'Flip/'+flip+'/Answers/Short?skip=0&limit=100';
+function getFlipData(flip){
+
+    var u=url+'Flip/'+flip+'/Answers/Short?skip=0&limit=100';
     $.ajax({
       url: u,
       type: 'GET',
@@ -48,13 +55,35 @@ function getFlipData(flip){
 }
 
 
+function updateIdentityStatus(identity, element){
+    var prevEpoch=FlipEpoch-1;
+    var u=url+'Epoch/'+prevEpoch+'/Identity/'+identity;
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        if (data.result == null)  { return }
+        element[0].textContent=data.result.state;
+        console.log(element[0]+':'+JSON.stringify(data));
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+}
+
 function updateFlipData(data){
   if (data.result == null)  { return }
 
+  FlipEpoch = data.result.epoch;
+
   if (data.result.status=="Qualified")
-    $("#FlipConsensus")[0].textContent='Strong';
+    $("#FlipConsensus")[0].textContent='Strong'
+  else
   if (data.result.status=="WeaklyQualified")
     $("#FlipConsensus")[0].textContent='Weak';
+
 
   if ((data.result.status!="Qualified")&&(data.result.status!="WeaklyQualified")){
     $("#FlipConsensus")[0].textContent='No consensus';
@@ -62,9 +91,20 @@ function updateFlipData(data){
     $("#FlipAnswer")[0].textContent=data.result.answer;
   }
 
-    $("#FlipTx")[0].textContent= data.result.txHash.substr(0,45)+"...";
-//    $("#FlipTx")[0].textContent= "<a href='./txs?tx="+data.result.txHash+"'>" + data.result.txHash.substr(0,25) + "...</a>";
+  $("#FlipAuthor")[0].textContent= data.result.author.substr(0,30)+"...";
+  $("#FlipAuthor")[0].href= "./identity?identity="+data.result.author;
 
+  $("#FlipTx")[0].textContent= data.result.txHash.substr(0,35)+"...";
+  $("#FlipTx")[0].href="./tx?tx="+data.result.txHash;
+
+  $("#FlipCreated")[0].textContent= data.result.timestamp;
+  $("#FlipSize")[0].textContent= data.result.size + ' bytes';
+
+  $("#FlipEpoch")[0].textContent= epochFmt(data.result.epoch);
+  $("#FlipEpoch")[0].href="./epoch?epoch="+data.result.epoch;
+
+  $("#FlipBlock")[0].textContent= data.result.blockHeight;
+  $("#FlipBlock")[0].href="./block?block="+data.result.blockHeight;
 }
 
 
@@ -81,7 +121,10 @@ function updateFlipAnswersShortData(data){
             td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].address+"'>" + data.result[i].address + "</a></div>");
         tr.append(td);
 
-        tr.append("<td>-</td>");
+        td=$("<td/>");
+        updateIdentityStatus(data.result[i].address, td);
+        tr.append(td);
+
         tr.append("<td>" + data.result[i].respAnswer + "</td>");
         //tr.append("<td>" + data.result[i].flipAnswer + "</td>");
         table.append(tr);
@@ -103,7 +146,9 @@ function updateFlipAnswersLongData(data){
             td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].address+"'>" + data.result[i].address + "</a></div>");
         tr.append(td);
 
-        tr.append("<td>-</td>");
+        td=$("<td/>");
+        updateIdentityStatus(data.result[i].address, td);
+        tr.append(td);
     
         var answerText='';
         if (data.result[i].respAnswer=="Left"){

@@ -1,9 +1,21 @@
+function initValidation(currEpoch){
+  var nextEpoch=currEpoch*1+1;
+  var prevEpoch=currEpoch-1;
+
+  $("#EpochId")[0].textContent='for starting epoch ' + epochFmt(currEpoch);
+  $("#EpochPageLink")[0].href="/epoch?epoch="+currEpoch;
+
+  if(currEpoch>0)
+    getValidationData(currEpoch);
+
+};
 
 
 function getValidationData(epoch){
     var prevEpoch=epoch-1;
 
     var u=url+'Epoch/'+prevEpoch;
+
     $.ajax({
       url: u,
       type: 'GET',
@@ -63,7 +75,7 @@ function getValidationData(epoch){
       type: 'GET',
       dataType:'json',
       success: function (data) {
-        updateValidationIdentitiesData(data);
+        updateValidationIdentitiesData(data, prevEpoch);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -88,8 +100,9 @@ function getValidationData(epoch){
 
 
 
-function updateValidationIdentitiesData(data){
+function updateValidationIdentitiesData(data, epoch){
 
+    var nextEpoch = epoch*1+1;
     var valid_identities_table=$("#IdentitiesTable");
     var failed_identities_table=$("#FailedIdentities");    
     valid_identities_table.find('td').parent().remove();
@@ -125,7 +138,6 @@ function updateValidationIdentitiesData(data){
           tr.append("<td>" + longScoreTxt + "</td>");
         else
           tr.append("<td>" + longScoreTxt + "</td>");
-        tr.append("<td></td>");//Age
       } else {
         tr.append("<td>" + data.result[i].prevState+ "</td>");
         //todo authorScore:        tr.append("<td>" + precise2(data.result[i].authorScore*100) + "%</td>"); 
@@ -144,7 +156,11 @@ function updateValidationIdentitiesData(data){
             if (data.result[i].shortAnswers.flipsCount>0) 
               tr.append("<td>Late submission</td>");
             else
-              tr.append("<td>Missed validation</td>");
+              if (data.result[i].approved) 
+                tr.append("<td>Not accomplished</td>")
+              else
+                tr.append("<td>Missed validation</td>");
+
             MissedValidationCount++;
           }else{
             tr.append("<td>Wrong answers</td>");
@@ -152,6 +168,8 @@ function updateValidationIdentitiesData(data){
           }
         }
       }
+
+      tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+data.result[i].address+"'><i class='icon icon--info'></a></td>");
 
       if(data.result[i].state!="Undefined"){
         valid_identities_table.append(tr);

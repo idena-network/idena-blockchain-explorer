@@ -74,6 +74,25 @@ const commonConfig = {
       hash: false,
       filename: 'flip.html',
     }),
+
+
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/tx.html'),
+      hash: false,
+      filename: 'tx.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/block.html'),
+      hash: false,
+      filename: 'block.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/answers.html'),
+      hash: false,
+      filename: 'answers.html',
+    }),
+
+
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/epoch.html'),
       hash: false,

@@ -52,6 +52,7 @@ function getIdentityData(identiy){
       }
     });
 
+
     var u=url+'Identity/'+identiy+'/FlipStates';
     $.ajax({
       url: u,
@@ -112,7 +113,7 @@ function updateIdentityEpochsData(data, identity){
 
         var tr = $('<tr/>');
         var td=$("<td/>");
-            td.append("<div class='text_block text_block--ellipsis'><a href='./epoch?epoch="+nextEpoch+"'>" + nextEpoch + "</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./epoch?epoch="+nextEpoch+"'>" + epochFmt(nextEpoch) + "</a></div>");
         tr.append(td);
         tr.append("<td>"+data.result[i].prevState+"</td>");
 
@@ -132,7 +133,7 @@ function updateIdentityEpochsData(data, identity){
               tr.append("<td>"+shortScoreTxt+"</td>");
               tr.append("<td>"+longScoreTxt+"</td>");
               tr.append("<td>Late submission</td>") 
-              tr.append("<td><a href='./identity?epoch="+epoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
+              tr.append("<td><a href='./identity?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
             } else {
               tr.append("<td>-</td>");
               tr.append("<td>-</td>");
@@ -145,7 +146,7 @@ function updateIdentityEpochsData(data, identity){
           tr.append("<td>"+shortScoreTxt+"</td>");
           tr.append("<td>"+longScoreTxt+"</td>");
           tr.append("<td>Successful</td>");
-          tr.append("<td><a href='./identity?epoch="+data.result[i].epoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
+          tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
         }
       table.append(tr);
   }
@@ -161,7 +162,7 @@ function updateIdentityFlipStatesData(data){
     var state=data.result[i].value;
     if (state=='Qualified') qualifiedFlips=data.result[i].count;
     if (state=='WeaklyQualified') weaklyQualifiedFlips=data.result[i].count;
-    if (state=='') notQualifiedFlips=data.result[i].count;
+    if (state=='NotQualified') notQualifiedFlips=data.result[i].count;
   }
   var totalFlips = qualifiedFlips + weaklyQualifiedFlips + notQualifiedFlips;
   $("#IdentityFlipsCreated")[0].textContent= totalFlips;

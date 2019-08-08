@@ -2,26 +2,22 @@
 function initEpoch(currEpoch){
   var nextEpoch=currEpoch*1+1;
   var prevEpoch=currEpoch-1;
-  if (path=='/validation')
-    $("#EpochId")[0].textContent=currEpoch;
 
+  getEpochData(currEpoch);
+  $("#DetailsEpochId")[0].textContent=epochFmt(currEpoch);
+  $("#EpochId")[0].textContent="Epoch "+ epochFmt(currEpoch);
 
-  if (path=='/epoch'){
-    getEpochData(currEpoch);
-    $("#DetailsEpochId")[0].textContent="#"+ currEpoch;
-    $("#EpochId")[0].textContent="Epoch #"+ currEpoch;
+  if (currEpoch>0){
     $("#ValidationResult")[0].href="/validation?epoch="+currEpoch;
-
-    (prevEpoch>0)
-    ?$("#prev-epoch-btn")[0].href=path+"?epoch="+prevEpoch
-    :$("#prev-epoch-btn")[0].href="#";
+  } else {
+    $("#ValidationResult")[0].setAttribute('disabled', '');
   }
 
-  if (path=='/validation'){
-    getValidationData(currEpoch);
-    $("#EpochPageLink")[0].href="/epoch?epoch="+currEpoch;
+  if (prevEpoch>=0){
+    $("#prev-epoch-btn")[0].href=path+"?epoch="+prevEpoch;
+  } else {
+    $('#prev-epoch-btn')[0].setAttribute('disabled', '');
   }
-
 };
 
 function getEpochData(epoch){
@@ -40,6 +36,7 @@ function getEpochData(epoch){
     });
 
     u=url+'Epoch/'+prevEpoch;
+    if (prevEpoch>0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -66,6 +63,7 @@ function getEpochData(epoch){
     });
 
     u=url+'Epoch/'+prevEpoch+'/IdentityStatesSummary';
+    if (prevEpoch>0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -79,6 +77,7 @@ function getEpochData(epoch){
     });
 
     u=url+'Epoch/'+prevEpoch+'/Identities?skip=0&limit=100';
+    if (prevEpoch>0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -92,6 +91,7 @@ function getEpochData(epoch){
     });
 
     u=url+'Epoch/'+prevEpoch+'/Flips?skip=0&limit=100';
+    if (prevEpoch>0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -232,8 +232,6 @@ function getEpochData(epoch){
 
 
 
-
-
 function updateEpochFlipsData(data){
     var table=$("#FlipsTable");
     table.find('td').parent().remove();
@@ -322,7 +320,7 @@ function updateEpochInvitationsData(data){
     for (var i = 0; i < data.result.length; i++) {
         var tr = $('<tr/>');
         var td=$("<td/>");
-            td.append("<div class='text_block text_block--ellipsis'><a href='./txs?tx="+data.result[i].hash+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+data.result[i].hash+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
         tr.append(td);
         var td=$("<td/>");
             td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].author.toLowerCase()+'" alt="pic"width="32"></div>');
@@ -333,7 +331,7 @@ function updateEpochInvitationsData(data){
         var activation=data.result[i].activationHash;
         if (activation!=""){
           var td=$("<td/>");
-              td.append("<div class='text_block text_block--ellipsis'><a href='./txs?tx="+activation+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
+              td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+activation+"'>" + data.result[i].hash.substr(0, 15) + "...</a></div>");
           tr.append(td);
 
           var td=$("<td/>");
@@ -411,20 +409,24 @@ function updateEpochFlipsAnswersSummaryData(data){
          
 function updateEpochFlipsStatesSummaryData(data){
   if (data.result == null)  { return }
-  var solvedFlips=0, qualifiedFlips=0, weaklyQualifiedFlips=0, notQualifiedFlips=0;
+  var solvedFlips=0, qualifiedFlips=0, weaklyQualifiedFlips=0, notQualifiedFlips=0, flipsCreated=0;
   for (var i = 0; i < data.result.length; i++) {
     var state=data.result[i].value;
     if (state=='Qualified') qualifiedFlips=data.result[i].count;
     if (state=='WeaklyQualified') weaklyQualifiedFlips=data.result[i].count;
-    if (state=='') notQualifiedFlips=data.result[i].count;
+    if (state=='NotQualified') notQualifiedFlips=data.result[i].count;
+    if (state=='') flipsCreated=data.result[i].count;
+
   }
   solvedFlips = qualifiedFlips + weaklyQualifiedFlips + notQualifiedFlips;
+  flipsCreated = flipsCreated + solvedFlips;
   if (path=='/validation'){
     $("#FlipsConsensus")[0].textContent=qualifiedFlips +" / "+ weaklyQualifiedFlips + " / " + notQualifiedFlips;
     $("#TotalFlips")[0].textContent=solvedFlips;
   }  
+
   if (path=='/epoch'){
-    $("#EpochFlipsCreated")[0].textContent=notQualifiedFlips;
+    $("#EpochFlipsCreated")[0].textContent=flipsCreated;
   }
 }
 
@@ -469,7 +471,7 @@ function updateEpochTxsData(data){
 
         var td=$("<td/>");
             var hash=data.result[i].hash;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./txs/"+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?="+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
         tr.append(td);
 
         var td=$("<td/>");
@@ -496,7 +498,7 @@ function updateEpochBlocksData(data){
 
         var td=$("<td/>");
             var height=data.result[i].height;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./block/"+height+"'>" + height + "</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./block?block="+height+"'>" + height + "</a></div>");
         tr.append(td);
 
         tr.append("<td>-</td>");//todo blockissuer

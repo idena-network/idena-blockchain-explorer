@@ -142,11 +142,23 @@ $(document).ready(function() {
 
   if(path=="/validation")
     if (! (p.epoch===undefined))
-     initEpoch(p.epoch);
+     initValidation(p.epoch);
 
   if(path=="/flip")
     if (! (p.flip===undefined))
      initFlip(p.flip);
+
+  if(path=="/answers")
+    if (! (p.identity===undefined) && !(p.epoch===undefined))
+     initIdentityAnswers(p.identity, p.epoch);
+
+
+  if(path=="/tx")
+    if (! (p.tx===undefined) )
+     initTransaction(p.tx);
+
+  if(path=="/")
+    initEpochs();
 
 });
 
