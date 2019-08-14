@@ -136,6 +136,10 @@ $(document).ready(function() {
     if (! (p.identity===undefined))
      initIdentity(p.identity);
 
+  if(path=="/address")
+    if (! (p.address===undefined))
+     initAddress(p.address);
+     
   if(path=="/epoch")
     if (! (p.epoch===undefined))
       initEpoch(p.epoch);
@@ -152,11 +156,9 @@ $(document).ready(function() {
     if (! (p.identity===undefined) && !(p.epoch===undefined))
      initIdentityAnswers(p.identity, p.epoch);
 
-
   if(path=="/tx")
     if (! (p.tx===undefined) )
      initTransaction(p.tx);
-
   if(path=="/")
     initEpochs();
 

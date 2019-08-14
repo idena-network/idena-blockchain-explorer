@@ -4,6 +4,8 @@ function initIdentity(identity){
   prepareIdentityData(identity);
   $("#IdentityAddress")[0].textContent=identity;
   $("#IdentityAvatar img")[0].src="https://robohash.org/"+identity.toLowerCase();
+
+  $("#BalanceAddress")[0].href="/address?address="+identity;
 };
 
 var CurrentEpoch=0;
@@ -109,7 +111,7 @@ function updateIdentityEpochsData(data, identity){
   for (var i = 0; i < data.result.length; i++) {
         var epoch=data.result[i].epoch;
         var nextEpoch = epoch*1+1;
-        if (nextEpoch==CurrentEpoch) { break; }
+        if (nextEpoch==CurrentEpoch) { continue; }
 
         var tr = $('<tr/>');
         var td=$("<td/>");
@@ -133,7 +135,7 @@ function updateIdentityEpochsData(data, identity){
               tr.append("<td>"+shortScoreTxt+"</td>");
               tr.append("<td>"+longScoreTxt+"</td>");
               tr.append("<td>Late submission</td>") 
-              tr.append("<td><a href='./identity?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
+              tr.append("<td><a href='./identity?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
             } else {
               tr.append("<td>-</td>");
               tr.append("<td>-</td>");
@@ -146,7 +148,7 @@ function updateIdentityEpochsData(data, identity){
           tr.append("<td>"+shortScoreTxt+"</td>");
           tr.append("<td>"+longScoreTxt+"</td>");
           tr.append("<td>Successful</td>");
-          tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--info'></a></td>");
+          tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
         }
       table.append(tr);
   }
@@ -183,7 +185,7 @@ function updateIdentityFlipQualifiedAnswersData(data){
 
 function updateIdentityData(data){
   if (data.result == null)  { return }
-  if ((data.result.state=='Newbie')||(data.result.state=='Verified')){
+  if (data.result.state=='Verified'){
     $("#IdentityAvatar div").append( '<i class="icon icon--status"></i>');
   }
   if (data.result.state=="Undefined"){

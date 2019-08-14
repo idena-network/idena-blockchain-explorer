@@ -31,6 +31,33 @@
   }
 }
 
+
+.flipframe {
+  border-radius: 20px;
+  &.active {
+    border-style: solid;
+    border-color: #578fff !important;
+  }
+
+  div {
+    width:160px; 
+    img{
+      width:160px; 
+      height:auto;
+    }
+  }
+}
+
+.fliptopimage {
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+}
+
+.flipbottomimage {
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
 .user-flip {
   display: inline-block;
   vertical-align: middle;

@@ -16,6 +16,31 @@
     </section>
 
 
+
+      <section class="section section_flips">
+        <div>
+          <div class="row">
+            <div>
+              <div class="flipframe" id="FlipImgLeft">
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL0" class='fliptopimage'></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL1"></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL2"></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL3" class='flipbottomimage'></div>
+              </div>
+            </div>
+            <div>
+              <div class="flipframe" id="FlipImgRight">
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR0" class='fliptopimage'></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR1"></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR2"></div>
+                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR3" class='flipbottomimage'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
       <section class="section section_details">
         <h3>Details</h3>
         <div class="card">
@@ -24,7 +49,7 @@
               <div class="section__group">
 
                 <div class="control-label">Author:</div>
-                <div class="text_block"><a href="" id="FlipAuthor">-</a></div>
+                <div class="text_block"><a href="" id="FlipAuthor"><img class="user-pic" width="32" src=""></img><span>-<span></a></div>
                 <hr>
                 <div class="control-label">Created:</div>
                 <div class="text_block" id="FlipCreated">-</div>
@@ -103,50 +128,6 @@
 
 
 
-    <section class="section section_tabs">
-      <div class="tabs" data-tabs="true">
-        <div class="section__header">
-          <div class="row align-items-center justify-content-between">
-            <div class="col">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    id="validation-tab"
-                    data-toggle="tab"
-                    href="#validation"
-                    role="tab"
-                    aria-controls="validation"
-                    aria-selected="true"
-                  >
-                    <h3>Challenged identities</h3>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-content">
-          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="FlipIdentitiesTable">
-                    <tr>
-                      <th>Identity</th>
-                      <th style="width: 190px;" data-toggle="tooltip" title="Identity status before the validation">Status</th>
-                      <th style="width: 140px;" data-toggle="tooltip" title="Answer given on validation session">Answer</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
 
     <section class="section section_tabs">
@@ -194,6 +175,54 @@
       </div>
     </section>
 
+
+
+
+
+    <section class="section section_tabs">
+      <div class="tabs" data-tabs="true">
+        <div class="section__header">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="validation-tab"
+                    data-toggle="tab"
+                    href="#validation"
+                    role="tab"
+                    aria-controls="validation"
+                    aria-selected="true"
+                  >
+                    <h3>Challenged identities</h3>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content">
+          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FlipIdentitiesTable">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Identity status before the validation">Status</th>
+                      <th style="width: 140px;" data-toggle="tooltip" title="Answer given on validation session">Answer</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
   </div>

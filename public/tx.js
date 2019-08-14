@@ -31,7 +31,7 @@ function updateTxData(data){
   $("#TxBlock")[0].textContent=data.result.blockHeight;
   $("#TxBlock")[0].href="./block?block="+data.result.blockHeight;
 
-  $("#TxTime")[0].textContent=data.result.timestamp;
+  $("#TxTime")[0].textContent= timeFmt(data.result.timestamp);
 
   $("#TxType")[0].textContent=data.result.type;
 

@@ -98,6 +98,13 @@ const commonConfig = {
       hash: false,
       filename: 'epoch.html',
     }),
+
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/address.html'),
+      hash: false,
+      filename: 'address.html',
+    }),
+
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/identity.html'),
       hash: false,

@@ -289,7 +289,7 @@ function updateEpochFlipSubmissionsData(data){
             td.append('<div class="user-pic"><img src="https://robohash.org/'+author.toLowerCase()+'" alt="pic"width="32"></div>');
             td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+author+"'>" + author.substr(0, 15) + "...</a></div>");
         tr.append(td);
-        tr.append("<td>" + data.result[i].timestamp + "</td>");
+        tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].size + "</td>");
         table.append(tr);
     }
@@ -384,7 +384,7 @@ function updateEpochIdentitiesData(data){
       if (data.result[i].totalShortAnswers.flipsCount>0)
         totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
 
-      if(data.result[i].state!="Undefined"){
+      if((data.result[i].state!="Undefined")&&(data.result[i].state!="Suspended")&&(data.result[i].state!="Zombie")){
         tr.append("<td>" + data.result[i].state + "</td>");
         tr.append("<td>" + totalScoreTxt+ "</td>");
         valid_identities_table.append(tr);
@@ -435,7 +435,7 @@ function updateEpochFlipsStatesSummaryData(data){
 function updateEpochData(data){
   if (data.result == null)  { return }
   if (path=='/epoch'){
-    $("#EpochStart")[0].textContent=data.result.validationTime;
+    $("#EpochStart")[0].textContent= timeFmt(data.result.validationTime);
     $("#FirstBlock")[0].textContent=data.result.validationFirstBlockHeight;
   }
 }
@@ -444,7 +444,7 @@ function updateEpochData(data){
 function updateNextEpochData(data){
   if (data.result == null)  { return }
   if (path=='/epoch'){
-    $("#EpochEnd")[0].textContent=data.result.validationTime;
+    $("#EpochEnd")[0].textContent= timeFmt(data.result.validationTime);
   }
 }
 
@@ -471,7 +471,7 @@ function updateEpochTxsData(data){
 
         var td=$("<td/>");
             var hash=data.result[i].hash;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?="+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
         tr.append(td);
 
         var td=$("<td/>");
@@ -479,7 +479,7 @@ function updateEpochTxsData(data){
             td.append('<div class="user-pic"><img src="https://robohash.org/'+from.toLowerCase()+'" alt="pic"width="32"></div>');
             td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+from+"'>" + from.substr(0, 15) + "...</a></div>");
         tr.append(td);
-        tr.append("<td>" + data.result[i].timestamp + "</td>");
+        tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].type + "</td>");
         table.append(tr);
     }
@@ -503,7 +503,7 @@ function updateEpochBlocksData(data){
 
         tr.append("<td>-</td>");//todo blockissuer
 
-        tr.append("<td>" + data.result[i].timestamp + "</td>");
+        tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].txCount + "</td>");
         table.append(tr);
     }

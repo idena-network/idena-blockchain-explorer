@@ -128,7 +128,7 @@ function updateValidationIdentitiesData(data, epoch){
       if (data.result[i].totalShortAnswers.flipsCount>0)
         totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
 
-      if(data.result[i].state!="Undefined"){
+      if((data.result[i].state!="Undefined")&&(data.result[i].state!="Suspended")&&(data.result[i].state!="Zombie")){
 
         tr.append("<td>" + data.result[i].prevState+ "</td>");
         tr.append("<td>" + data.result[i].state + "</td>");
@@ -138,6 +138,10 @@ function updateValidationIdentitiesData(data, epoch){
           tr.append("<td>" + longScoreTxt + "</td>");
         else
           tr.append("<td>" + longScoreTxt + "</td>");
+
+        tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+data.result[i].address+"'><i class='icon icon--thin_arrow_right'></a></td>");
+        valid_identities_table.append(tr);
+
       } else {
         tr.append("<td>" + data.result[i].prevState+ "</td>");
         //todo authorScore:        tr.append("<td>" + precise2(data.result[i].authorScore*100) + "%</td>"); 
@@ -167,13 +171,7 @@ function updateValidationIdentitiesData(data, epoch){
             FailedValidationCount++;
           }
         }
-      }
-
-      tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+data.result[i].address+"'><i class='icon icon--info'></a></td>");
-
-      if(data.result[i].state!="Undefined"){
-        valid_identities_table.append(tr);
-      } else {
+        tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+data.result[i].address+"'><i class='icon icon--thin_arrow_right'></a></td>");
         failed_identities_table.append(tr);
       }
     }

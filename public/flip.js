@@ -40,7 +40,7 @@ function getFlipData(flip){
       }
     });
 
-    u=url+'Flip/'+flip+'/Answers/Long?skip=0&limit=10';
+    u=url+'Flip/'+flip+'/Answers/Long?skip=0&limit=100';
     $.ajax({
       url: u,
       type: 'GET',
@@ -52,20 +52,32 @@ function getFlipData(flip){
         console.error(u +', error:'+error);
       }
     });
+
+    u=url+'Flip/'+flip+'/Content';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateFlipContent(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
 }
 
 
+
 function updateIdentityStatus(identity, element){
-    var prevEpoch=FlipEpoch-1;
-    var u=url+'Epoch/'+prevEpoch+'/Identity/'+identity;
+    var u=url+'Epoch/'+FlipEpoch+'/Identity/'+identity;
     $.ajax({
       url: u,
       type: 'GET',
       dataType:'json',
       success: function (data) {
         if (data.result == null)  { return }
-        element[0].textContent=data.result.state;
-        console.log(element[0]+':'+JSON.stringify(data));
+        element[0].textContent=data.result.prevState;
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -91,13 +103,23 @@ function updateFlipData(data){
     $("#FlipAnswer")[0].textContent=data.result.answer;
   }
 
-  $("#FlipAuthor")[0].textContent= data.result.author.substr(0,30)+"...";
+  if(data.result.answer=="Left"){
+      $("#FlipImgLeft").addClass('active');
+  } else
+    if(data.result.answer=="Right"){
+      $("#FlipImgRight").addClass('active');
+    }
+
+  $("#FlipAuthor span")[0].textContent= data.result.author.substr(0,30)+"...";
+  $("#FlipAuthor img")[0].src= 'https://robohash.org/'+data.result.author.toLowerCase();
   $("#FlipAuthor")[0].href= "./identity?identity="+data.result.author;
+
+
 
   $("#FlipTx")[0].textContent= data.result.txHash.substr(0,35)+"...";
   $("#FlipTx")[0].href="./tx?tx="+data.result.txHash;
 
-  $("#FlipCreated")[0].textContent= data.result.timestamp;
+  $("#FlipCreated")[0].textContent= timeFmt(data.result.timestamp);
   $("#FlipSize")[0].textContent= data.result.size + ' bytes';
 
   $("#FlipEpoch")[0].textContent= epochFmt(data.result.epoch);
@@ -178,3 +200,30 @@ function updateFlipAnswersLongData(data){
     $("#RightAnswers")[0].textContent=rightAnswer;
 
 }
+
+
+
+function updateFlipContent(data){
+    if (data.result == null)  { return }
+
+
+//    if (data.result.Pics.length>0)
+//      $(".section_flips").removeClass('hidden');
+    for (var i = 0; i < data.result.Pics.length; i++) {
+      var buffArray = new Uint8Array(
+          data.result.Pics[i].substring(2).match(/.{1,2}/g).map(byte => parseInt(byte, 16))
+      )
+      var lposition, rposition;
+      for (var j = 0; j < data.result.Pics.length; j++){
+          if (data.result.LeftOrder[j]==i)
+            lposition=j;
+          if (data.result.RightOrder[j]==i)
+            rposition=j;
+      }
+      var src = URL.createObjectURL(new Blob([buffArray], {type: 'image/jpeg'}))
+      $("#FlipImageL"+lposition)[0].src=src;
+      $("#FlipImageR"+rposition)[0].src=src;      
+    }
+}
+
+

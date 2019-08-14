@@ -8,108 +8,64 @@
   <main class="main">
     <div class="container">
   
-      <section class="section section_main">
+
+    <section class="section">
+
+      <div class="section_main__group">
+        <h1 class="section_main__title">Address</h1>
+        <h3 class="section_main__subtitle"><span id="Address">...</span></h3>
+      </div>
+
+    </section>
+
+ 
+      <section class="section section_info">
         <div class="row">
-          <div class="col-auto">
-            <div class="section_main__image" id="IdentityAvatar">
-              <img src="" alt="pic" width="160">
-              <div class="verified_sign">
-<!--
-                </i class="icon icon--status">
--->
+          <div class="col-12 col-sm-12">
+            <h3>Details</h3>
+            <div class="card">
+              <div class="info_block">
+                <div class="row" id="BalanceSection">
+                  <div class="col-12 col-sm-6 bordered-col">
+                    <h3 class="info_block__accent" id="AddressBalance">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Available balance">Balance</div>
+                  </div>
+                  <div class="col-12 col-sm-6 bordered-col hidden">
+                    <h3 class="info_block__accent" id="AddressStake">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Frozen balance">Stake</div>
+                  </div>
+                  <div class="col-12 col-sm-6 bordered-col">
+                    <h3 class="info_block__accent" id="AddressTxs">-</h3>
+                    <div class="control-label">Transactions</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="section_main__group">
-              <h1 class="section_main__title" id="IdentityAddress">
-                0x...
-              </h1>
-              <div class="section_main__subtitle"></div>
-            </div>
 
-            <a type="button" class="btn btn-small btn-primary" id="BalanceAddress">
-              <i class="icon icon--coins"></i>
-              <span>Balance of address</span>
-            </a>
-
-          </div>
         </div>
       </section>
-  
-      <section class="section section_details">
-        <h3>Details</h3>
+
+
+      <section class="section section_details hidden" id="OwnerSection">
+        <h3>Owner</h3>
         <div class="card">
           <div class="row">
             <div class="col-12 col-sm-6">
               <div class="section__group">
-                <div class="control-label">ID</div>
-                <div class="text_block text_block--break" id="IdentityId">-</div>
-                <hr>
-                <div class="control-label">Username</div>
-                <div class="text_block">...</div>
+                <div class="control-label">Identity:</div>
+                <div class="text_block text_block--break">  <a href="" id="AddressOwner"><img class="user-pic" width="32" src=""></img><span>-<span></a>  </div>
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <div class="section__group">
-                <div class="control-label">Status</div>
-                <div class="text_block" id="IdentityStatus">-</div>
-                <hr>
-                <div class="control-label">Age</div>
-                <div class="text_block" id="IdentityAge">-</div>
+                <div class="control-label">Status:</div>
+                <div class="text_block" id="OwnerState">-</div>
               </div>
             </div>
           </div>
         </div>
       </section>
-  
-      <section class="section section_info">
-        <div class="row">
-          <div class="col-12 col-sm-6">
-            <h3>Validation</h3>
-            <div class="card">
-              <div class="info_block">
-                <div class="row">
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentityRightAnswers">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total right answers">Right answers</div>
-                  </div>
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentitySolvedFlips">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total flips solved">Solved flips</div>
-                  </div>
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentityScore">-</h3>
-                    <div class="control-label">Score</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-12 col-sm-6">
-            <h3>Flips created</h3>
-            <div class="card">
-              <div class="info_block">
-                <div class="row">
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentityFlipsCreated">-</h3>
-                    <div class="control-label data-toggle="tooltip" data-label="Qualified / Total flips"">Total flips</div>
-                  </div>
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentityQualifiedFlips">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Strong / Weak / No consensus">Flips quality</div>
-                  </div>
-                  <div class="col-12 col-sm-4 bordered-col">
-                    <h3 class="info_block__accent" id="IdentityInappropriateFlips">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Flips with inappropriate content">Inappropriate</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
 
   
       <section class="section section_tabs">
@@ -121,14 +77,14 @@
                   <li class="nav-item">
                     <a
                       class="nav-link active"
-                      id="epochs-tab"
+                      id="txs-tab"
                       data-toggle="tab"
-                      href="#epochs"
+                      href="#txs"
                       role="tab"
-                      aria-controls="epochs"
+                      aria-controls="txs"
                       aria-selected="true"
                     >
-                      <h3>Identity's validations</h3>
+                      <h3>Transactions</h3>
                     </a>
                   </li>
 
@@ -155,15 +111,12 @@
             <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
               <div class="card">
                 <div class="table-responsive">
-                  <table class="table" id="IdentityEpochsTable">
+                  <table class="table" id="TransactionsTable">
                     <tr>
-                      <th style="width: 100px;">Epoch</th>
-                      <th data-toggle="tooltip" title="Identity status before the validation">Previous<br>status</th>
-                      <th data-toggle="tooltip" title="Identity validation status">Status</th>
-                      <th>Validation score</th>
-                      <th style="width: 100px;">Qualification score</th>
-                      <th style="width: 100px;">Validated</th>
-                      <th style="width: 90px;">Details</th>
+                      <th>Transaction</th>
+                      <th>From</th>
+                      <th style="width: 100px;">Timestamp</th>
+                      <th style="width: 100px;">Type</th>
                     </tr>
                   </table>
                 </div>
