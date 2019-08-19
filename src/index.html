@@ -7,6 +7,35 @@
 
   <main class="main">
     <div class="container">
+
+                                                 
+
+      <section class="section section_info">
+        <div class="row">
+          <div class="col-12 col-sm-12">
+            <h1>Coins supply</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row" id="BalanceSection">
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="TotalSupply">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Total coins available (including staked coins)">Total supply</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="TotalStaked">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Frozen coins minted for identity stakes">Staked coins</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="TotalBurnt">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Coins burnt by protocol (fees, lost identities, etc.)">Burnt coins</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
     
     
       <section class="section section_tabs">
@@ -25,7 +54,22 @@
                       aria-controls="epochs"
                       aria-selected="true"
                     >
-                      <h1>Epochs</h1>
+                      <h3>Epochs</h3>
+                    </a>
+                  </li>
+
+
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="epochs-tab"
+                      data-toggle="tab"
+                      href="#topaddress"
+                      role="tab"
+                      aria-controls="topaddress"
+                      aria-selected="false"
+                    >
+                      <h3>Top addresses</h3>
                     </a>
                   </li>
 
@@ -35,6 +79,7 @@
           </div>
 
           <div class="tab-content">
+
             <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
               <div class="card">
                 <div class="table-responsive">
@@ -46,12 +91,29 @@
                       <th>Flips</th>
                       <th>Invitations</th>
                       <th>Verified</th>
-
+                      <th>Minted, DNA</th>
+                      <th>Burnt, DNA</th>
                     </tr>
                   </table>
                 </div>
               </div>
             </div>
+
+
+            <div class="tab-pane" id="topaddress" role="tabpanel" aria-labelledby="epochs-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="TopAddressTable">
+                    <tr>
+                      <th>Address</th>
+                      <th>Balance</th>
+                      <th>Stake</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
 
           </div>
         </div>

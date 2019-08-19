@@ -22,166 +22,90 @@
           <div class="row">
             <div class="col-12 col-sm-6">
               <div class="section__group">
-                <div class="control-label">Tx:</div>
-                <div class="text_block text_block--break" ><a href="" id="FlipTx">-</a></div>
+                <div class="control-label">Height:</div>
+                <div class="text_block" id="BlockHeight">-</div>
                 <hr>
-                <div class="control-label">Author:</div>
-                <div class="text_block" id="FirstBlock">-</div>
+                <div class="control-label">Proposer:</div>
+                <div class="text_block"><a href="" id="BlockProposer"><img class="user-pic" width="32" src=""></img><span>-<span></a></div>
+
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <div class="section__group">
                 <div class="control-label">Created:</div>
-                <div class="text_block" id="EpochStart">-</div>
+                <div class="text_block" id="BlockCreated">-</div>
                 <hr>
-                <div class="control-label">Size:</div>
-                <div class="text_block" id="EpochEnd">-</div>
+                <div class="control-label">Trasactions:</div>
+                <div class="text_block" id="BlockTxCount">-</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+
+
+  
+      <section class="section section_tabs">
+        <div class="tabs">
+          <div class="section__header">
+            <div class="row align-items-center justify-content-between">
+              <div class="col">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="txs-tab"
+                      data-toggle="tab"
+                      href="#txs"
+                      role="tab"
+                      aria-controls="txs"
+                      aria-selected="true"
+                    >
+                      <h3>Transactions</h3>
+                    </a>
+                  </li>
+
 <!--
-
-    <section class="section section_info">
-      <div class="row">
-        <div class="col-12 col-sm-6">
-          <h3>Agreed answer</h3>
-          <div class="card">
-            <div class="info_block">
-              <div class="row">
-                <div class="col-12 col-sm-6 bordered-col">
-                  <h3 class="info_block__accent" id="FlipAnswer">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Answer agreed by qualification committee">Answer</div>
-                </div>
-                <div class="col-12 col-sm-6 bordered-col">
-                  <h3 class="info_block__accent" id="FlipConsensus">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Qualification committee consensus">Consensus</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h3>Votes</h3>
-          <div class="card">
-            <div class="info_block">
-              <div class="row">
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="LeftAnswers">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Votes for Left answer">Left</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="RightAnswers">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Votes for Right answer">Right</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="InappropriateAnswers">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Votes for inappropriate content">Inappropriate</div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-    <section class="section section_tabs">
-      <div class="tabs" data-tabs="true">
-        <div class="section__header">
-          <div class="row align-items-center justify-content-between">
-            <div class="col">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    id="validation-tab"
-                    data-toggle="tab"
-                    href="#validation"
-                    role="tab"
-                    aria-controls="validation"
-                    aria-selected="true"
-                  >
-                    <h3>Challenged identities</h3>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-content">
-          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="FlipIdentitiesTable">
-                    <tr>
-                      <th>Identity</th>
-                      <th style="width: 190px;">Previous status</th>
-                      <th style="width: 140px;" data-toggle="tooltip" title="Answer given on validation session">Answer</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <section class="section section_tabs">
-      <div class="tabs" data-tabs="true">
-        <div class="section__header">
-          <div class="row align-items-center justify-content-between">
-            <div class="col">
-              <ul class="nav nav-tabs" role="tablist">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    id="validation-tab"
-                    data-toggle="tab"
-                    href="#validation"
-                    role="tab"
-                    aria-controls="validation"
-                    aria-selected="true"
-                  >
-                    <h3>Qualification committee</h3>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="tab-content">
-          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="FlipCommitteeTable">
-                    <tr>
-                      <th>Identity</th>
-                      <th style="width: 190px;">Previous status</th>
-                      <th style="width: 140px;" data-toggle="tooltip" title="Answer given on qualification session">Answer</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="transactions-tab"
+                      data-toggle="tab"
+                      href="#transactions"
+                      role="tab"
+                      aria-controls="transactions"
+                      aria-selected="false"
+                    >
+                      <h3>Transactions</h3>
+                    </a>
+                  </li>
 -->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content">
+            <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="TransactionsTable">
+                    <tr>
+                      <th>Transaction</th>
+                      <th>From</th>
+                      <th style="width: 100px;">Timestamp</th>
+                      <th style="width: 100px;">Type</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
 
   </div>
 </main>

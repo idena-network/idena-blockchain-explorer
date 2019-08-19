@@ -36,7 +36,7 @@ function getAddressData(address){
     });
 
 
-    u=url+'Identity/'+address+'/Txs?skip=0&limit=100';
+    u=url+'Address/'+address+'/Txs?skip=0&limit=100';
     $.ajax({
       url: u,
       type: 'GET',

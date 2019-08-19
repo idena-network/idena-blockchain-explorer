@@ -35,5 +35,14 @@ function updateTxData(data){
 
   $("#TxType")[0].textContent=data.result.type;
 
+  $("#TxFrom")[0].textContent=data.result.from;
+  $("#TxTo")[0].textContent=data.result.to;
+  $("#TxFrom")[0].href="./address?address="+data.result.from;
+  $("#TxTo")[0].href="./address?address="+data.result.to;
+
+
+  $("#TxAmount")[0].textContent=data.result.amount;
+  $("#TxFee")[0].textContent=data.result.fee;
+
 
 }

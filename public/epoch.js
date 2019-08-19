@@ -23,6 +23,7 @@ function initEpoch(currEpoch){
 function getEpochData(epoch){
     var prevEpoch=epoch-1;
     var u=url+'Epochs/Count';
+
     $.ajax({
       url: u,
       type: 'GET',
@@ -36,7 +37,7 @@ function getEpochData(epoch){
     });
 
     u=url+'Epoch/'+prevEpoch;
-    if (prevEpoch>0)
+    if (prevEpoch>=0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -49,21 +50,8 @@ function getEpochData(epoch){
       }
     });
 
-    u=url+'Epoch/'+epoch;
-    $.ajax({
-      url: u,
-      type: 'GET',
-      dataType:'json',
-      success: function (data) {
-        updateNextEpochData(data);
-      },
-      error: function (request, error) {
-        console.error(u +', error:'+error);
-      }
-    });
-
     u=url+'Epoch/'+prevEpoch+'/IdentityStatesSummary';
-    if (prevEpoch>0)
+    if (prevEpoch>=0)
     $.ajax({
       url: u,
       type: 'GET',
@@ -76,28 +64,58 @@ function getEpochData(epoch){
       }
     });
 
-    u=url+'Epoch/'+prevEpoch+'/Identities?skip=0&limit=100';
-    if (prevEpoch>0)
-    $.ajax({
-      url: u,
-      type: 'GET',
-      dataType:'json',
-      success: function (data) {
-        updateEpochIdentitiesData(data);
-      },
-      error: function (request, error) {
-        console.error(u +', error:'+error);
-      }
-    });
+    if (prevEpoch>=0) {
+      u=url+'Epoch/'+prevEpoch+'/Identities?skip=0&limit=100';
+      $.ajax({
+        url: u,
+        type: 'GET',
+        dataType:'json',
+        success: function (data) {
+          updateEpochIdentitiesData(data);
+        },
+        error: function (request, error) {
+          console.error(u +', error:'+error);
+        }
+        });
+    } else {
+        u=url+'Epoch/'+epoch+'/Identities?skip=0&limit=100';
+        $.ajax({
+        url: u,
+        type: 'GET',
+        dataType:'json',
+        success: function (data) {
+          updateZeroEpochIdentitiesData(data);
+        },
+        error: function (request, error) {
+          console.error(u +', error:'+error);
+        }
+      });
+    }
+
 
     u=url+'Epoch/'+prevEpoch+'/Flips?skip=0&limit=100';
-    if (prevEpoch>0)
+    if (prevEpoch>=0)
     $.ajax({
       url: u,
       type: 'GET',
       dataType:'json',
       success: function (data) {
         updateEpochFlipsData(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+
+    //----------current epoch data --------------
+
+    u=url+'Epoch/'+epoch;
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateNextEpochData(data);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -368,6 +386,34 @@ function updateEpochIdentityStatesSummaryData(data){
 
 
 
+function updateZeroEpochIdentitiesData(data){
+    var valid_identities_table=$("#IdentitiesTable");    
+    valid_identities_table.find('td').parent().remove();
+    if (data.result == null)  { return }
+
+    for (var i = 0; i < data.result.length; i++) {
+        if((data.result[i].prevState=="Candidate")||(data.result[i].prevState=="Invite")){ continue; }
+
+        var tr = $('<tr/>');
+        var td=$("<td/>");
+            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].address.toLowerCase()+'" alt="pic"width="32"></div>');
+            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].address+"'>" + data.result[i].address + "</a></div>");
+        tr.append(td);
+
+      var totalScoreTxt='-';
+      if (data.result[i].totalShortAnswers.flipsCount>0)
+        totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
+
+      if((data.result[i].prevState!="Undefined")&&(data.result[i].prevState!="Suspended")&&(data.result[i].prevState!="Zombie")){
+        tr.append("<td>" + data.result[i].prevState + "</td>");
+        tr.append("<td>" + totalScoreTxt+ "</td>");
+        valid_identities_table.append(tr);
+      } 
+    }
+}
+
+
+
 function updateEpochIdentitiesData(data){
     var valid_identities_table=$("#IdentitiesTable");    
     valid_identities_table.find('td').parent().remove();
@@ -501,10 +547,24 @@ function updateEpochBlocksData(data){
             td.append("<div class='text_block text_block--ellipsis'><a href='./block?block="+height+"'>" + height + "</a></div>");
         tr.append(td);
 
-        tr.append("<td>-</td>");//todo blockissuer
+        var td=$("<td/>");
+            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].proposer.toLowerCase()+'" alt="pic"width="32"></div>');
+            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].proposer+"'>" + data.result[i].proposer.substr(0, 15) + "...</a></div>");
+        tr.append(td);
 
         tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].txCount + "</td>");
+
+        var minted, burnt;
+        minted=data.result[i].coins.balance.minted*1+data.result[i].coins.stake.minted*1;
+        burnt=data.result[i].coins.balance.burnt*1+data.result[i].coins.stake.burnt*1;
+        
+        if ( frac(minted)>99) { minted=precise2(minted)+'' } 
+        if ( frac(burnt)>99) { burnt=precise2(burnt)+'' } 
+
+        tr.append("<td>" + minted+ "</td>");  
+        tr.append("<td>" + burnt + "</td>");  
+
         table.append(tr);
     }
 }

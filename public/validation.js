@@ -2,7 +2,7 @@ function initValidation(currEpoch){
   var nextEpoch=currEpoch*1+1;
   var prevEpoch=currEpoch-1;
 
-  $("#EpochId")[0].textContent='for starting epoch ' + epochFmt(currEpoch);
+  $("#EpochId")[0].textContent='for epoch ' + epochFmt(currEpoch);
   $("#EpochPageLink")[0].href="/epoch?epoch="+currEpoch;
 
   if(currEpoch>0)

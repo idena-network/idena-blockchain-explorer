@@ -131,36 +131,83 @@ $(document).ready(function() {
   path=window.location.pathname;
 
   var p=getAllUrlParams();
+  var title='';
 
-  if(path=="/identity")
-    if (! (p.identity===undefined))
-     initIdentity(p.identity);
+  if(path=="/identity") {
+    title=title+'Identity';
+    if (! (p.identity===undefined)) {
+      initIdentity(p.identity);
+      title=title+' '+p.identity;
+    }
+  }
 
-  if(path=="/address")
-    if (! (p.address===undefined))
-     initAddress(p.address);
+  if(path=="/address") {
+    title=title+'Address';
+    if (! (p.address===undefined)) {
+      initAddress(p.address);
+      title=title+' '+p.address;
+    }
+  }
      
-  if(path=="/epoch")
-    if (! (p.epoch===undefined))
+  if(path=="/epoch") {
+    title=title+'Epoch';
+    if (! (p.epoch===undefined)) {
       initEpoch(p.epoch);
+      title=title+' '+epochFmt(p.epoch);
+    }
+  }
 
-  if(path=="/validation")
-    if (! (p.epoch===undefined))
-     initValidation(p.epoch);
+  if(path=="/validation") {
+    title=title+'Validation result';
+    if (! (p.epoch===undefined)) {
+      initValidation(p.epoch);
+      title=title+' '+epochFmt(p.epoch);
+    }
+  }
 
-  if(path=="/flip")
-    if (! (p.flip===undefined))
-     initFlip(p.flip);
+  if(path=="/flip") {
+    title=title+'Flip';
+    if (! (p.flip===undefined)) {
+      initFlip(p.flip);
+      title=title+' '+p.flip;
+    }
+  }
 
-  if(path=="/answers")
-    if (! (p.identity===undefined) && !(p.epoch===undefined))
-     initIdentityAnswers(p.identity, p.epoch);
+  if(path=="/block") {
+    title=title+'Block';
+    if (! (p.block===undefined)) {
+      initBlock(p.block);
+      title=title+' '+p.block;
+    }
+  }
 
-  if(path=="/tx")
-    if (! (p.tx===undefined) )
-     initTransaction(p.tx);
-  if(path=="/")
+  if(path=="/answers") {
+    title=title+'Identity validation';
+    if (! (p.identity===undefined) && !(p.epoch===undefined)) {
+      initIdentityAnswers(p.identity, p.epoch);
+      title=title+' '+p.identity + ' for epoch '+ epochFmt(p.epoch);
+    }
+
+  }
+
+
+  if(path=="/tx") {
+    title=title+'Transaction';
+    if (! (p.tx===undefined) ) {
+      initTransaction(p.tx);
+      title=title+' '+p.tx;
+    }
+  }
+
+  if(path=="/") {
     initEpochs();
+    title = 'Idena Explorer';
+  } else
+    title = title + ' | Idena Explorer';
+
+
+  $('title').text( title );
+
 
 });
 
@@ -170,6 +217,52 @@ $(document).ready(function() {
 
 
 
+$("#SearchInput").keyup(function (e) {
+//  const isValidEmail = $(this)[0].checkValidity();
+//  isValidEmail ? Btn[0].disabled = false : Btn[0].disabled = true;
+  const Btn = $(this).parent().parent().find(".btn");
+  if (e.which === 13) {
+    Btn[0].click()
+  }
+});
+
+
+
+$("#SearchBtn").click(function(){
+  const input = $("#SearchInput")[0];
+  const txt = input.value;
+  if (txt=='') { return; }
+
+  input.setAttribute('disabled', '');
+
+    var u=url+'Search?value='+txt;
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {        
+        if (data.result == null)  { 
+ 	  alert('Nothing found...');
+          input.removeAttribute('disabled');
+	  input.focus();
+          return; 
+        }
+        for (var i=0; i<data.result.length; i++){
+          if (data.result[i].Name=='Address')
+            location.href = './address?address='+txt;
+          if (data.result[i].Name=='Block')
+            location.href = './block?block='+txt;
+          if (data.result[i].Name=='Flip')
+            location.href = './flip?flip='+txt;
+          if (data.result[i].Name=='Transaction')
+            location.href = './tx?tx='+txt;
+        }
+      },
+      error: function (request, error) {
+        alert("Oops, something went wrong: " + error);
+      }
+    });
+});
 
 
 

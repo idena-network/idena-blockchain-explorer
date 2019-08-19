@@ -1,7 +1,9 @@
 
-var url='https://scan.idena.io/api/';
+var url='https://api.idena.io/api/';
 var path='';
 
+
+function frac(n){ return Number(String(n).split('.')[1] || 0); }
 
 function precise2(x) {
   return Math.round(x*100)/100;
