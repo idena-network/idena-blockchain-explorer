@@ -10,7 +10,7 @@ function initIdentity(identity){
 
 var CurrentEpoch=0;
   
-function prepareIdentityData(identiy){
+function prepareIdentityData(identity){
     var u=url+'Epochs/Count';
     $.ajax({
       url: u,
@@ -19,7 +19,7 @@ function prepareIdentityData(identiy){
       success: function (data) {
         if (data.result == null)  { return }
         CurrentEpoch=data.result;
-        getIdentityData(identiy);
+        getIdentityData(identity);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -27,8 +27,8 @@ function prepareIdentityData(identiy){
     });
 }
 
-function getIdentityData(identiy){
-    var u=url+'Identity/'+identiy;
+function getIdentityData(identity){
+    var u=url+'Identity/'+identity;
     $.ajax({
       url: u,
       type: 'GET',
@@ -41,7 +41,7 @@ function getIdentityData(identiy){
       }
     });
 
-    var u=url+'Identity/'+identiy+'/Age';
+    var u=url+'Identity/'+identity+'/Age';
     $.ajax({
       url: u,
       type: 'GET',
@@ -55,7 +55,7 @@ function getIdentityData(identiy){
     });
 
 
-    var u=url+'Identity/'+identiy+'/FlipStates';
+    var u=url+'Identity/'+identity+'/FlipStates';
     $.ajax({
       url: u,
       type: 'GET',
@@ -68,7 +68,7 @@ function getIdentityData(identiy){
       }
     });
 
-    var u=url+'Identity/'+identiy+'/FlipQualifiedAnswers';
+    var u=url+'Identity/'+identity+'/FlipQualifiedAnswers';
     $.ajax({
       url: u,
       type: 'GET',
@@ -81,18 +81,88 @@ function getIdentityData(identiy){
       }
     });
 
-    var u=url+'Identity/'+identiy+'/Epochs?skip=0&limit=100';
+    var u=url+'Identity/'+identity+'/Epochs?skip=0&limit=100';
     $.ajax({
       url: u,
       type: 'GET',
       dataType:'json',
       success: function (data) {
-        updateIdentityEpochsData(data, identiy);
+        updateIdentityEpochsData(data, identity);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
       }
     });
+
+
+    var u=url+'Epochs/Count';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateEpochCountFlipsData(data, identity);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+
+}
+
+function updateEpochCountFlipsData(data, identity){
+    var table=$("#IdentityFlipsTable");
+    table.find('td').parent().remove();
+    if (data.result == null)  { return }
+    getFlipsData(data.result-1, identity, data.result-1);
+}
+
+
+function getFlipsData(epoch, identity, currEpoch){
+
+    var u=url+'Epoch/'+epoch+'/Identity/'+identity+'/Flips';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateFlipsData(data, epoch, identity, currEpoch);
+        if(epoch>0)
+          getFlipsData(epoch-1, identity, currEpoch);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+}
+
+function updateFlipsData(data, epoch, identity, currEpoch){
+
+    if (data.result == null)  { return }
+    var nextEpoch=epoch*1+1;
+
+    var table=$("#IdentityFlipsTable");
+
+    for (var i = 0; i < data.result.length; i++) {
+        var tr = $('<tr/>');
+
+        var td=$("<td/>");
+            td.append('<div class="user-pic"><img src="./images/flip_icn.png'+'" alt="pic"width="44"></div>');
+            var cid=data.result[i].cid;  
+            td.append("<div class='text_block text_block--ellipsis'><a href='./flip?flip="+cid+"'>" + cid.substr(0, 15) + "...</a></div>");
+        tr.append(td);
+
+        var td=$("<td/>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./epoch?epoch="+epoch+"'>" + epochFmt(epoch) + "</a></div>");
+        tr.append(td);
+
+        var status = (data.result[i].status==''?'-':data.result[i].status);
+        tr.append("<td>"+status+"</td>");
+        tr.append("<td>"+data.result[i].timestamp+"</td>");
+        tr.append("<td>"+data.result[i].size+"</td>");
+
+        table.append(tr);
+    }
 }
 
 
@@ -192,9 +262,10 @@ function updateIdentityData(data){
     $("#IdentityStatus")[0].textContent='Not validated';
   } else
     $("#IdentityStatus")[0].textContent=data.result.state;
-  $("#IdentitySolvedFlips")[0].textContent=data.result.shortAnswers.flipsCount;
-  $("#IdentityRightAnswers")[0].textContent=data.result.shortAnswers.point;
+  $("#IdentitySolvedFlips")[0].textContent=data.result.totalShortAnswers.flipsCount; //shortAnswers.flipsCount; without state fork
+  $("#IdentityRightAnswers")[0].textContent=data.result.totalShortAnswers.point; //shortAnswers.point;
   if (data.result.shortAnswers.flipsCount>0)
-    $("#IdentityScore")[0].textContent= precise2(data.result.shortAnswers.point / data.result.shortAnswers.flipsCount * 100)+'%';
-  $("#IdentityId")[0].textContent=data.result.address;
+    $("#IdentityScore")[0].textContent= precise2(data.result.totalShortAnswers.point / data.result.totalShortAnswers.flipsCount * 100)+'%';
+//    $("#IdentityScore")[0].textContent= precise2(data.result.shortAnswers.point / data.result.shortAnswers.flipsCount * 100)+'%';
+
 }

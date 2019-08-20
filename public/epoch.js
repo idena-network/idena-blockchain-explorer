@@ -22,8 +22,8 @@ function initEpoch(currEpoch){
 
 function getEpochData(epoch){
     var prevEpoch=epoch-1;
-    var u=url+'Epochs/Count';
 
+    var u=url+'Epochs/Count';
     $.ajax({
       url: u,
       type: 'GET',
@@ -241,9 +241,6 @@ function getEpochData(epoch){
       }
     });
 }
-
-
-
 
 
 

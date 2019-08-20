@@ -43,19 +43,21 @@
           <div class="row">
             <div class="col-12 col-sm-6">
               <div class="section__group">
+<!--
                 <div class="control-label">ID</div>
                 <div class="text_block text_block--break" id="IdentityId">-</div>
                 <hr>
                 <div class="control-label">Username</div>
                 <div class="text_block">...</div>
+-->
+                <div class="control-label">Status:</div>
+                <div class="text_block" id="IdentityStatus">-</div>
+
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <div class="section__group">
-                <div class="control-label">Status</div>
-                <div class="text_block" id="IdentityStatus">-</div>
-                <hr>
-                <div class="control-label">Age</div>
+                <div class="control-label">Age:</div>
                 <div class="text_block" id="IdentityAge">-</div>
               </div>
             </div>
@@ -72,11 +74,11 @@
                 <div class="row">
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="IdentityRightAnswers">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total right answers">Right answers</div>
+                    <div class="control-label" data-toggle="tooltip" title="Total right answers (forks included)">Right answers</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="IdentitySolvedFlips">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total flips solved">Solved flips</div>
+                    <div class="control-label" data-toggle="tooltip" title="Total flips solved (forks included)">Solved flips</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="IdentityScore">-</h3>
@@ -86,14 +88,15 @@
               </div>
             </div>
           </div>
+
           <div class="col-12 col-sm-6">
-            <h3>Flips created</h3>
+            <h3>Flips</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row">
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="IdentityFlipsCreated">-</h3>
-                    <div class="control-label data-toggle="tooltip" data-label="Qualified / Total flips"">Total flips</div>
+                    <div class="control-label" data-toggle="tooltip" title="Total flips created">Total flips</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="IdentityQualifiedFlips">-</h3>
@@ -132,25 +135,26 @@
                     </a>
                   </li>
 
-<!--
+
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      id="transactions-tab"
+                      id="flips-tab"
                       data-toggle="tab"
-                      href="#transactions"
+                      href="#flips"
                       role="tab"
-                      aria-controls="transactions"
+                      aria-controls="flips"
                       aria-selected="false"
                     >
-                      <h3>Transactions</h3>
+                      <h3>Created flips</h3>
                     </a>
                   </li>
--->
+
                 </ul>
               </div>
             </div>
           </div>
+
           <div class="tab-content">
             <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
               <div class="card">
@@ -169,6 +173,24 @@
                 </div>
               </div>
             </div>
+
+            <div class="tab-pane" id="flips" role="tabpanel" aria-labelledby="flips-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="IdentityFlipsTable">
+                    <tr>
+                      <th>Flip</th>
+                      <th data-toggle="tooltip" title="">Epoch</th>
+                      <th data-toggle="tooltip" title="Flips qualification status">Status</th>
+                      <th style="width: 100px;">Created</th>
+                      <th style="width: 90px;">Size</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+<!--
+
             <div class="tab-pane" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
               <div class="section_group">
                 <div class="card">
@@ -247,11 +269,13 @@
                 </div>
               </div>
             </div>
+-->
+
+
           </div>
         </div>
       </section>
-
-
+   
 <!--
       <section class="section section_tabs">
         <div class="tabs" data-tabs="true">
