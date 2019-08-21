@@ -256,7 +256,18 @@ function updateEpochFlipsData(data){
     for (var i = 0; i < data.result.length; i++) {
         var tr = $('<tr/>');
         var td=$("<td/>");
-            td.append('<div class="user-pic"><img src="./images/flip_icn.png'+'" alt="pic"width="44"></div>');
+
+            if (data.result[i].icon.length>2){
+                var buffArray = new Uint8Array(
+                    data.result[i].icon.substring(2).match(/.{1,2}/g).map(byte => parseInt(byte, 16))
+                )
+                var src = URL.createObjectURL(new Blob([buffArray], {type: 'image/jpeg'}))
+                td.append('<div class="user-pic"><img src="'+src+'" alt="pic"width="44" height="44"></div>');
+                //URL.revokeObjectURL(src);
+            } else {
+                td.append('<div class="user-pic"><img src="./images/flip_icn.png'+'" alt="pic" width="44"></div>');
+            }
+
             var cid=data.result[i].cid;  
             td.append("<div class='text_block text_block--ellipsis'><a href='./flip?flip="+cid+"'>" + cid.substr(0, 15) + "...</a></div>");
         tr.append(td);
@@ -282,6 +293,9 @@ function updateEpochFlipsData(data){
             tr.append("<td>-</td>");
           tr.append("<td>" + (data.result[i].status=="WeaklyQualified"?"Weak": (data.result[i].status=="Qualified"?"Strong":"No consensus")) + "</td>");
         }
+
+
+
         table.append(tr);
     }
 }
@@ -295,7 +309,20 @@ function updateEpochFlipSubmissionsData(data){
     for (var i = 0; i < data.result.length; i++) {
         var tr = $('<tr/>');
         var td=$("<td/>");
-            td.append('<div class="user-pic"><img src="./images/flip_icn.png" alt="pic"width="44"></div>');
+            //td.append('<div class="user-pic"><img src="./images/flip_icn.png" alt="pic"width="44"></div>');
+
+            if (data.result[i].icon.length>2){
+                var buffArray = new Uint8Array(
+                    data.result[i].icon.substring(2).match(/.{1,2}/g).map(byte => parseInt(byte, 16))
+                )
+                var src = URL.createObjectURL(new Blob([buffArray], {type: 'image/jpeg'}))
+                td.append('<div class="user-pic"><img src="'+src+'" alt="pic"width="44" height="44"></div>');
+                //URL.revokeObjectURL(src);
+            } else {
+                td.append('<div class="user-pic"><img src="./images/flip_icn.png'+'" alt="pic" width="44"></div>');
+            }
+
+
             var cid=data.result[i].cid;  
             td.append("<div class='text_block text_block--ellipsis'><a href='./flip?flip="+cid+"'>" + cid.substr(0, 15) + "...</a></div>");
         tr.append(td);
