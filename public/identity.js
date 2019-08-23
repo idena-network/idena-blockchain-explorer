@@ -205,14 +205,15 @@ function updateIdentityEpochsData(data, identity){
           longScoreTxt=data.result[i].longAnswers.point +" out of "+data.result[i].longAnswers.flipsCount +" ("+precise2(data.result[i].longAnswers.point/data.result[i].longAnswers.flipsCount*100) + "%)";
         if (data.result[i].shortAnswers.flipsCount>0)
           shortScoreTxt=data.result[i].shortAnswers.point +" out of "+data.result[i].shortAnswers.flipsCount +" ("+precise2(data.result[i].shortAnswers.point/data.result[i].shortAnswers.flipsCount*100) + "%)";
-        if (data.result[i].totalShortAnswers.flipsCount>0)
-          totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
+//        if (data.result[i].totalShortAnswers.flipsCount>0)
+//         totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
 
         var state=data.result[i].state;
         if (state=="Undefined"){
           tr.append("<td>Not validated</td>");
           if (data.result[i].missed="true"){
-            if (data.result[i].respScore>0){
+ 
+            if (data.result[i].shortAnswers.flipsCount>0){
               tr.append("<td>"+shortScoreTxt+"</td>");
               tr.append("<td>"+longScoreTxt+"</td>");
               tr.append("<td>Late submission</td>") 
