@@ -311,7 +311,7 @@ function updateEpochFlipSubmissionsData(data){
         var td=$("<td/>");
             //td.append('<div class="user-pic"><img src="./images/flip_icn.png" alt="pic"width="44"></div>');
 
-            if (data.result[i].icon.length>2){
+            if (data.result[i].icon!=null){
                 var buffArray = new Uint8Array(
                     data.result[i].icon.substring(2).match(/.{1,2}/g).map(byte => parseInt(byte, 16))
                 )
