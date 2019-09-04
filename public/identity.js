@@ -147,7 +147,7 @@ function updateFlipsData(data, epoch, identity, currEpoch){
         var tr = $('<tr/>');
 
         var td=$("<td/>");
-            if (data.result[i].icon.length>2){
+            if (data.result[i].icon!=null){
                 var buffArray = new Uint8Array(
                     data.result[i].icon.substring(2).match(/.{1,2}/g).map(byte => parseInt(byte, 16))
                 )
