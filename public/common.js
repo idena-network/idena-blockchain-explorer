@@ -1,5 +1,5 @@
 
-var url='https://api.idena.io/api/';
+var url='https://api2.idena.io/api/';
 var path='';
 
 
