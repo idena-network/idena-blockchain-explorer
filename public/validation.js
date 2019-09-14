@@ -157,15 +157,19 @@ function updateValidationIdentitiesData(data, epoch){
 
           if (data.result[i].missed){
 
-            if (data.result[i].shortAnswers.flipsCount>0) 
-              tr.append("<td>Late submission</td>");
-            else
-              if (data.result[i].approved) 
-                tr.append("<td>Not accomplished</td>")
+            if (data.result[i].shortAnswers.flipsCount>0) {
+
+                tr.append("<td>Late submission</td>")
+
+            } else {
+
+              if (data.result[i].requiredFlips!=data.result[i].madeFlips)
+                tr.append("<td>Not allowed</td>")
               else
                 tr.append("<td>Missed validation</td>");
-
+            }
             MissedValidationCount++;
+
           }else{
             tr.append("<td>Wrong answers</td>");
             FailedValidationCount++;

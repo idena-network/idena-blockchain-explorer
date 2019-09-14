@@ -50,6 +50,19 @@ function getAddressData(address){
     });
 
 
+    u=url+'Address/'+address+'/penalties?skip=0&limit=100';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updatePenaltyData(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+
 }
 
 
@@ -112,6 +125,33 @@ function updateAddressTxsData(data){
         tr.append(td);
         tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].type + "</td>");
+        table.append(tr);
+    }
+}
+
+
+
+function updatePenaltyData(data){
+  if (data.result == null)  { return }
+
+    var table=$("#MiningPenaltyTable");
+    table.find('td').parent().remove();
+    if (data.result == null)  { return }
+
+    for (var i = 0; i < data.result.length; i++) {
+        var tr = $('<tr/>');
+
+        var td=$("<td/>");
+            var epoch=data.result[i].epoch
+            td.append("<div class='text_block text_block--ellipsis'><a href='./epoch?epoch="+epoch+"'>" + epochFmt(epoch) + "</a></div>");
+        tr.append(td);
+
+        var td=$("<td/>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./block?block="+data.result[i].blockHeight+"'>" + data.result[i].blockHeight + "</a></div>");
+        tr.append(td);
+
+        tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
+        tr.append("<td>" + data.result[i].penalty + "</td>");
         table.append(tr);
     }
 }

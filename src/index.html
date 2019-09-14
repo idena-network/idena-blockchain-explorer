@@ -12,7 +12,7 @@
 
       <section class="section section_info">
         <div class="row">
-          <div class="col-12 col-sm-12">
+          <div class="col-12 col-sm-9">
             <h1>Coins supply</h1>
             <div class="card">
               <div class="info_block">
@@ -27,12 +27,30 @@
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="TotalBurnt">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Coins burnt by protocol (fees, lost identities, etc.)">Burnt coins</div>
+                    <div class="control-label" data-toggle="tooltip" title="Coins burnt by protocol (fees, penalties, lost identities, etc.)">Burnt coins</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+
+          <div class="col-12 col-sm-3">
+            <h1>Identities</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row" id="IdentitesSection">
+
+                  <div class="col-12 col-sm-12 bordered-col">
+                    <h3 class="info_block__accent"><span id="OnlineMinersTotal">-</span> / <span id="ValidatedTotal">-</span></h3>
+                    <div class="control-label" data-toggle="tooltip" title="Online miners / Total validated identities">Online / Total</div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
 
         </div>
       </section>
@@ -62,14 +80,28 @@
                   <li class="nav-item">
                     <a
                       class="nav-link"
-                      id="epochs-tab"
+                      id="topaddresses-tab"
                       data-toggle="tab"
                       href="#topaddress"
                       role="tab"
                       aria-controls="topaddress"
                       aria-selected="false"
                     >
-                      <h3>Top addresses</h3>
+                      <h3>Top 100 addresses</h3>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="miners-tab"
+                      data-toggle="tab"
+                      href="#miners"
+                      role="tab"
+                      aria-controls="miners"
+                      aria-selected="false"
+                    >
+                      <h3>Online miners</h3>
                     </a>
                   </li>
 
@@ -79,7 +111,6 @@
           </div>
 
           <div class="tab-content">
-
             <div class="tab-pane active" id="epochs" role="tabpanel" aria-labelledby="epochs-tab">
               <div class="card">
                 <div class="table-responsive">
@@ -90,7 +121,7 @@
                       <th>Transactions</th>
                       <th>Flips</th>
                       <th>Invitations</th>
-                      <th>Verified</th>
+                      <th>Validated</th>
                       <th>Minted, DNA</th>
                       <th>Burnt, DNA</th>
                     </tr>
@@ -114,6 +145,20 @@
               </div>
             </div>
 
+            <div class="tab-pane" id="miners" role="tabpanel" aria-labelledby="miners-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="MinersTable">
+                    <tr>
+                      <th>Address</th>
+                      <th>Last seen</th>
+                      <th style="width: 150px;">Miner status</th>
+                      <th data-toggle="tooltip" title="Mining penalty left">Penalty, DNA</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
 
           </div>
         </div>

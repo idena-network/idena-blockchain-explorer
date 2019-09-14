@@ -13,14 +13,31 @@ function epochFmt(epoch){
   return '#000'+ epoch;
 }
 
+function identityStatusFmt(s){
+  if (s=='Undefined') return 'Not validated'
+  return s
+}
+
 var localeFmt;
 
 function timeFmt(str){
   dt =new Date(str);
   d = $.format.date(dt, localeFmt); 
   t = $.format.date(dt, "HH:mm:ss");
-
   return d+' '+t;
+}
+
+
+function lastSeenFmt(str){
+  lastSeenDate = new Date(str)
+  now = new Date()
+  diff = Math.ceil( Math.abs(lastSeenDate.getTime() - now.getTime()) / (1000 ));
+
+  if (diff<60) return 'Recently'
+  if (diff>=60 && diff<360) return '10 minutes ago'
+  if (diff>=360 && diff<600) return '30 minutes ago'
+  if (diff>360 && diff<3600) return '1 hour ago'
+  if (diff>=3600) return 'More than 1 hour'
 }
 
 

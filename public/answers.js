@@ -131,15 +131,30 @@ function updateAnswersData(data, table){
 
 function updateIdentityAnswersData(data){
   if (data.result == null)  { return }
-  if ((data.result.state=='Newbie')||(data.result.state=='Verified')){
+
+  if (data.result.state=='Verified'){
     $("#IdentityAvatar div").append( '<i class="icon icon--status"></i>');
   }
 
-  if (data.result.state=="Undefined"){
-    $("#ValidationStatus")[0].textContent='Validation failed';
-  } else {
+  if ((data.result.state=='Newbie')||(data.result.state=='Verified')){
     $("#ValidationStatus")[0].textContent='Successful validation';
+  } else {
+    $("#ValidationStatus")[0].textContent='Validation failed';
   }
+
+  if (data.result.prevState=='Invite'){
+    $("#ValidationAllowed")[0].textContent='No (invitation is not activated)'
+  } else {
+    if (data.result.madeFlips==data.result.requiredFlips){
+      $("#ValidationAllowed")[0].textContent='Yes'
+    } else {
+      $("#ValidationAllowed")[0].textContent='No (flips are missing: '+data.result.madeFlips +' out of ' + data.result.requiredFlips + ')'
+    }
+  }
+
+
+    $("#AfterValidationStatus")[0].textContent=identityStatusFmt(data.result.state);
+    $("#BeforeValidationStatus")[0].textContent=identityStatusFmt(data.result.prevState);
 
   $("#IdentityShortAnswers")[0].textContent=data.result.shortAnswers.point +' / '+data.result.shortAnswers.flipsCount;
   if (data.result.shortAnswers.flipsCount>0)
@@ -152,9 +167,11 @@ function updateIdentityAnswersData(data){
 
   if (data.result.missed){
     if (data.result.shortAnswers.flipsCount>0) {
+      $("#ValidationResult")[0].textContent="Late submission";
       $("#ShortInTime")[0].textContent="Late";
       $("#LongInTime")[0].textContent="Late";
     } else
+      $("#ValidationResult")[0].textContent="Missed validation";
       if (data.result.approved) {
         $("#ShortInTime")[0].textContent="Not accomplished";
         $("#LongInTime")[0].textContent="No answers";
@@ -164,6 +181,11 @@ function updateIdentityAnswersData(data){
       }
 
   }else{
+    if (data.result.state=="Undefined"){
+      $("#ValidationResult")[0].textContent="Wrong answers"
+    }else{
+      $("#ValidationResult")[0].textContent="Successful"
+    }
     $("#ShortInTime")[0].textContent="In time";
     $("#LongInTime")[0].textContent="In time";
   }

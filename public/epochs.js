@@ -68,6 +68,18 @@ function getEpochsData(){
     });
 
 
+    u=url+'OnlineIdentities?skip=0&limit=100';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        undateMinersActivity(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
 
 }
 
@@ -91,6 +103,11 @@ function updateEpochsData(data){
           lastVerifiedElement[0].textContent=data.result[i].validatedCount;
         } 
 
+        if (i==1) {
+          $('#ValidatedTotal')[0].textContent=data.result[i].validatedCount;
+        } 
+
+
         lastVerifiedElement=$("<td>-</td>");
         tr.append(lastVerifiedElement);
 
@@ -110,17 +127,49 @@ function updateEpochsData(data){
 
 
 
+
+
+function undateMinersActivity(data){
+    var table=$("#MinersTable");
+    table.find('td').parent().remove();
+    if (data.result == null)  { return }
+
+    var onLineTotal=0
+    for (var i = 0; i < data.result.length; i++) {
+
+        var tr = $('<tr/>');
+        var td=$("<td/>");
+            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].address.toLowerCase()+'" alt="pic"width="32"></div>');
+            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+data.result[i].address+"'>" + data.result[i].address + "</a></div>");
+        tr.append(td);
+
+        tr.append("<td>" + lastSeenFmt(data.result[i].lastActivity) + "</td>");
+        tr.append("<td>" + (data.result[i].online?'Mining':'Offline') + "</td>");
+        tr.append("<td>" + (data.result[i].penalty==0?'-':precise2(data.result[i].penalty)) + "</td>");
+
+        if (data.result[i].online) onLineTotal++
+        table.append(tr);
+    }
+    $("#OnlineMinersTotal")[0].textContent = onLineTotal;
+    
+}
+
+
 function undateBalancesData(data){
     var table=$("#TopAddressTable");
     table.find('td').parent().remove();
     if (data.result == null)  { return }
 
     for (var i = 0; i < data.result.length; i++) {
-        var tr = $('<tr/>');
-        tr.append("<td> <a href='./address?address="+data.result[i].address+"'>" + data.result[i].address + "</a></td>");
 
-        tr.append("<td>" + data.result[i].balance + "</td>");
-        tr.append("<td>" + (data.result[i].stake==0?'-':data.result[i].stake) + "</td>");
+        var tr = $('<tr/>');
+        var td=$("<td/>");
+            td.append('<div class="user-pic"><img src="https://robohash.org/'+data.result[i].address.toLowerCase()+'" alt="pic"width="32"></div>');
+            td.append("<div class='text_block text_block--ellipsis'><a href='./address?address="+data.result[i].address+"'>" + data.result[i].address + "</a></div>");
+        tr.append(td);
+
+        tr.append("<td>" + precise2(data.result[i].balance) + "</td>");
+        tr.append("<td>" + (data.result[i].stake==0?'-':precise2(data.result[i].stake)) + "</td>");
 
         table.append(tr);
     }

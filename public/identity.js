@@ -108,6 +108,20 @@ function getIdentityData(identity){
       }
     });
 
+    var u=url+'OnlineIdentity/'+identity;
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateOnlineMiningStatus(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+
+
 }
 
 function updateEpochCountFlipsData(data, identity){
@@ -198,7 +212,7 @@ function updateIdentityEpochsData(data, identity){
         var td=$("<td/>");
             td.append("<div class='text_block text_block--ellipsis'><a href='./epoch?epoch="+nextEpoch+"'>" + epochFmt(nextEpoch) + "</a></div>");
         tr.append(td);
-        tr.append("<td>"+data.result[i].prevState+"</td>");
+        tr.append("<td>"+identityStatusFmt(data.result[i].prevState)+"</td>");
 
         var longScoreTxt='-', shortScoreTxt='-', totalScoreTxt='-';
         if (data.result[i].longAnswers.flipsCount>0)
@@ -209,9 +223,15 @@ function updateIdentityEpochsData(data, identity){
 //         totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
 
         var state=data.result[i].state;
-        if (state=="Undefined"){
-          tr.append("<td>Not validated</td>");
-          if (data.result[i].missed="true"){
+
+
+        if ((state!="Verified")&&(state!="Newbie")){
+
+
+          tr.append("<td>"+identityStatusFmt(state)+"</td>");
+
+
+          if (data.result[i].missed){ 
  
             if (data.result[i].shortAnswers.flipsCount>0){
               tr.append("<td>"+shortScoreTxt+"</td>");
@@ -219,19 +239,33 @@ function updateIdentityEpochsData(data, identity){
               tr.append("<td>Late submission</td>") 
               tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
             } else {
-              tr.append("<td>-</td>");
-              tr.append("<td>-</td>");
-              tr.append("<td>Missed validation</td>");
-              tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
+
+              if (data.result[i].requiredFlips!=data.result[i].madeFlips){
+                tr.append("<td>-</td>");
+                tr.append("<td>-</td>");
+                tr.append("<td>Not allowed</td>");
+                tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
+              } else {
+                tr.append("<td>-</td>");
+                tr.append("<td>-</td>");
+                tr.append("<td>Missed validation</td>");
+                tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
+              }
             }
-          }
-        } else {
-          tr.append("<td>"+data.result[i].state+"</td>");
-          tr.append("<td>"+shortScoreTxt+"</td>");
-          tr.append("<td>"+longScoreTxt+"</td>");
-          tr.append("<td>Successful</td>");
-          tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
+          } else {
+         
+            tr.append("<td>"+shortScoreTxt+"</td>");
+            tr.append("<td>"+longScoreTxt+"</td>");
+            tr.append("<td>Wrong answers</td>")
+            tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
         }
+      } else {
+        tr.append("<td>"+data.result[i].state+"</td>");
+        tr.append("<td>"+shortScoreTxt+"</td>");
+        tr.append("<td>"+longScoreTxt+"</td>");
+        tr.append("<td>Successful</td>");
+        tr.append("<td><a href='./answers?epoch="+nextEpoch+"&identity="+identity+"'><i class='icon icon--thin_arrow_right'></a></td>");
+      }
       table.append(tr);
   }
 }
@@ -270,14 +304,28 @@ function updateIdentityData(data){
   if (data.result.state=='Verified'){
     $("#IdentityAvatar div").append( '<i class="icon icon--status"></i>');
   }
-  if (data.result.state=="Undefined"){
-    $("#IdentityStatus")[0].textContent='Not validated';
-  } else
-    $("#IdentityStatus")[0].textContent=data.result.state;
+  $("#IdentityStatus")[0].textContent=identityStatusFmt(data.result.state);
+
+  if ((data.result.state=="Newbie")||(data.result.state=="Verified"))
+    $(".onlineMiner").removeClass("hidden")
+
   $("#IdentitySolvedFlips")[0].textContent=data.result.totalShortAnswers.flipsCount; //shortAnswers.flipsCount; without state fork
   $("#IdentityRightAnswers")[0].textContent=data.result.totalShortAnswers.point; //shortAnswers.point;
   if (data.result.shortAnswers.flipsCount>0)
     $("#IdentityScore")[0].textContent= precise2(data.result.totalShortAnswers.point / data.result.totalShortAnswers.flipsCount * 100)+'%';
 //    $("#IdentityScore")[0].textContent= precise2(data.result.shortAnswers.point / data.result.shortAnswers.flipsCount * 100)+'%';
+
+}
+
+
+function updateOnlineMiningStatus(data){
+  if (data.result == null)  { return }
+
+  $("#LastSeen")[0].textContent=timeFmt(data.result.lastActivity);
+  if (data.result.online) {
+    $("#OnlineMinerStatus")[0].textContent="On";
+  } else {
+    $("#OnlineMinerStatus")[0].textContent="Off";
+  }
 
 }
