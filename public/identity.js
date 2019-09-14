@@ -321,7 +321,11 @@ function updateIdentityData(data){
 function updateOnlineMiningStatus(data){
   if (data.result == null)  { return }
 
-  $("#LastSeen")[0].textContent=timeFmt(data.result.lastActivity);
+  if (data.result.lastActivity)
+    $("#LastSeen")[0].textContent=timeFmt(data.result.lastActivity)
+  else
+    $("#LastSeen")[0].textContent='-'
+
   if (data.result.online) {
     $("#OnlineMinerStatus")[0].textContent="On";
   } else {
