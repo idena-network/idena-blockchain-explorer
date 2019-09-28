@@ -11,8 +11,8 @@
     <section class="section">
 
       <div class="section_main__group">
-        <h1 class="section_main__title">Validation results</h1>
-        <h3 class="section_main__subtitle">for epoch <span id="EpochId">...</span> on <span id="ValidationDate">...</span></h3>
+        <h1 class="section_main__title">Rewards paid</h1>
+        <h3 class="section_main__subtitle">for epoch <span id="EpochId">...</span> on <span id="RewardDate">...</span></h3>
       </div>
 
       <div class="button-group">
@@ -55,52 +55,53 @@
 
 -->
 
-    <section class="section section_info">
-      <div class="row">
-        <div class="col-12 col-sm-6">
-          <h3>Validation</h3>
-          <div class="card">
-            <div class="info_block">
-              <div class="row">
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="ValidatedIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Successfully validated identities">Total validated</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="FailedValidationIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Identities given wrong answers">Failed validation</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="MissedValidationIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Identities missed validation or submitted too late">Missed validation</div>
+      <section class="section section_info">
+        <div class="row">
+
+          <div class="col-12 col-sm-4">
+            <h1>Total reward fund</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row">
+
+                  <div class="col-12 col-sm-12 bordered-col">
+                    <h3 class="info_block__accent"><span id="TotalRewards">-</span></h3>
+                    <div class="control-label" data-toggle="tooltip" title="Total reward fund (including the fundation reward and zero wallet)">Total</div>
+                  </div>
+
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-12 col-sm-6">
-          <h3>Flips</h3>
-          <div class="card">
-            <div class="info_block">
-              <div class="row">
-                <div class="col-12 col-sm-4 bordered-col">
-            <h3 class="info_block__accent" id="TotalFlips">-</h3>
-            <div class="control-label" data-toggle="tooltip" title="Total flips used for validation">Total</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-            <h3 class="info_block__accent" id="FlipsConsensus">- / - / -</h3>
-            <div class="control-label" data-toggle="tooltip" title="Strong / Weak / No consensus">Consensus</div>
-                </div>
-                <div class="col-12 col-sm-4 bordered-col">
-            <h3 class="info_block__accent" id="AbuseFlips">-</h3>
-            <div class="control-label" data-toggle="tooltip" title="Flips with inappropriate content">Inappropriate</div>
+
+          <div class="col-12 col-sm-8">
+            <h1>Rewards</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row" id="BalanceSection">
+
+
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="ValidationReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for succesfull validation">Validation rewards</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="FlipsReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for qualified flips">Flips rewards</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="InvitationsReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for validated invitations">Invitations rewards</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+
+
+
         </div>
-      </div>
-    </section>
+      </section>
 
 
 
@@ -120,37 +121,9 @@
                     aria-controls="validation"
                     aria-selected="true"
                   >
-                    <h3>Validated</h3>
+                    <h3>Rewards distribution</h3>
                   </a>
                 </li>
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="killed-tab"
-                    data-toggle="tab"
-                    href="#killed"
-                    role="tab"
-                    aria-controls="killed"
-                    aria-selected="false"
-                  >
-                    <h3>Failed</h3>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="flips-tab"
-                    data-toggle="tab"
-                    href="#flips"
-                    role="tab"
-                    aria-controls="flips"
-                    aria-selected="false"
-                  >
-                    <h3>Flips</h3>
-                  </a>
-                </li>
-
 
               </ul>
             </div>
@@ -161,16 +134,21 @@
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
-                  <table class="table" id="IdentitiesTable">
+                  <table class="table" id="RewardsTable">
                     <tr>
                       <th>Identity</th>
-                      <th style="width: 140px;">Previous<br/>status</th>
-                      <th style="width: 140px;">Status</th>
-                      <th style="width: 140px;">Validation<br/>score</th>
-                      <th style="width: 140px;">Qualification<br/>score</th>
-                      <th style="width: 100px;">Details</th>
+                      <th>Previous<br/>status</th>
+                      <th>Status</th>
+                      <th style="width: 80px;">Validation<br/>reward,<br/>DNA</th>
+                      <th style="width: 80px;">Flips<br/>reward,<br/>DNA</th>
+                      <th style="width: 80px;">Invitation<br/>reward,<br/>DNA</th>
+                      <th style="width: 80px;">Total<br/>reward,<br/>DNA</th>
                     </tr>
 <!--
+
+                      <th style="width: 80px;" data-toggle="tooltip" title="Total reward paid to identity wallet">Total to<br/>balance,<br/>DNA</th>
+                      <th style="width: 80px;" data-toggle="tooltip" title="Total reward paid to stake">Total to<br/>stake,<br/>DNA</th>
+
                     <tr>
                       <td>
                         <div class="user-pic"><img src="http://lorempixel.com/32/32/" alt="pic"width="32"></div>

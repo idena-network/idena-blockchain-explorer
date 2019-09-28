@@ -170,7 +170,8 @@ function updateIdentityAnswersData(data){
       $("#ValidationResult")[0].textContent="Late submission";
       $("#ShortInTime")[0].textContent="Late";
       $("#LongInTime")[0].textContent="Late";
-    } else
+    } else {
+
       $("#ValidationResult")[0].textContent="Missed validation";
       if (data.result.approved) {
         $("#ShortInTime")[0].textContent="Not accomplished";
@@ -179,7 +180,7 @@ function updateIdentityAnswersData(data){
         $("#ShortInTime")[0].textContent="Missing";
         $("#LongInTime")[0].textContent="Missing";
       }
-
+    }
   }else{
     if (data.result.state=="Undefined"){
       $("#ValidationResult")[0].textContent="Wrong answers"

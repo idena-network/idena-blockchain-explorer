@@ -2,7 +2,7 @@ function initValidation(currEpoch){
   var nextEpoch=currEpoch*1+1;
   var prevEpoch=currEpoch-1;
 
-  $("#EpochId")[0].textContent='for epoch ' + epochFmt(currEpoch);
+  $("#EpochId")[0].textContent=epochFmt(currEpoch);
   $("#EpochPageLink")[0].href="/epoch?epoch="+currEpoch;
 
   if(currEpoch>0)
@@ -21,7 +21,7 @@ function getValidationData(epoch){
       type: 'GET',
       dataType:'json',
       success: function (data) {
-        updateEpochData(data);
+        updateValidationEpochData(data);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -97,6 +97,10 @@ function getValidationData(epoch){
 }
 
 
+function updateValidationEpochData(data){
+  if (data.result == null)  { return }
+  $("#ValidationDate")[0].textContent= dateFmt(data.result.validationTime);
+}
 
 
 

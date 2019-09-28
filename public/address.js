@@ -63,6 +63,19 @@ function getAddressData(address){
       }
     });
 
+    u=url+'Identity/'+address+'/EpochRewards?skip=0&limit=100';
+    $.ajax({
+      url: u,
+      type: 'GET',
+      dataType:'json',
+      success: function (data) {
+        updateAddressRewardsData(data);
+      },
+      error: function (request, error) {
+        console.error(u +', error:'+error);
+      }
+    });
+
 }
 
 
@@ -115,17 +128,56 @@ function updateAddressTxsData(data){
 
         var td=$("<td/>");
             var hash=data.result[i].hash;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+hash+"'>" + hash.substr(0, 10) + "...</a></div>");
         tr.append(td);
 
         var td=$("<td/>");
             var from=data.result[i].from;
             td.append('<div class="user-pic"><img src="https://robohash.org/'+from.toLowerCase()+'" alt="pic"width="32"></div>');
-            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+from+"'>" + from.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+from+"'>" + from.substr(0, 10) + "...</a></div>");
         tr.append(td);
+
+        var td=$("<td/>");
+            var to=data.result[i].to;
+            if (to){
+              td.append('<div class="user-pic"><img src="https://robohash.org/'+to.toLowerCase()+'" alt="pic"width="32"></div>');
+              td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+to+"'>" + to.substr(0, 10) + "...</a></div>");
+            } else {
+              td.append("<div class='text_block text_block--ellipsis'>-</div>");
+            }
+        tr.append(td);
+
+
         tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].type + "</td>");
         table.append(tr);
+    }
+}
+
+
+
+function updateAddressRewardsData(data){
+  if (data.result == null)  { return }
+
+    var table=$("#RewardsTable");
+    table.find('td').parent().remove();
+    if (data.result == null)  { return }
+
+    for (var i = 0; i < data.result.length; i++) {
+
+        for(var j=0; j<data.result[i].rewards.length; j++){
+	        var tr = $('<tr/>');
+        	var td=$("<td/>");
+	            var epoch=data.result[i].epoch+1
+        	    td.append("<div class='text_block text_block--ellipsis'><a href='./rewards?epoch="+epoch+"'>" + epochFmt(epoch) + "</a></div>");
+	        tr.append(td);
+
+	        tr.append("<td>" + data.result[i].rewards[j].type + "</td>");
+        	tr.append("<td>" + data.result[i].rewards[j].balance + "</td>");
+	        tr.append("<td>" + data.result[i].rewards[j].stake + "</td>");
+        	tr.append("<td>" + precise6(data.result[i].rewards[j].stake*1+ data.result[i].rewards[j].balance*1) + "</td>");
+	        table.append(tr);
+	}
     }
 }
 

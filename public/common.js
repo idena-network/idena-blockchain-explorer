@@ -9,14 +9,34 @@ function precise2(x) {
   return Math.round(x*100)/100;
 }
 
-function epochFmt(epoch){
-  return '#000'+ epoch;
+function precise6(x) {
+  return Math.round(x*1000000)/1000000;
 }
+
+function epochFmt(epoch){
+  var str=epoch+'';
+  var l=str.length;
+  if (l=1) return '#000'+ epoch;
+  if (l=2) return '#00'+ epoch;
+  if (l=3) return '#0'+ epoch;
+  if (l>3) return '#'+ epoch;
+}
+
+function dnaFmt(amount){
+  return amount + ' DNA';
+}
+
+function flipQualificationStatusFmt(status){
+  if (status=='QualifiedByNone') return 'Not qualified'
+  return status
+}
+
 
 function identityStatusFmt(s){
   if (s=='Undefined') return 'Not validated'
   return s
 }
+
 
 var localeFmt;
 
@@ -25,6 +45,12 @@ function timeFmt(str){
   d = $.format.date(dt, localeFmt); 
   t = $.format.date(dt, "HH:mm:ss");
   return d+' '+t;
+}
+
+function dateFmt(str){
+  dt =new Date(str);
+  d = $.format.date(dt, localeFmt); 
+  return d;
 }
 
 

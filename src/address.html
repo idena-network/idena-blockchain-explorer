@@ -92,6 +92,20 @@
                   <li class="nav-item">
                     <a
                       class="nav-link"
+                      id="rewards-tab"
+                      data-toggle="tab"
+                      href="#rewards"
+                      role="tab"
+                      aria-controls="rewards"
+                      aria-selected="false"
+                    >
+                      <h3>Rewards</h3>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
                       id="miningpenalty-tab"
                       data-toggle="tab"
                       href="#miningpenalty"
@@ -116,6 +130,7 @@
                     <tr>
                       <th>Transaction</th>
                       <th>From</th>
+                      <th>To</th>
                       <th style="width: 100px;">Timestamp</th>
                       <th style="width: 100px;">Type</th>
                     </tr>
@@ -123,6 +138,7 @@
                 </div>
               </div>
             </div>
+
 
             <div class="tab-pane" id="miningpenalty" role="tabpanel" aria-labelledby="miningpenalty-tab">
               <div class="card">
@@ -139,6 +155,22 @@
               </div>
             </div>
 
+
+            <div class="tab-pane" id="rewards" role="tabpanel" aria-labelledby="rewards-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="RewardsTable">
+                    <tr>
+                      <th style="width: 100px;">Epoch</th>
+                      <th>Reward type</th>
+                      <th>Paid to stake, DNA</th>
+                      <th>Paid to wallet, DNA</th>
+                      <th>Total, DNA</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
 
             <div class="tab-pane" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
               <div class="section_group">

@@ -199,6 +199,15 @@ $(document).ready(function() {
     }
   }
 
+  if(path=="/rewards") {
+    title=title+'Validation session rewards';
+    if (! (p.epoch===undefined) ) {
+      initRewards(p.epoch);
+      title=title+' '+epochFmt(p.epoch);
+    }
+  }
+
+
   if(path=="/") {
     initEpochs();
     title = 'Idena Explorer';

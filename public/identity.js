@@ -11,15 +11,16 @@ function initIdentity(identity){
 var CurrentEpoch=0;
   
 function prepareIdentityData(identity){
-    var u=url+'Epochs/Count';
+    var u=url+'epoch/last';
     $.ajax({
       url: u,
       type: 'GET',
       dataType:'json',
       success: function (data) {
         if (data.result == null)  { return }
-        CurrentEpoch=data.result;
+        CurrentEpoch=data.result.epoch;
         getIdentityData(identity);
+        updateEpochCountFlipsData(CurrentEpoch, identity);
       },
       error: function (request, error) {
         console.error(u +', error:'+error);
@@ -95,19 +96,6 @@ function getIdentityData(identity){
     });
 
 
-    var u=url+'Epochs/Count';
-    $.ajax({
-      url: u,
-      type: 'GET',
-      dataType:'json',
-      success: function (data) {
-        updateEpochCountFlipsData(data, identity);
-      },
-      error: function (request, error) {
-        console.error(u +', error:'+error);
-      }
-    });
-
     var u=url+'OnlineIdentity/'+identity;
     $.ajax({
       url: u,
@@ -124,11 +112,11 @@ function getIdentityData(identity){
 
 }
 
-function updateEpochCountFlipsData(data, identity){
+function updateEpochCountFlipsData(epoch, identity){
     var table=$("#IdentityFlipsTable");
     table.find('td').parent().remove();
-    if (data.result == null)  { return }
-    getFlipsData(data.result-1, identity, data.result-1);
+
+    getFlipsData(epoch, identity, epoch);
 }
 
 
@@ -182,7 +170,7 @@ function updateFlipsData(data, epoch, identity, currEpoch){
         tr.append(td);
 
         var status = (data.result[i].status==''?'-':data.result[i].status);
-        tr.append("<td>"+status+"</td>");
+        tr.append("<td>"+flipQualificationStatusFmt(status)+"</td>");
         tr.append("<td>"+data.result[i].timestamp+"</td>");
         tr.append("<td>"+data.result[i].size+"</td>");
 
@@ -206,7 +194,7 @@ function updateIdentityEpochsData(data, identity){
   for (var i = 0; i < data.result.length; i++) {
         var epoch=data.result[i].epoch;
         var nextEpoch = epoch*1+1;
-        if (nextEpoch==CurrentEpoch) { continue; }
+        if (nextEpoch==CurrentEpoch+1) { continue; }
 
         var tr = $('<tr/>');
         var td=$("<td/>");

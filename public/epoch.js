@@ -9,8 +9,10 @@ function initEpoch(currEpoch){
 
   if (currEpoch>0){
     $("#ValidationResult")[0].href="/validation?epoch="+currEpoch;
+    $("#ValidationRewards")[0].href="/rewards?epoch="+currEpoch;
   } else {
     $("#ValidationResult")[0].setAttribute('disabled', '');
+    $("#ValidationRewards")[0].setAttribute('disabled', '');
   }
 
   if (prevEpoch>=0){
@@ -23,7 +25,7 @@ function initEpoch(currEpoch){
 function getEpochData(epoch){
     var prevEpoch=epoch-1;
 
-    var u=url+'Epochs/Count';
+    var u=url+'epoch/last'
     $.ajax({
       url: u,
       type: 'GET',
@@ -202,7 +204,7 @@ function getEpochData(epoch){
       }
     });
 
-    u=url+'Epoch/'+epoch+'/Txs?skip=0&limit=15';
+    u=url+'Epoch/'+epoch+'/Txs?skip=0&limit=50';
     $.ajax({
       url: u,
       type: 'GET',
@@ -215,20 +217,8 @@ function getEpochData(epoch){
       }
     });
 
-    u=url+'Epoch/'+epoch+'/Txs?skip=0&limit=10';
-    $.ajax({
-      url: u,
-      type: 'GET',
-      dataType:'json',
-      success: function (data) {
-        updateEpochTxsData(data);
-      },
-      error: function (request, error) {
-        console.error(u +', error:'+error);
-      }
-    });
 
-    u=url+'Epoch/'+epoch+'/Blocks?skip=0&limit=10';
+    u=url+'Epoch/'+epoch+'/Blocks?skip=0&limit=50';
     $.ajax({
       url: u,
       type: 'GET',
@@ -345,7 +335,7 @@ function updateEpochInvitesSummaryData(data){
 
 function updateEpochCountData(data, epoch){
     if (data.result == null)  { return }
-    if (data.result-1<=epoch) {
+    if (data.result.epoch<=epoch) {
       $('#next-epoch-btn')[0].setAttribute('disabled', '');
       $('#EpochEndLabel')[0].textContent='Next validation:';
     } else {
@@ -541,14 +531,25 @@ function updateEpochTxsData(data){
 
         var td=$("<td/>");
             var hash=data.result[i].hash;  
-            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+hash+"'>" + hash.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./tx?tx="+hash+"'>" + hash.substr(0, 10) + "...</a></div>");
         tr.append(td);
 
         var td=$("<td/>");
             var from=data.result[i].from;
             td.append('<div class="user-pic"><img src="https://robohash.org/'+from.toLowerCase()+'" alt="pic"width="32"></div>');
-            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+from+"'>" + from.substr(0, 15) + "...</a></div>");
+            td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+from+"'>" + from.substr(0, 10) + "...</a></div>");
         tr.append(td);
+
+        var td=$("<td/>");
+            var to=data.result[i].to;
+            if (to){
+              td.append('<div class="user-pic"><img src="https://robohash.org/'+to.toLowerCase()+'" alt="pic"width="32"></div>');
+              td.append("<div class='text_block text_block--ellipsis'><a href='./identity?identity="+to+"'>" + to.substr(0, 10) + "...</a></div>");
+            } else {
+              td.append("<div class='text_block text_block--ellipsis'>-</div>");
+            }
+        tr.append(td);
+
         tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].type + "</td>");
         table.append(tr);
