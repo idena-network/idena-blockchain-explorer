@@ -162,6 +162,19 @@
                       <h3>Created flips</h3>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="invites-tab"
+                      data-toggle="tab"
+                      href="#invites"
+                      role="tab"
+                      aria-controls="invites"
+                      aria-selected="false"
+                    >
+                      <h3>Invites</h3>
+                    </a>
+                  </li>
 
                 </ul>
               </div>
@@ -192,8 +205,9 @@
                 <div class="table-responsive">
                   <table class="table" id="IdentityFlipsTable">
                     <tr>
+                      <th data-toggle="tooltip" title="Validation session">Validation</th>
                       <th>Flip</th>
-                      <th data-toggle="tooltip" title="">Epoch</th>
+                      <th data-toggle="tooltip" title="">Keywords</th>
                       <th data-toggle="tooltip" title="Flips qualification status">Status</th>
                       <th style="width: 100px;">Created</th>
                       <th style="width: 90px;">Size</th>
@@ -202,6 +216,23 @@
                 </div>
               </div>
             </div>
+
+            <div class="tab-pane" id="invites" role="tabpanel" aria-labelledby="invites-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="IdentityInvitesTable">
+                    <tr>
+                      <th data-toggle="tooltip" title="Invitation transaction">Invitation</th>
+                      <th>Issued</th>
+                      <th data-toggle="tooltip" title="Activation transaction">Activation</th>
+                      <th>Activated</th>
+                      <th data-toggle="tooltip" title="">Invited identity</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+
 <!--
 
             <div class="tab-pane" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">

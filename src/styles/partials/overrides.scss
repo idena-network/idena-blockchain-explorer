@@ -30,15 +30,24 @@ body {
   }
 }
 
-h1, h2, h3, h4, h5,
-.h1, .h2, .h3, .h4, .h5 {
+h1,
+h2,
+h3,
+h4,
+h5,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
   font-family: $font-family-base;
   font-weight: $font-weight-semi;
   color: inherit;
   line-height: normal;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: rem(28px);
   margin-bottom: rem(30px);
 
@@ -50,7 +59,8 @@ h1, .h1 {
   }
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: rem(24px);
   margin-bottom: rem(54px);
   letter-spacing: -0.48px;
@@ -59,7 +69,8 @@ h2, .h2 {
   }
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: rem(21px);
   line-height: rem(28px);
   margin-bottom: rem(20px);
@@ -68,7 +79,8 @@ h3, .h3 {
   }
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: rem(18px);
   margin-bottom: rem(12px);
   line-height: rem(36px);
@@ -78,7 +90,8 @@ h4, .h4 {
   }
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: rem(16px);
   margin-bottom: rem(12px);
   font-weight: $font-weight-medium;
@@ -90,7 +103,8 @@ h5, .h5 {
   }
 }
 
-input, a {
+input,
+a {
   &:focus {
     outline: none;
   }
@@ -159,7 +173,7 @@ p {
   }
 
   &:hover {
-    color: #0467D8;
+    color: #0467d8;
   }
 }
 
@@ -223,7 +237,7 @@ p {
 }
 
 .text-grey {
-  color: #7D8499 !important;
+  color: #7d8499 !important;
 }
 
 .btn-primary {
@@ -240,7 +254,7 @@ p {
   }
 
   &[disabled] {
-    background-color: #F3F3F3 !important;
+    background-color: #f3f3f3 !important;
     color: #979797 !important;
   }
 }
@@ -276,13 +290,11 @@ p {
   }
 
   &[disabled] {
-    background-color: $white !important; 
+    background-color: $white !important;
     color: #dee2e6 !important;
     cursor: default;
   }
 }
-
-
 
 .btn-small {
   font-size: rem(14px);
@@ -297,7 +309,7 @@ p {
 
 .form-control--error {
   @include placeholder {
-    color: #EB3B47
+    color: #eb3b47;
   }
 }
 
@@ -317,6 +329,10 @@ p {
 
 .font-weight-bold {
   font-weight: $font-weight-bold;
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 .hint {
@@ -410,7 +426,6 @@ p {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
-
 
 .card {
   color: $dark;
@@ -534,15 +549,14 @@ p {
   font-size: rem(14px);
   line-height: 1.6;
 
-  [data-toggle=tooltip] {
+  [data-toggle='tooltip'] {
     border-bottom: 1px dotted $grey;
   }
 }
 
-.control-label[data-toggle=tooltip] {
-    border-bottom: 1px dotted $grey;
-  }
-
+.control-label[data-toggle='tooltip'] {
+  border-bottom: 1px dotted $grey;
+}
 
 .pager {
   .icon {
@@ -564,5 +578,5 @@ p {
 }
 
 .hidden {
-    display: none !important;  
+  display: none !important;
 }

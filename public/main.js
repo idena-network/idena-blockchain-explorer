@@ -4,7 +4,7 @@
 function getAllUrlParams(url) {
   let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
   let obj = {};
-  
+
   if (queryString) {
     queryString = queryString.split('#')[0];
     let arr = queryString.split('&');
@@ -28,7 +28,7 @@ function getAllUrlParams(url) {
       } else {
         if (!obj[paramName]) {
           obj[paramName] = paramValue;
-        } else if (obj[paramName] && typeof obj[paramName] === 'string'){
+        } else if (obj[paramName] && typeof obj[paramName] === 'string') {
           obj[paramName] = [obj[paramName]];
           obj[paramName].push(paramValue);
         } else {
@@ -53,13 +53,13 @@ window.addEventListener('DOMContentLoaded', function () {
   const BODY = $('body');
 
   // START OF: mark is mobile =====
-  (function() {
+  (function () {
     BODY.addClass('loaded');
 
-    if(isMobile()){
+    if (isMobile()) {
       BODY.addClass('body--mobile');
       $('video').remove()
-    }else{
+    } else {
       BODY.addClass('body--desktop');
     }
   })();
@@ -67,13 +67,13 @@ window.addEventListener('DOMContentLoaded', function () {
 
   let $btnAgree = $('.btn_agree');
 
-  $btnAgree.on('click', function() {
+  $btnAgree.on('click', function () {
     $(this).closest('.badge_fixed').remove()
   });
 
   function initInputBlur() {
     $('.form_subscribe').each(function () {
-      $(this).find('.form-control').on('blur', function(event) {
+      $(this).find('.form-control').on('blur', function (event) {
         let inputValue = this.value;
         if (inputValue) {
           this.classList.add('value-exists');
@@ -125,110 +125,119 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
   $('[data-toggle="tooltip"]').tooltip();
-  path=window.location.pathname;
+  path = window.location.pathname;
 
-  var p=getAllUrlParams();
-  var title='';
+  var p = getAllUrlParams();
+  var title = '';
 
-  if(path=="/identity") {
-    title=title+'Identity';
-    if (! (p.identity===undefined)) {
+  if (path == "/identity") {
+    title = title + 'Identity';
+    if (!(p.identity === undefined)) {
       initIdentity(p.identity);
-      title=title+' '+p.identity;
+      title = title + ' ' + p.identity;
     }
   }
 
-  if(path=="/address") {
-    title=title+'Address';
-    if (! (p.address===undefined)) {
+  if (path == "/address") {
+    title = title + 'Address';
+    if (!(p.address === undefined)) {
       initAddress(p.address);
-      title=title+' '+p.address;
+      title = title + ' ' + p.address;
     }
   }
-     
-  if(path=="/epoch") {
-    title=title+'Epoch';
-    if (! (p.epoch===undefined)) {
+
+  if (path == "/epoch") {
+    title = title + 'Epoch';
+    if (!(p.epoch === undefined)) {
       initEpoch(p.epoch);
-      title=title+' '+epochFmt(p.epoch);
+      title = title + ' ' + epochFmt(p.epoch);
     }
   }
 
-  if(path=="/validation") {
-    title=title+'Validation result';
-    if (! (p.epoch===undefined)) {
+  if (path == "/validation") {
+    title = title + 'Validation result';
+    if (!(p.epoch === undefined)) {
       initValidation(p.epoch);
-      title=title+' '+epochFmt(p.epoch);
+      title = title + ' ' + epochFmt(p.epoch);
     }
   }
 
-  if(path=="/flip") {
-    title=title+'Flip';
-    if (! (p.flip===undefined)) {
+  if (path == "/flip") {
+    title = title + 'Flip';
+    if (!(p.flip === undefined)) {
       initFlip(p.flip);
-      title=title+' '+p.flip;
+      title = title + ' ' + p.flip;
     }
   }
 
-  if(path=="/block") {
-    title=title+'Block';
-    if (! (p.block===undefined)) {
+  if (path == "/block") {
+    title = title + 'Block';
+    if (!(p.block === undefined)) {
       initBlock(p.block);
-      title=title+' '+p.block;
+      title = title + ' ' + p.block;
     }
   }
 
-  if(path=="/answers") {
-    title=title+'Identity validation';
-    if (! (p.identity===undefined) && !(p.epoch===undefined)) {
+  if (path == "/answers") {
+    title = title + 'Identity validation';
+    if (!(p.identity === undefined) && !(p.epoch === undefined)) {
       initIdentityAnswers(p.identity, p.epoch);
-      title=title+' '+p.identity + ' for epoch '+ epochFmt(p.epoch);
+      title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
     }
 
   }
 
 
-  if(path=="/tx") {
-    title=title+'Transaction';
-    if (! (p.tx===undefined) ) {
+  if (path == "/tx") {
+    title = title + 'Transaction';
+    if (!(p.tx === undefined)) {
       initTransaction(p.tx);
-      title=title+' '+p.tx;
+      title = title + ' ' + p.tx;
     }
   }
 
-  if(path=="/rewards") {
-    title=title+'Validation session rewards';
-    if (! (p.epoch===undefined) ) {
+  if (path == "/rewards") {
+    title = title + 'Validation session rewards';
+    if (!(p.epoch === undefined)) {
       initRewards(p.epoch);
-      title=title+' '+epochFmt(p.epoch);
+      title = title + ' ' + epochFmt(p.epoch);
     }
   }
 
 
-  if(path=="/") {
+  if (path == "/") {
     initEpochs();
     title = 'Idena Explorer';
   } else
     title = title + ' | Idena Explorer';
 
 
-  $('title').text( title );
+  $('title').text(title);
 
 
+
+  if (document.location.hash != '') {
+    var viewelem = $('a[href="' + document.location.hash + '"]')[0]; //tab click
+    if (viewelem) viewelem.click()
+  }
 });
 
 
+$('a.nav-link[data-toggle="tab"]').on('click', function (e) {
+  //alert($(this)[0].attr('href'))
+  history.replaceState(undefined, undefined, $(this)[0].href)
+})
 
 
 
 
 
 $("#SearchInput").keyup(function (e) {
-//  const isValidEmail = $(this)[0].checkValidity();
-//  isValidEmail ? Btn[0].disabled = false : Btn[0].disabled = true;
+  //  const isValidEmail = $(this)[0].checkValidity();
+  //  isValidEmail ? Btn[0].disabled = false : Btn[0].disabled = true;
   const Btn = $(this).parent().parent().find(".btn");
   if (e.which === 13) {
     Btn[0].click()
@@ -237,40 +246,40 @@ $("#SearchInput").keyup(function (e) {
 
 
 
-$("#SearchBtn").click(function(){
+$("#SearchBtn").click(function () {
   const input = $("#SearchInput")[0];
   const txt = input.value;
-  if (txt=='') { return; }
+  if (txt == '') { return; }
 
   input.setAttribute('disabled', '');
 
-    var u=url+'Search?value='+txt;
-    $.ajax({
-      url: u,
-      type: 'GET',
-      dataType:'json',
-      success: function (data) {        
-        if (data.result == null)  { 
- 	  alert('Nothing found...');
-          input.removeAttribute('disabled');
-	  input.focus();
-          return; 
-        }
-        for (var i=0; i<data.result.length; i++){
-          if (data.result[i].Name=='Address')
-            location.href = './address?address='+txt;
-          if (data.result[i].Name=='Block')
-            location.href = './block?block='+txt;
-          if (data.result[i].Name=='Flip')
-            location.href = './flip?flip='+txt;
-          if (data.result[i].Name=='Transaction')
-            location.href = './tx?tx='+txt;
-        }
-      },
-      error: function (request, error) {
-        alert("Oops, something went wrong: " + error);
+  var u = url + 'Search?value=' + txt;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      if (data.result == null) {
+        alert('Nothing found...');
+        input.removeAttribute('disabled');
+        input.focus();
+        return;
       }
-    });
+      for (var i = 0; i < data.result.length; i++) {
+        if (data.result[i].Name == 'Address')
+          location.href = './address?address=' + txt;
+        if (data.result[i].Name == 'Block')
+          location.href = './block?block=' + txt;
+        if (data.result[i].Name == 'Flip')
+          location.href = './flip?flip=' + txt;
+        if (data.result[i].Name == 'Transaction')
+          location.href = './tx?tx=' + txt;
+      }
+    },
+    error: function (request, error) {
+      alert("Oops, something went wrong: " + error);
+    }
+  });
 });
 
 

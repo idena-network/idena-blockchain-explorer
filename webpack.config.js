@@ -173,7 +173,7 @@ const buildConfig = {
   },
   plugins: [
     new ExtractTextPlugin({
-      filename: '[name].css',
+      filename: '[name].css?[hash:8]',
       allChunks: true,
     }),
     new webpack.optimize.UglifyJsPlugin({
