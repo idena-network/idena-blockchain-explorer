@@ -105,6 +105,20 @@
                     </a>
                   </li>
 
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="mining24-tab"
+                      data-toggle="tab"
+                      href="#mining24"
+                      role="tab"
+                      aria-controls="mining24"
+                      aria-selected="false"
+                    >
+                      <h3>Last 24 hours mining</h3>
+                    </a>
+                  </li>
+
                 </ul>
               </div>
             </div>
@@ -117,6 +131,7 @@
                   <table class="table" id="EpochsTable">
                     <tr>
                       <th>Epoch</th>
+                      <th>Date</th>
                       <th>Blocks</th>
                       <th>Transactions</th>
                       <th>Flips</th>
@@ -160,6 +175,20 @@
               </div>
             </div>
 
+            <div class="tab-pane" id="mining24" role="tabpanel" aria-labelledby="mining24-tab">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="Mining24Table">
+                    <tr>
+                      <th>Address</th>
+                      <th style="width: 150px;">Total mined, DNA</th>
+                      <th data-toggle="tooltip" title="Selected as a block proposer">Blocks produced</th>
+                      <th data-toggle="tooltip" title="Selected as a committee member">Voted for blocks</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+  
           </div>
         </div>
       </section>

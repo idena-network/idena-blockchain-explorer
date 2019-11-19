@@ -35,11 +35,24 @@ function updateTxData(data){
 
   $("#TxType")[0].textContent=data.result.type;
 
-  $("#TxFrom")[0].textContent=data.result.from;
-  $("#TxTo")[0].textContent=data.result.to;
-  $("#TxFrom")[0].href="./address?address="+data.result.from;
-  $("#TxTo")[0].href="./address?address="+data.result.to;
+//  $("#TxTo")[0].textContent=data.result.to;
+//  $("#TxTo")[0].href="./address?address="+data.result.to;
 
+//  $("#TxFrom")[0].textContent=data.result.from;
+//  $("#TxFrom")[0].href="./address?address="+data.result.from;
+
+
+  if (data.result.from) {
+    $("#TxFrom span")[0].textContent=data.result.from.substr(0,30)+"...";
+    $("#TxFrom img")[0].src= 'https://robohash.org/'+data.result.from.toLowerCase();
+    $("#TxFrom")[0].href= "./address?address="+data.result.from;
+   }
+
+  if (data.result.to) {
+    $("#TxTo span")[0].textContent=data.result.to.substr(0,30)+"...";
+    $("#TxTo img")[0].src= 'https://robohash.org/'+data.result.to.toLowerCase();
+    $("#TxTo")[0].href= "./address?address="+data.result.to;
+  }
 
   $("#TxAmount")[0].textContent=data.result.amount;
   $("#TxFee")[0].textContent=data.result.fee;

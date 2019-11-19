@@ -182,10 +182,10 @@ function updateIdentityAnswersData(data){
       }
     }
   }else{
-    if (data.result.state=="Undefined"){
-      $("#ValidationResult")[0].textContent="Wrong answers"
-    }else{
+    if ((data.result.state=='Newbie')||(data.result.state=='Verified')){
       $("#ValidationResult")[0].textContent="Successful"
+    }else{
+      $("#ValidationResult")[0].textContent="Wrong answers"
     }
     $("#ShortInTime")[0].textContent="In time";
     $("#LongInTime")[0].textContent="In time";

@@ -247,7 +247,7 @@ function updateFlipContent(data) {
         .match(/.{1,2}/g)
         .map(byte => parseInt(byte, 16))
     );
-    var lposition, rposition;
+    var lposition=-1, rposition=-1;
     for (var j = 0; j < data.result.Pics.length; j++) {
       if (data.result.LeftOrder[j] == i) lposition = j;
       if (data.result.RightOrder[j] == i) rposition = j;
@@ -255,7 +255,9 @@ function updateFlipContent(data) {
     var src = URL.createObjectURL(
       new Blob([buffArray], { type: 'image/jpeg' })
     );
-    $('#FlipImageL' + lposition)[0].src = src;
-    $('#FlipImageR' + rposition)[0].src = src;
+    if (lposition>=0)
+      $('#FlipImageL' + lposition)[0].src = src;
+    if (rposition>=0)
+      $('#FlipImageR' + rposition)[0].src = src;
   }
 }

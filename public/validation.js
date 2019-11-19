@@ -69,7 +69,7 @@ function getValidationData(epoch){
       }
     });
 
-    u=url+'Epoch/'+prevEpoch+'/Identities?skip=0&limit=100';
+    u=url+'Epoch/'+prevEpoch+'/Identities?skip=0&limit=200';
     $.ajax({
       url: u,
       type: 'GET',
@@ -82,7 +82,7 @@ function getValidationData(epoch){
       }
     });
 
-    u=url+'Epoch/'+prevEpoch+'/Flips?skip=0&limit=100';
+    u=url+'Epoch/'+prevEpoch+'/Flips?skip=0&limit=400';
     $.ajax({
       url: u,
       type: 'GET',

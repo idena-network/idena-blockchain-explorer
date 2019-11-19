@@ -270,7 +270,7 @@ function updateEpochFlipsData(data) {
       "<div class='text_block text_block--ellipsis'><a href='./flip?flip=" +
       cid +
       "'>" +
-      cid.substr(0, 14) +
+      cid.substr(0, 10) +
       '...</a></div>'
     );
     tr.append(td);
@@ -286,7 +286,7 @@ function updateEpochFlipsData(data) {
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
       author +
       "'>" +
-      author.substr(0, 14) +
+      author.substr(0, 12) +
       '...</a></div>'
     );
     tr.append(td);
@@ -326,6 +326,10 @@ function updateEpochFlipsData(data) {
         '</td>'
       );
     }
+
+
+    wordsScore = data.result[i].wrongWordsVotes===0?'-':-data.result[i].wrongWordsVotes
+    tr.append('<td>' + wordsScore + '</td>');
 
     table.append(tr);
   }
@@ -765,6 +769,8 @@ function updateEpochTxsData(data) {
     }
     tr.append(td);
 
+    tr.append("<td align='right'>" + (data.result[i].amount==0? '-' : precise6(data.result[i].amount)) + "</td>");
+
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].type + '</td>');
     table.append(tr);
@@ -819,11 +825,9 @@ function updateEpochBlocksData(data) {
 
     var minted, burnt;
     minted =
-      data.result[i].coins.balance.minted * 1 +
-      data.result[i].coins.stake.minted * 1;
+      data.result[i].coins.minted;
     burnt =
-      data.result[i].coins.balance.burnt * 1 +
-      data.result[i].coins.stake.burnt * 1;
+      data.result[i].coins.burnt;
 
     if (frac(minted) > 99) {
       minted = precise2(minted) + '';

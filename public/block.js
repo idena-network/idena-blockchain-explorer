@@ -81,6 +81,9 @@ function updateBlockTxsData(data){
             }
         tr.append(td);
 
+        tr.append("<td align='right'>" + (data.result[i].amount==0? '-' : precise6(data.result[i].amount)) + "</td>");
+
+
         tr.append("<td>" + timeFmt(data.result[i].timestamp) + "</td>");
         tr.append("<td>" + data.result[i].type + "</td>");
         table.append(tr);
