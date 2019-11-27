@@ -27,39 +27,47 @@
 
   img {
     border-radius: 100px;
-    box-shadow: 0 0 0 1px rgba(83, 86, 92, .16);
+    box-shadow: 0 0 0 1px rgba(83, 86, 92, 0.16);
   }
 }
 
-.flipkeywordsframe{
-  position: absolute;
-  top: 50%;
+.flipkeywordsframe {
+  .flipkeywords {
+    background-color: white;
+    border-radius: 20px;
+    border-radius: 20px;
+    padding: 20px;
+    //min-width: 300px;
+  }
+  //position: absolute;
+  //top: 50%;
 }
 
 .flipframe {
   border-radius: 20px;
+  width: 160px;
   &.active {
     border-style: solid;
     border-color: #578fff !important;
   }
 
   div {
-    width:160px; 
-    img{
-      width:160px; 
-      height:auto;
+    width: 160px;
+    img {
+      width: 155px;
+      height: auto;
     }
   }
 }
 
 .fliptopimage {
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
 }
 
 .flipbottomimage {
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
 }
 
 .user-flip {
@@ -71,7 +79,7 @@
 
   img {
     border-radius: 4px;
-    box-shadow: 0 0 0 1px rgba(83, 86, 92, .16);
+    box-shadow: 0 0 0 1px rgba(83, 86, 92, 0.16);
   }
 }
 
@@ -121,12 +129,12 @@
   font-weight: $font-weight-medium;
   font-size: rem(14px);
   padding: rem(10px 16px 11px);
-  background-color: rgba($grey, .1);
+  background-color: rgba($grey, 0.1);
   color: $grey;
   display: inline-block;
 
   &--success {
-    background-color: rgba($green, .1);
+    background-color: rgba($green, 0.1);
     color: $green;
   }
 }
@@ -237,7 +245,6 @@
     }
   }
 }
-
 
 .section_message {
   text-align: center;

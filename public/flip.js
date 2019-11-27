@@ -130,7 +130,22 @@ function updateFlipData(data) {
     $('#Keyword1Descr')[0].textContent = data.result.words.word1.desc;
     $('#Keyword2')[0].textContent = data.result.words.word2.name;
     $('#Keyword2Descr')[0].textContent = data.result.words.word2.desc;
+
+    if (data.result.wrongWords) {
+      $('#KeywordRelevance span')[0].textContent =
+        'Flip is marked as irrelevant to the keywords and penalized';
+      $('#KeywordRelevance i').addClass('icon--micro_fail');
+    } else {
+      $('#KeywordRelevance span')[0].textContent =
+        'Flip is relevant to the keywords';
+      $('#KeywordRelevance i').addClass('icon--micro_success');
+    }
+  } else {
+    $('#Keyword1Descr')[0].textContent = 'No keywords available';
+    $('#Keyword2Descr')[0].textContent = 'No keywords available';
   }
+
+  $('#IrrelevantKeywordsScore')[0].textContent = data.result.wrongWordsVotes;
 }
 
 function updateFlipAnswersShortData(data) {
@@ -182,7 +197,7 @@ function updateFlipAnswersLongData(data) {
 
   var leftAnswer = 0,
     rightAnswer = 0,
-    inappropriateAnswer = 0,
+    //inappropriateAnswer = 0,
     noneAnswer = 0;
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
@@ -216,7 +231,7 @@ function updateFlipAnswersLongData(data) {
     }
 
     if (data.result[i].respAnswer == 'Inappropriate') {
-      inappropriateAnswer++;
+      //inappropriateAnswer++;
       tr.append('<td>' + data.result[i].respAnswer + '</td>');
     }
 
@@ -228,7 +243,7 @@ function updateFlipAnswersLongData(data) {
     table.append(tr);
   }
 
-  $('#InappropriateAnswers')[0].textContent = inappropriateAnswer;
+  //$('#InappropriateAnswers')[0].textContent = inappropriateAnswer;
   $('#LeftAnswers')[0].textContent = leftAnswer;
   $('#RightAnswers')[0].textContent = rightAnswer;
 }
@@ -247,7 +262,8 @@ function updateFlipContent(data) {
         .match(/.{1,2}/g)
         .map(byte => parseInt(byte, 16))
     );
-    var lposition=-1, rposition=-1;
+    var lposition = -1,
+      rposition = -1;
     for (var j = 0; j < data.result.Pics.length; j++) {
       if (data.result.LeftOrder[j] == i) lposition = j;
       if (data.result.RightOrder[j] == i) rposition = j;
@@ -255,9 +271,7 @@ function updateFlipContent(data) {
     var src = URL.createObjectURL(
       new Blob([buffArray], { type: 'image/jpeg' })
     );
-    if (lposition>=0)
-      $('#FlipImageL' + lposition)[0].src = src;
-    if (rposition>=0)
-      $('#FlipImageR' + rposition)[0].src = src;
+    if (lposition >= 0) $('#FlipImageL' + lposition)[0].src = src;
+    if (rposition >= 0) $('#FlipImageR' + rposition)[0].src = src;
   }
 }

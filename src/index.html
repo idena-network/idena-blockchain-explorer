@@ -27,7 +27,7 @@
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="TotalBurnt">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Coins burnt by protocol (fees, penalties, lost identities, etc.)">Burnt coins</div>
+                    <div class="control-label" data-toggle="tooltip" title="Coins burnt by protocol (fees, penalties, lost stakes, etc.)">Burnt coins</div>
                   </div>
                 </div>
               </div>
@@ -105,7 +105,7 @@
                     </a>
                   </li>
 
-                  <li class="nav-item">
+                  <li class="nav-item" hidden>
                     <a
                       class="nav-link"
                       id="mining24-tab"
@@ -131,13 +131,14 @@
                   <table class="table" id="EpochsTable">
                     <tr>
                       <th>Epoch</th>
-                      <th>Date</th>
-                      <th>Blocks</th>
-                      <th>Transactions</th>
-                      <th>Flips</th>
-                      <th>Invitations</th>
-                      <th>Validated</th>
-                      <th>Minted, DNA</th>
+                      <th>Validation<br>date</th>   
+                      <th>Blocks<br>mined</th>
+                      <th>Transactions<br>number</th>
+                      <th>Flips<br>created</th>
+                      <th>Invitations<br>sent</th>
+                      <th>Total<br>validated</th>
+                      <th>Rewards<br>paid, DNA</th>
+<!--                      <th data-toggle="tooltip" title="Mined coins and paid rewards">Total <br>minted, DNA</th> -->
                       <th>Burnt, DNA</th>
                     </tr>
                   </table>

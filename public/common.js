@@ -32,6 +32,7 @@ function flipQualificationStatusFmt(status) {
 }
 
 function identityStatusFmt(s) {
+  if (!s) return '';
   if (s == 'Undefined') return 'Not validated';
   return s;
 }
@@ -288,7 +289,6 @@ function getLocaleDateString() {
 
 function addShowMoreTableButton(table, onClickFunction, total, loaded, param) {
   p = JSON.stringify(param);
-  console.log('p=' + p);
   if (loaded < total) {
     table.parent()[0].style.paddingBottom = '40px';
     table

@@ -114,14 +114,28 @@
                 <li class="nav-item">
                   <a
                     class="nav-link active"
-                    id="validation-tab"
+                    id="rewards-tab"
                     data-toggle="tab"
-                    href="#validation"
+                    href="#rewards"
                     role="tab"
-                    aria-controls="validation"
+                    aria-controls="rewards"
                     aria-selected="true"
                   >
                     <h3>Rewards distribution</h3>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="penalty-tab"
+                    data-toggle="tab"
+                    href="#penalty"
+                    role="tab"
+                    aria-controls="penalty"
+                    aria-selected="true"
+                  >
+                    <h3>Penalties</h3>
                   </a>
                 </li>
 
@@ -130,7 +144,7 @@
           </div>
         </div>
         <div class="tab-content">
-          <div class="tab-pane active" id="validation" role="tabpanel" aria-labelledby="validation-tab">
+          <div class="tab-pane active" id="rewards" role="tabpanel" aria-labelledby="rewards-tab">
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
@@ -144,92 +158,28 @@
                       <th style="width: 80px;">Invitation<br/>reward,<br/>DNA</th>
                       <th style="width: 80px;">Total<br/>reward,<br/>DNA</th>
                     </tr>
-<!--
 
-                      <th style="width: 80px;" data-toggle="tooltip" title="Total reward paid to identity wallet">Total to<br/>balance,<br/>DNA</th>
-                      <th style="width: 80px;" data-toggle="tooltip" title="Total reward paid to stake">Total to<br/>stake,<br/>DNA</th>
-
-                    <tr>
-                      <td>
-                        <div class="user-pic"><img src="http://lorempixel.com/32/32/" alt="pic"width="32"></div>
-                        <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                      <td>76%</td>
-                      <td>50%</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="user-pic"><img src="http://lorempixel.com/32/32/" alt="pic"
-                                                   width="32"></div>
-                        <div class="text_block text_block--ellipsis"><a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                      <td>76%</td>
-                      <td>50%</td>
-                    </tr>
--->
                   </table>
                 </div>
               </div>
 
-<!--
-              <div class="absolute-group">
-                <div class="pager">
-                  <div class="row small-row align-items-center">
-                    <div class="col-auto small-col">
-                      <div class="control-label">1-10 out of 123</div>
-                    </div>
-                    <div class="col-auto small-col">
-                      <div class="button-group">
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_left"></i>
-                        </button>
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_right"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
--->
+
             </div>
           </div>
 
-          <div class="tab-pane" id="flips" role="tabpanel" aria-labelledby="flips-tab">
+          <div class="tab-pane" id="penalty" role="tabpanel" aria-labelledby="penalty-tab">
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
-                  <table class="table" id="FlipsTable">
+                  <table class="table" id="PenaltyTable">
                     <tr>
-                      <th>Flip</th>
-                      <th>Author</th>
-                      <th style="width: 120px;" data-toggle="tooltip" title="Number of identities being challenged with the flip">Challenged  <br>identities</th>
-                      <th style="width: 120px;" data-toggle="tooltip" title="Number of identities qualified the flip">Qualification <br> committee</th>
-                      <th style="width: 100px;" data-toggle="tooltip" title="Agreed answer">Answer</th>
-                      <th style="width: 80px;" data-toggle="tooltip" title="Qualification committee consensus about the flip">Consensus</th>
+                      <th>Address</th>
+                      <th>Previous<br/>status</th>
+                      <th>Status</th>
+                      <th data-toggle="tooltip" title="">Peanlty details</th>
                     </tr>
                     <tr>
-<!--
-                      <td>
-                        <div class="user-flip">
-                          <img src="http://lorempixel.com/44/44/" alt="pic" width="44">
-                        </div>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">HvNUMQLvi0Wqw5BC8pl22</a>
-                        </div>
-                      </td>
-                      <td>3</td>
-                      <td>180,236</td>
-                      <td>Yes</td>
-                    </tr>
--->
+
                   </table>
                 </div>
               </div>
@@ -258,7 +208,7 @@
             </div>
           </div>
 
-          <div class="tab-pane" id="killed" role="tabpanel" aria-labelledby="killed-tab">
+          <div class="tab-pane" id="rewards" role="tabpanel" aria-labelledby="rewards-tab">
             <div class="section__group">
               <div class="card">
                 <div class="table-responsive">
@@ -271,53 +221,10 @@
                       <th style="width: 190px;">Failure reason</th>
                       <th style="width: 100px;">Details</th>
                     </tr>
-<!--
-                    <tr>
-                      <td>
-                        <div class="user-pic">
-                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
-                        </div>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="user-pic">
-                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
-                        </div>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                    </tr>
--->
                   </table>
                 </div>
               </div>
 
-<!--
-              <div class="absolute-group">
-                <div class="pager">
-                  <div class="row small-row align-items-center">
-                    <div class="col-auto small-col">
-                      <div class="control-label">20–30 of 90</div>
-                    </div>
-                    <div class="col-auto small-col">
-                      <div class="button-group">
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_left"></i>
-                        </button>
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_right"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
--->
 
             </div>
           </div>

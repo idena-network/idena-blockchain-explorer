@@ -17,39 +17,50 @@
 
 
 
-      <section class="section section_flips">
-        <div>
-          <div class="row">
-            <div>
-              <div class="flipframe" id="FlipImgLeft">
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL0" class='fliptopimage'></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL1"></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL2"></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL3" class='flipbottomimage'></div>
+      <section class="section section_info">
+        <div class="row">
+              <div class="col-12 col-sm-4" >
+                <div class="row" style="flex-wrap: nowrap;">
+
+                  <div class="col-12 col-sm-6" style="flex: 0 0 0;">
+                    <div class="flipframe" id="FlipImgLeft">
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL0" class='fliptopimage'></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL1"></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL2"></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageL3" class='flipbottomimage'></div>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-6" style="flex: 0 0 0;">
+                    <div class="flipframe" id="FlipImgRight">
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR0" class='fliptopimage'></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR1"></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR2"></div>
+                      <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR3" class='flipbottomimage'></div>
+                    </div>
+                  </div>
               </div>
             </div>
-            <div>
-              <div class="flipframe" id="FlipImgRight">
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR0" class='fliptopimage'></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR1"></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR2"></div>
-                <div><img src="./images/flip_icn@2x.png" alt="pic" id="FlipImageR3" class='flipbottomimage'></div>
+            <div class="col-12 col-sm-4">
+                  <div >
+                      <div class="flipkeywordsframe">
+                        <div class="flipkeywords">
+                          <p class="text_block font-weight-bold capitalize" id="Keyword1"></p>
+                          <br>
+                          <p class="text_block text-grey" id="Keyword1Descr">-</p>
+                          <br>
+                          <br>
+                          <p class="text_block font-weight-bold capitalize" id="Keyword2"></p>
+                          <br>
+                          <p class="text_block text-grey" id="Keyword2Descr">-</p>
+                        </div>  
+          
+                        <br>
+                        <p class="text_block " id="KeywordRelevance"><i class='icon'></i> <span><span></p>
+                      </div> 
+                    </div>
               </div>
-            </div>
-            <div>
-              <div class="flipkeywordsframe">
-                <div class="text_block font-weight-bold capitalize" id="Keyword1"></div>
-                <br>
-                <div class="text_block text-grey" id="Keyword1Descr"></div>
-                <br>
-                <br>
-                <div class="text_block font-weight-bold capitalize" id="Keyword2"></div>
-                <br>
-                <div class="text_block text-grey" id="Keyword2Descr"></div>
-              </div>
-            </div>
-          </div>
         </div>
+        
       </section>
 
 
@@ -127,8 +138,8 @@
                   <div class="control-label" data-toggle="tooltip" title="Votes for Right answer">Right</div>
                 </div>
                 <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="InappropriateAnswers">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Votes for inappropriate content">Inappropriate</div>
+                  <h3 class="info_block__accent" id="IrrelevantKeywordsScore">-</h3>
+                  <div class="control-label" data-toggle="tooltip" title="Votes for irrelevant keywords">Irrelevance</div>
 
                 </div>
               </div>

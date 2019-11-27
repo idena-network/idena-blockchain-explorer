@@ -15,7 +15,7 @@ function getEpochsData() {
       console.error(u + ', error:' + error);
     }
   });
-
+  /*
   u = url + 'Epochs/Count';
   $.ajax({
     url: u,
@@ -28,6 +28,7 @@ function getEpochsData() {
       console.error(u + ', error:' + error);
     }
   });
+*/
 
   u = url + 'Coins';
   $.ajax({
@@ -42,18 +43,7 @@ function getEpochsData() {
     }
   });
 
-  u = url + 'Balances?skip=0&limit=170';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      undateBalancesData(data);
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
-    }
-  });
+  getBalancesData(100, 0);
 
   u = url + 'OnlineMiners/Count';
   $.ajax({
@@ -105,8 +95,12 @@ function updateEpochsData(data) {
     return;
   }
 
-  var lastVerifiedElement;
-  for (var i = 0; i < data.result.length; i++) {
+  var lastVerifiedElement, lastValidationDateElement, lastRewardsElement;
+  for (var i = 0; i < data.result.length - 1; i++) {
+    if (i == 1) {
+      $('#ValidatedTotal')[0].textContent = data.result[i].validatedCount;
+    }
+
     var tr = $('<tr/>');
     tr.append(
       "<td> <a href='./epoch?epoch=" +
@@ -116,20 +110,25 @@ function updateEpochsData(data) {
         '</a></td>'
     );
 
-    tr.append('<td>' + '' + '</td>');
+    if (i > 0) {
+      lastVerifiedElement[0].textContent = data.result[i].validatedCount;
+      lastValidationDateElement.find('a')[0].textContent = dateFmt(
+        data.result[i].validationTime
+      );
+      lastRewardsElement.find('a')[0].textContent = precise2(
+        data.result[i].rewards.total
+      );
+    }
+
+    lastValidationDateElement = $(
+      "<td><a href='./validation?epoch=" + data.result[i].epoch + "'></a></td>"
+    );
+    tr.append(lastValidationDateElement);
     tr.append('<td>' + data.result[i].blockCount + '</td>');
     tr.append('<td>' + data.result[i].txCount + '</td>');
     tr.append('<td>' + data.result[i].flipCount + '</td>');
     tr.append('<td>' + data.result[i].inviteCount + '</td>');
-    if (i > 0) {
-      lastVerifiedElement[0].textContent = data.result[i].validatedCount;
-    }
-
-    if (i == 1) {
-      $('#ValidatedTotal')[0].textContent = data.result[i].validatedCount;
-    }
-
-    lastVerifiedElement = $('<td>-</td>');
+    lastVerifiedElement = $('<td></td>');
     tr.append(lastVerifiedElement);
 
     var minted, burnt;
@@ -144,6 +143,10 @@ function updateEpochsData(data) {
       burnt = precise2(burnt) + '';
     }
 
+    lastRewardsElement = $(
+      "<td><a href='./rewards?epoch=" + data.result[i].epoch + "'></a></td>"
+    );
+//TODO:    tr.append(lastRewardsElement);
     tr.append("<td align='right'>" + dnaFmt(minted, '') + '</td>');
     tr.append("<td align='right'>" + dnaFmt(burnt, '') + '</td>');
 
@@ -216,12 +219,31 @@ function undateMinersCount(data) {
   $('#OnlineMinersTotal')[0].textContent = data.result;
 }
 
-function undateBalancesData(data) {
+function getBalancesData(total, loaded) {
+  const step = 30;
+
+  if (loaded > total) {
+    return;
+  }
+
+  u = url + 'Balances?skip=0' + loaded + '&limit=' + step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      undateBalancesData(data, total, loaded + step);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function undateBalancesData(data, total, loaded) {
   var table = $('#TopAddressTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  addShowMoreTableButton(table, getBalancesData, total, loaded);
+
   if (data.result == null) {
     return;
   }

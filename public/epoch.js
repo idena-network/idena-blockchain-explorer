@@ -29,10 +29,10 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochCountData(data, epoch);
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -43,10 +43,10 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function (data) {
+      success: function(data) {
         updateEpochData(data);
       },
-      error: function (request, error) {
+      error: function(request, error) {
         console.error(u + ', error:' + error);
       }
     });
@@ -57,24 +57,24 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function (data) {
+      success: function(data) {
         updateEpochIdentityStatesSummaryData(data);
       },
-      error: function (request, error) {
+      error: function(request, error) {
         console.error(u + ', error:' + error);
       }
     });
 
   if (prevEpoch >= 0) {
-    u = url + 'Epoch/' + prevEpoch + '/Identities?skip=0&limit=100';
+    u = url + 'Epoch/' + prevEpoch + '/Identities/Count';
     $.ajax({
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function (data) {
-        updateEpochIdentitiesData(data);
+      success: function(data) {
+        getEpochIdentitiesData(data.result, 0, { prevEpoch });
       },
-      error: function (request, error) {
+      error: function(request, error) {
         console.error(u + ', error:' + error);
       }
     });
@@ -84,29 +84,42 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function (data) {
+      success: function(data) {
         updateZeroEpochIdentitiesData(data);
       },
-      error: function (request, error) {
+      error: function(request, error) {
         console.error(u + ', error:' + error);
       }
     });
   }
-
+  /*
   u = url + 'Epoch/' + prevEpoch + '/Flips?skip=0&limit=100';
   if (prevEpoch >= 0)
     $.ajax({
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function (data) {
+      success: function(data) {
         updateEpochFlipsData(data);
       },
-      error: function (request, error) {
+      error: function(request, error) {
         console.error(u + ', error:' + error);
       }
     });
 
+  u = url + 'Epoch/' + prevEpoch + '/Flips/Count';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      getEpochFlipsData(data.result, 0, { prevEpoch });
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+*/
   //----------current epoch data --------------
 
   u = url + 'Epoch/' + epoch;
@@ -114,10 +127,10 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateNextEpochData(data);
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -127,23 +140,23 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochFlipsStatesSummaryData(data);
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
 
-  u = url + 'Epoch/' + epoch + '/Flips?skip=0&limit=100';
+  u = url + 'Epoch/' + epoch + '/Flips/Count';
   $.ajax({
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
-      updateEpochFlipSubmissionsData(data);
+    success: function(data) {
+      getEpochFlipSubmissionsData(data.result, 0, { epoch });
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -153,10 +166,10 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochInvitesSummaryData(data);
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -166,10 +179,10 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochInvitationsData(data);
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -179,10 +192,11 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochTransactionsCountData(data);
+      getEpochTxsData(data.result, 0, { epoch });
     },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
@@ -192,158 +206,51 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function (data) {
+    success: function(data) {
       updateEpochBlocksCountData(data);
+      getEpochBlocksData(data.result, 0, { epoch });
     },
-    error: function (request, error) {
-      console.error(u + ', error:' + error);
-    }
-  });
-
-  u = url + 'Epoch/' + epoch + '/Txs?skip=0&limit=50';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      updateEpochTxsData(data);
-    },
-    error: function (request, error) {
-      console.error(u + ', error:' + error);
-    }
-  });
-
-  u = url + 'Epoch/' + epoch + '/Blocks?skip=0&limit=50';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function (data) {
-      updateEpochBlocksData(data);
-    },
-    error: function (request, error) {
+    error: function(request, error) {
       console.error(u + ', error:' + error);
     }
   });
 }
 
-function updateEpochFlipsData(data) {
-  var table = $('#FlipsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+function getEpochFlipSubmissionsData(total, loaded, params) {
+  const step = 30;
 
+  if (loaded > total) {
+    return;
+  }
+
+  u =
+    url + 'Epoch/' + params.epoch + '/Flips?skip=' + loaded + '&limit=' + step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateEpochFlipSubmissionsData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateEpochFlipSubmissionsData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
 
-  for (var i = 0; i < data.result.length; i++) {
-    var tr = $('<tr/>');
-    var td = $('<td/>');
-
-    if (data.result[i].icon != null) {
-      var buffArray = new Uint8Array(
-        data.result[i].icon
-          .substring(2)
-          .match(/.{1,2}/g)
-          .map(byte => parseInt(byte, 16))
-      );
-      var src = URL.createObjectURL(
-        new Blob([buffArray], { type: 'image/jpeg' })
-      );
-      td.append(
-        '<div class="user-pic"><img src="' +
-        src +
-        '" alt="pic"width="44" height="44"></div>'
-      );
-      //URL.revokeObjectURL(src);
-    } else {
-      td.append(
-        '<div class="user-pic"><img src="./images/flip_icn.png' +
-        '" alt="pic" width="44"></div>'
-      );
-    }
-
-    var cid = data.result[i].cid;
-    td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./flip?flip=" +
-      cid +
-      "'>" +
-      cid.substr(0, 10) +
-      '...</a></div>'
-    );
-    tr.append(td);
-
-    var td = $('<td/>');
-    var author = data.result[i].author;
-    td.append(
-      '<div class="user-pic"><img src="https://robohash.org/' +
-      author.toLowerCase() +
-      '" alt="pic"width="32"></div>'
-    );
-    td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      author +
-      "'>" +
-      author.substr(0, 12) +
-      '...</a></div>'
-    );
-    tr.append(td);
-
-    var keywords = '-';
-    if (data.result[i].words != null) {
-      keywords = data.result[i].words.word1.name + '/' + data.result[i].words.word2.name
-    }
-
-    tr.append('<td>' + keywords + '</td>');
-    if (data.result[i].status == '') {
-      tr.append('<td>Not used</td>');
-      tr.append('<td>-</td>');
-      tr.append('<td>-</td>');
-    } else {
-      tr.append(
-        '<td>' +
-        data.result[i].shortRespCount +
-        ' / ' +
-        data.result[i].longRespCount +
-        '</td>'
-      );
-
-      if (
-        data.result[i].status == 'Qualified' ||
-        data.result[i].status == 'WeaklyQualified'
-      )
-        tr.append('<td>' + data.result[i].answer + '</td>');
-      else tr.append('<td>-</td>');
-      tr.append(
-        '<td>' +
-        (data.result[i].status == 'WeaklyQualified'
-          ? 'Weak'
-          : data.result[i].status == 'Qualified'
-            ? 'Strong'
-            : 'No consensus') +
-        '</td>'
-      );
-    }
-
-
-    wordsScore = data.result[i].wrongWordsVotes===0?'-':-data.result[i].wrongWordsVotes
-    tr.append('<td>' + wordsScore + '</td>');
-
-    table.append(tr);
-  }
-}
-
-function updateEpochFlipSubmissionsData(data) {
   var table = $('#FlipSubmissionsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
-  if (data.result == null) {
-    return;
-  }
+  addShowMoreTableButton(
+    table,
+    getEpochFlipSubmissionsData,
+    total,
+    loaded,
+    params
+  );
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
@@ -362,39 +269,39 @@ function updateEpochFlipSubmissionsData(data) {
       );
       td.append(
         '<div class="user-pic"><img src="' +
-        src +
-        '" alt="pic"width="44" height="44"></div>'
+          src +
+          '" alt="pic"width="44" height="44"></div>'
       );
       //URL.revokeObjectURL(src);
     } else {
       td.append(
         '<div class="user-pic"><img src="./images/flip_icn.png' +
-        '" alt="pic" width="44"></div>'
+          '" alt="pic" width="44"></div>'
       );
     }
 
     var cid = data.result[i].cid;
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./flip?flip=" +
-      cid +
-      "'>" +
-      cid.substr(0, 15) +
-      '...</a></div>'
+        cid +
+        "'>" +
+        cid.substr(0, 15) +
+        '...</a></div>'
     );
     tr.append(td);
     var td = $('<td/>');
     var author = data.result[i].author;
     td.append(
       '<div class="user-pic"><img src="https://robohash.org/' +
-      author.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+        author.toLowerCase() +
+        '" alt="pic"width="32"></div>'
     );
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      author +
-      "'>" +
-      author.substr(0, 15) +
-      '...</a></div>'
+        author +
+        "'>" +
+        author.substr(0, 15) +
+        '...</a></div>'
     );
     tr.append(td);
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
@@ -438,24 +345,24 @@ function updateEpochInvitationsData(data) {
     var td = $('<td/>');
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
-      data.result[i].hash +
-      "'>" +
-      data.result[i].hash.substr(0, 15) +
-      '...</a></div>'
+        data.result[i].hash +
+        "'>" +
+        data.result[i].hash.substr(0, 15) +
+        '...</a></div>'
     );
     tr.append(td);
     var td = $('<td/>');
     td.append(
       '<div class="user-pic"><img src="https://robohash.org/' +
-      data.result[i].author.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+        data.result[i].author.toLowerCase() +
+        '" alt="pic"width="32"></div>'
     );
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      data.result[i].author +
-      "'>" +
-      data.result[i].author.substr(0, 15) +
-      '...</a></div>'
+        data.result[i].author +
+        "'>" +
+        data.result[i].author.substr(0, 15) +
+        '...</a></div>'
     );
     tr.append(td);
     //        tr.append("<td>" + data.result[i].timestamp + "</td>");
@@ -465,25 +372,25 @@ function updateEpochInvitationsData(data) {
       var td = $('<td/>');
       td.append(
         "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
-        activation +
-        "'>" +
-        data.result[i].hash.substr(0, 15) +
-        '...</a></div>'
+          activation +
+          "'>" +
+          data.result[i].hash.substr(0, 15) +
+          '...</a></div>'
       );
       tr.append(td);
 
       var td = $('<td/>');
       td.append(
         '<div class="user-pic"><img src="https://robohash.org/' +
-        data.result[i].activationAuthor.toLowerCase() +
-        '" alt="pic"width="32"></div>'
+          data.result[i].activationAuthor.toLowerCase() +
+          '" alt="pic"width="32"></div>'
       );
       td.append(
         "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-        data.result[i].activationAuthor +
-        "'>" +
-        data.result[i].activationAuthor.substr(0, 15) +
-        '...</a></div>'
+          data.result[i].activationAuthor +
+          "'>" +
+          data.result[i].activationAuthor.substr(0, 15) +
+          '...</a></div>'
       );
       tr.append(td);
     } else {
@@ -538,15 +445,15 @@ function updateZeroEpochIdentitiesData(data) {
     var td = $('<td/>');
     td.append(
       '<div class="user-pic"><img src="https://robohash.org/' +
-      data.result[i].address.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+        data.result[i].address.toLowerCase() +
+        '" alt="pic"width="32"></div>'
     );
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      data.result[i].address +
-      "'>" +
-      data.result[i].address +
-      '</a></div>'
+        data.result[i].address +
+        "'>" +
+        data.result[i].address +
+        '</a></div>'
     );
     tr.append(td);
 
@@ -560,7 +467,7 @@ function updateZeroEpochIdentitiesData(data) {
         precise2(
           (data.result[i].totalShortAnswers.point /
             data.result[i].totalShortAnswers.flipsCount) *
-          100
+            100
         ) +
         '%)';
 
@@ -576,30 +483,57 @@ function updateZeroEpochIdentitiesData(data) {
   }
 }
 
-function updateEpochIdentitiesData(data) {
-  var valid_identities_table = $('#IdentitiesTable');
-  valid_identities_table
-    .find('td')
-    .parent()
-    .remove();
+function getEpochIdentitiesData(total, loaded, params) {
+  const step = 300;
+
+  if (loaded > total) {
+    return;
+  }
+
+  u =
+    url +
+    'Epoch/' +
+    params.prevEpoch +
+    '/Identities?skip=' +
+    loaded +
+    '&limit=' +
+    step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateEpochIdentitiesData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateEpochIdentitiesData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
+
+  var valid_identities_table = $('#IdentitiesTable');
+
+  //addShowMoreTableButton(  valid_identities_table, getEpochIdentitiesData, total, loaded, params);
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
     var td = $('<td/>');
     td.append(
       '<div class="user-pic"><img src="https://robohash.org/' +
-      data.result[i].address.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+        data.result[i].address.toLowerCase() +
+        '" alt="pic"width="32"></div>'
     );
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      data.result[i].address +
-      "'>" +
-      data.result[i].address +
-      '</a></div>'
+        data.result[i].address +
+        "'>" +
+        data.result[i].address +
+        '</a></div>'
     );
     tr.append(td);
 
@@ -613,7 +547,7 @@ function updateEpochIdentitiesData(data) {
         precise2(
           (data.result[i].totalShortAnswers.point /
             data.result[i].totalShortAnswers.flipsCount) *
-          100
+            100
         ) +
         '%)';
 
@@ -626,20 +560,6 @@ function updateEpochIdentitiesData(data) {
       tr.append('<td>' + totalScoreTxt + '</td>');
       valid_identities_table.append(tr);
     }
-  }
-}
-
-function updateEpochFlipsAnswersSummaryData(data) {
-  if (data.result == null) {
-    return;
-  }
-  if (path == '/validation') {
-    var inappropriateFlips = 0;
-    for (var i = 0; i < data.result.length; i++) {
-      var state = data.result[i].value;
-      if (state == 'Inappropriate') inappropriateFlips = data.result[i].count;
-    }
-    $('#AbuseFlips')[0].textContent = inappropriateFlips;
   }
 }
 
@@ -705,19 +625,34 @@ function updateEpochBlocksCountData(data) {
   $('#EpochBlocksCount')[0].textContent = data.result;
 }
 
-function updateEpochTxsData(data) {
+function getEpochTxsData(total, loaded, params) {
+  const step = 30;
+
+  if (loaded > total) {
+    return;
+  }
+
+  u = url + 'Epoch/' + params.epoch + '/Txs?skip=' + loaded + '&limit=' + step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateEpochTxsData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateEpochTxsData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
 
   var table = $('#TransactionsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
-  if (data.result == null) {
-    return;
-  }
+  addShowMoreTableButton(table, getEpochTxsData, total, loaded, params);
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
@@ -726,10 +661,10 @@ function updateEpochTxsData(data) {
     var hash = data.result[i].hash;
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
-      hash +
-      "'>" +
-      hash.substr(0, 10) +
-      '...</a></div>'
+        hash +
+        "'>" +
+        hash.substr(0, 10) +
+        '...</a></div>'
     );
     tr.append(td);
 
@@ -737,15 +672,15 @@ function updateEpochTxsData(data) {
     var from = data.result[i].from;
     td.append(
       '<div class="user-pic"><img src="https://robohash.org/' +
-      from.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+        from.toLowerCase() +
+        '" alt="pic"width="32"></div>'
     );
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      from +
-      "'>" +
-      from.substr(0, 10) +
-      '...</a></div>'
+        from +
+        "'>" +
+        from.substr(0, 10) +
+        '...</a></div>'
     );
     tr.append(td);
 
@@ -754,22 +689,26 @@ function updateEpochTxsData(data) {
     if (to) {
       td.append(
         '<div class="user-pic"><img src="https://robohash.org/' +
-        to.toLowerCase() +
-        '" alt="pic"width="32"></div>'
+          to.toLowerCase() +
+          '" alt="pic"width="32"></div>'
       );
       td.append(
         "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-        to +
-        "'>" +
-        to.substr(0, 10) +
-        '...</a></div>'
+          to +
+          "'>" +
+          to.substr(0, 10) +
+          '...</a></div>'
       );
     } else {
       td.append("<div class='text_block text_block--ellipsis'>-</div>");
     }
     tr.append(td);
 
-    tr.append("<td align='right'>" + (data.result[i].amount==0? '-' : precise6(data.result[i].amount)) + "</td>");
+    tr.append(
+      "<td align='right'>" +
+        (data.result[i].amount == 0 ? '-' : precise6(data.result[i].amount)) +
+        '</td>'
+    );
 
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].type + '</td>');
@@ -777,16 +716,36 @@ function updateEpochTxsData(data) {
   }
 }
 
-function updateEpochBlocksData(data) {
+function getEpochBlocksData(total, loaded, params) {
+  const step = 30;
+
+  if (loaded > total) {
+    return;
+  }
+
+  u =
+    url + 'Epoch/' + params.epoch + '/Blocks?skip=' + loaded + '&limit=' + step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateEpochBlocksData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateEpochBlocksData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
 
   var table = $('#BlocksTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  addShowMoreTableButton(table, getEpochBlocksData, total, loaded, params);
+
   if (data.result == null) {
     return;
   }
@@ -798,36 +757,46 @@ function updateEpochBlocksData(data) {
     var height = data.result[i].height;
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./block?block=" +
-      height +
-      "'>" +
-      height +
-      '</a></div>'
+        height +
+        "'>" +
+        height +
+        '</a></div>'
     );
     tr.append(td);
 
-    var td = $('<td/>');
-    td.append(
-      '<div class="user-pic"><img src="https://robohash.org/' +
-      data.result[i].proposer.toLowerCase() +
-      '" alt="pic"width="32"></div>'
+    if (data.result[i].proposer) {
+      var td = $('<td/>');
+      td.append(
+        '<div class="user-pic"><img src="https://robohash.org/' +
+          data.result[i].proposer.toLowerCase() +
+          '" alt="pic"width="32"></div>'
+      );
+      td.append(
+        "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+          data.result[i].proposer +
+          "'>" +
+          data.result[i].proposer.substr(0, 15) +
+          '...</a></div>'
+      );
+      tr.append(td);
+    } else {
+      tr.append('<td>Empty block</td>');
+    }
+
+    tr.append(
+      '<td>' +
+        (data.result[i].proposer == ''
+          ? '-'
+          : precise6(data.result[i].vrfProposerThreshold)) +
+        '</td>'
     );
-    td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
-      data.result[i].proposer +
-      "'>" +
-      data.result[i].proposer.substr(0, 15) +
-      '...</a></div>'
-    );
-    tr.append(td);
 
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].txCount + '</td>');
 
     var minted, burnt;
-    minted =
-      data.result[i].coins.minted;
-    burnt =
-      data.result[i].coins.burnt;
+    minted = data.result[i].coins.minted;
+    burnt = data.result[i].coins.burnt;
 
     if (frac(minted) > 99) {
       minted = precise2(minted) + '';

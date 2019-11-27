@@ -1,202 +1,220 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<%= require('html-loader?attrs=false!./partials/head.html') %>
+  <%= require('html-loader?attrs=false!./partials/head.html') %>
 
-<body>
-<%= require('html-loader?attrs=false!./partials/header.html') %>
+  <body>
+    <%= require('html-loader?attrs=false!./partials/header.html') %>
 
-<main class="main">
-  <div class="container">
+    <main class="main">
+      <div class="container">
+        <section class="section">
+          <h1 id="EpochId">Epoch</h1>
 
-    <section class="section">
-      <h1 id="EpochId">Epoch</h1>
+          <div class="button-group">
+            <a href="#" class="btn btn-secondary btn-small" id="prev-epoch-btn">
+              <i class="icon icon--thin_arrow_left"></i>
+              <span>Previous epoch</span>
+            </a>
 
-      <div class="button-group">
-        <a href="#" class="btn btn-secondary btn-small" id="prev-epoch-btn">
-          <i class="icon icon--thin_arrow_left"></i>
-          <span>Previous epoch</span>
-        </a>
+            <a class="btn btn-secondary btn-small" id="next-epoch-btn">
+              <span>Next epoch</span>
+              <i class="icon icon--thin_arrow_right"></i>
+            </a>
 
-        <a class="btn btn-secondary btn-small" id="next-epoch-btn">
-          <span>Next epoch</span>
-          <i class="icon icon--thin_arrow_right"></i>
-        </a>
+            <a class="btn btn-secondary btn-small" id="ValidationResult">
+              <i class="icon icon--report"></i>
+              <span>Validation results</span>
+            </a>
 
-        <a class="btn btn-secondary btn-small" id="ValidationResult">
-          <i class="icon icon--report"></i>
-          <span>Validation results</span>
-        </a>
-
-        <a type="button" class="btn btn-small btn-secondary" id="ValidationRewards">
-           <i class="icon icon--coins"></i>
-           <span>Rewards</span>
-        </a>
-
-      </div>
-    </section>
-
-
-
-      <section class="section section_details">
-        <h3>Details</h3>
-        <div class="card">
-          <div class="row">
-            <div class="col-12 col-sm-6">
-              <div class="section__group">
-                <div class="control-label">Epoch number:</div>
-                <div class="text_block text_block--break" id="DetailsEpochId">-</div>
-                <hr>
-                <div class="control-label">Validation block height:</div>
-                <div class="text_block" id="FirstBlock">-</div>
-              </div>
-            </div>
-            <div class="col-12 col-sm-6">
-              <div class="section__group">
-                <div class="control-label">Start:</div>
-                <div class="text_block" id="EpochStart">-</div>
-                <hr>
-                <div class="control-label" id="EpochEndLabel">End:</div>
-                <div class="text_block" id="EpochEnd">-</div>
-              </div>
-            </div>
+            <a
+              type="button"
+              class="btn btn-small btn-secondary"
+              id="ValidationRewards"
+            >
+              <i class="icon icon--coins"></i>
+              <span>Rewards</span>
+            </a>
           </div>
-        </div>
-      </section>
+        </section>
 
-
-
-
-    <section class="section section_details">
-      <h3>Epoch data</h3>
-      <div class="card">
-        <div class="info_block">
-          <div class="row">
-            <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent" id="EpochIdentities">-</h3>
-              <div class="control-label">Identities</div>
-            </div>
-            <div class="col-12 col-sm-3 bordered-col" >
-              <h3 class="info_block__accent" ><span id="EpochTransactionsCount">-</span> / <span id="EpochBlocksCount">-</span></h3>
-              <div class="control-label" data-toggle="tooltip" title="Total transactions / Blocks">Transactions / Blocks</div>
-            </div>
-            <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent" id="EpochInvitations">- / -</h3>
-              <div class="control-label" data-toggle="tooltip" title="Activated / Total issued">Invitations</div>
-            </div>
-            <div class="col-12 col-sm-3 bordered-col">
-              <h3 class="info_block__accent" id="EpochFlipsCreated">-</h3>
-              <div class="control-label">Flips created</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-
-
-    <section class="section section_tabs">
-      <div class="tabs" data-tabs="true">
-        <div class="section__header">
-          <div class="row align-items-center justify-content-between">
-            <div class="col">
-              <ul class="nav nav-tabs" role="tablist">
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    id="identites-tab"
-                    data-toggle="tab"
-                    href="#identities"
-                    role="tab"
-                    aria-controls="identities"
-                    aria-selected="true"
-                  >
-                    <h3>Identities</h3>
-                  </a>
-                </li>
-
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="invitations-tab"
-                    data-toggle="tab"
-                    href="#invitations"
-                    role="tab"
-                    aria-controls="invitations"
-                    aria-selected="false"
-                  >
-                    <h3>Invitations</h3>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="submissions-tab"
-                    data-toggle="tab"
-                    href="#submissions"
-                    role="tab"
-                    aria-controls="submissions"
-                    aria-selected="false"
-                  >
-                    <h3>Flips</h3>
-                  </a>
-                </li>
-
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="blocks-tab"
-                    data-toggle="tab"
-                    href="#blocks"
-                    role="tab"
-                    aria-controls="blocks"
-                    aria-selected="false"
-                  >
-                    <h3>Blocks</h3>
-                  </a>
-                </li>
-
-                <li class="nav-item">
-                  <a
-                    class="nav-link"
-                    id="transactions-tab"
-                    data-toggle="tab"
-                    href="#transactions"
-                    role="tab"
-                    aria-controls="transactions"
-                    aria-selected="false"
-                  >
-                    <h3>Transactions</h3>
-                  </a>
-                </li>
-
-
-              </ul>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="tab-content">
-          <div class="tab-pane active" id="identities" role="tabpanel" aria-labelledby="identities-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="IdentitiesTable">
-                    <tr>
-                      <th>Identity</th>
-                      <th style="width: 190px;">Status</th>
-                      <th style="width: 130px;" data-toggle="tooltip" title="Total validation score for all validations">Score</th>
-                    </tr>
-                  </table>
+        <section class="section section_details">
+          <h3>Details</h3>
+          <div class="card">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <div class="section__group">
+                  <div class="control-label">Epoch number:</div>
+                  <div class="text_block text_block--break" id="DetailsEpochId">
+                    -
+                  </div>
+                  <hr />
+                  <div class="control-label">Validation block height:</div>
+                  <div class="text_block" id="FirstBlock">-</div>
                 </div>
               </div>
+              <div class="col-12 col-sm-6">
+                <div class="section__group">
+                  <div class="control-label">Start:</div>
+                  <div class="text_block" id="EpochStart">-</div>
+                  <hr />
+                  <div class="control-label" id="EpochEndLabel">End:</div>
+                  <div class="text_block" id="EpochEnd">-</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
-<!--
+        <section class="section section_details">
+          <h3>Epoch data</h3>
+          <div class="card">
+            <div class="info_block">
+              <div class="row">
+                <div class="col-12 col-sm-3 bordered-col">
+                  <h3 class="info_block__accent" id="EpochIdentities">-</h3>
+                  <div class="control-label">Identities</div>
+                </div>
+                <div class="col-12 col-sm-3 bordered-col">
+                  <h3 class="info_block__accent">
+                    <span id="EpochTransactionsCount">-</span> /
+                    <span id="EpochBlocksCount">-</span>
+                  </h3>
+                  <div
+                    class="control-label"
+                    data-toggle="tooltip"
+                    title="Total transactions / Blocks"
+                  >
+                    Transactions / Blocks
+                  </div>
+                </div>
+                <div class="col-12 col-sm-3 bordered-col">
+                  <h3 class="info_block__accent" id="EpochInvitations">
+                    - / -
+                  </h3>
+                  <div
+                    class="control-label"
+                    data-toggle="tooltip"
+                    title="Activated / Total issued"
+                  >
+                    Invitations
+                  </div>
+                </div>
+                <div class="col-12 col-sm-3 bordered-col">
+                  <h3 class="info_block__accent" id="EpochFlipsCreated">-</h3>
+                  <div class="control-label">Flips created</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section_tabs">
+          <div class="tabs" data-tabs="true">
+            <div class="section__header">
+              <div class="row align-items-center justify-content-between">
+                <div class="col">
+                  <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                      <a
+                        class="nav-link active"
+                        id="identites-tab"
+                        data-toggle="tab"
+                        href="#identities"
+                        role="tab"
+                        aria-controls="identities"
+                        aria-selected="true"
+                      >
+                        <h3>Identities</h3>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="invitations-tab"
+                        data-toggle="tab"
+                        href="#invitations"
+                        role="tab"
+                        aria-controls="invitations"
+                        aria-selected="false"
+                      >
+                        <h3>Invitations</h3>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="submissions-tab"
+                        data-toggle="tab"
+                        href="#submissions"
+                        role="tab"
+                        aria-controls="submissions"
+                        aria-selected="false"
+                      >
+                        <h3>Flips</h3>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="blocks-tab"
+                        data-toggle="tab"
+                        href="#blocks"
+                        role="tab"
+                        aria-controls="blocks"
+                        aria-selected="false"
+                      >
+                        <h3>Blocks</h3>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a
+                        class="nav-link"
+                        id="transactions-tab"
+                        data-toggle="tab"
+                        href="#transactions"
+                        role="tab"
+                        aria-controls="transactions"
+                        aria-selected="false"
+                      >
+                        <h3>Transactions</h3>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-content">
+              <div
+                class="tab-pane active"
+                id="identities"
+                role="tabpanel"
+                aria-labelledby="identities-tab"
+              >
+                <div class="section__group">
+                  <div class="card">
+                    <div class="table-responsive">
+                      <table class="table" id="IdentitiesTable">
+                        <tr>
+                          <th>Identity</th>
+                          <th style="width: 190px;">Status</th>
+                          <th
+                            style="width: 130px;"
+                            data-toggle="tooltip"
+                            title="Total validation score for all validations"
+                          >
+                            Score
+                          </th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!--
               <div class="absolute-group">
                 <div class="pager">
                   <div class="row small-row align-items-center">
@@ -217,26 +235,30 @@
                 </div>
               </div>
 -->
-
-            </div>
-          </div>
-
-          <div class="tab-pane" id="submissions" role="tabpanel" aria-labelledby="submissions-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="FlipSubmissionsTable">
-                    <tr>
-                      <th>Flip</th>
-                      <th>Author</th>
-                      <th style="width: 160px;">Submission<br>time</th>
-                      <th style="width: 160px;">Size, bytes</th>
-                    </tr>
-                  </table>
                 </div>
               </div>
 
-<!--
+              <div
+                class="tab-pane"
+                id="submissions"
+                role="tabpanel"
+                aria-labelledby="submissions-tab"
+              >
+                <div class="section__group">
+                  <div class="card">
+                    <div class="table-responsive">
+                      <table class="table" id="FlipSubmissionsTable">
+                        <tr>
+                          <th>Flip</th>
+                          <th>Author</th>
+                          <th style="width: 160px;">Submission<br />time</th>
+                          <th style="width: 160px;">Size, bytes</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!--
               <div class="absolute-group">
                 <div class="pager">
                   <div class="row small-row align-items-center">
@@ -257,28 +279,42 @@
                 </div>
               </div>
 -->
-
-            </div>
-          </div>
-
-
-
-          <div class="tab-pane" id="invitations" role="tabpanel" aria-labelledby="invitations-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="InvitationsTable">
-                    <tr>
-                      <th style="width: 160px;" data-toggle="tooltip" title="Invitation transaction">Invitation</th>
-                      <th>Issuer</th>
-                      <th style="width: 160px;" data-toggle="tooltip" title="Activation transaction">Activation</th>
-                      <th>Invited identity</th>
-                    </tr>
-                  </table>
                 </div>
               </div>
 
-<!--
+              <div
+                class="tab-pane"
+                id="invitations"
+                role="tabpanel"
+                aria-labelledby="invitations-tab"
+              >
+                <div class="section__group">
+                  <div class="card">
+                    <div class="table-responsive">
+                      <table class="table" id="InvitationsTable">
+                        <tr>
+                          <th
+                            style="width: 160px;"
+                            data-toggle="tooltip"
+                            title="Invitation transaction"
+                          >
+                            Invitation
+                          </th>
+                          <th>Issuer</th>
+                          <th
+                            style="width: 160px;"
+                            data-toggle="tooltip"
+                            title="Activation transaction"
+                          >
+                            Activation
+                          </th>
+                          <th>Invited identity</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!--
               <div class="absolute-group">
                 <div class="pager">
                   <div class="row small-row align-items-center">
@@ -299,30 +335,38 @@
                 </div>
               </div>
 -->
-
-            </div>
-          </div>
-
-
-
-          <div class="tab-pane" id="blocks" role="tabpanel" aria-labelledby="blocks-tab">
-            <div class="section__group">
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="BlocksTable">
-                    <tr>
-                      <th>Block</th>
-                      <th>Block issuer</th>
-                      <th>Created</th>
-                      <th>Transactions</th>
-                      <th>Minted, DNA</th>
-                      <th>Burnt, DNA</th>
-                    </tr>
-                  </table>
                 </div>
               </div>
 
-<!--
+              <div
+                class="tab-pane"
+                id="blocks"
+                role="tabpanel"
+                aria-labelledby="blocks-tab"
+              >
+                <div class="section__group">
+                  <div class="card">
+                    <div class="table-responsive">
+                      <table class="table" id="BlocksTable">
+                        <tr>
+                          <th>Block</th>
+                          <th>Block issuer</th>
+                          <th
+                            data-toggle="tooltip"
+                            title="Mininum score for the block proposer selection"
+                          >
+                            Issuer<br />threshold
+                          </th>
+                          <th>Created</th>
+                          <th>Transactions</th>
+                          <th>Minted, DNA</th>
+                          <th>Burnt, DNA</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!--
               <div class="absolute-group">
                 <div class="pager">
                   <div class="row small-row align-items-center">
@@ -343,15 +387,17 @@
                 </div>
               </div>
 -->
+                </div>
+              </div>
 
-            </div>
-          </div>
-
-
-
-          <div class="tab-pane" id="transactions" role="tabpanel" aria-labelledby="transactions-tab">
-            <div class="section__group">
-<!--
+              <div
+                class="tab-pane"
+                id="transactions"
+                role="tabpanel"
+                aria-labelledby="transactions-tab"
+              >
+                <div class="section__group">
+                  <!--
               <div class="card">
                 <div class="transaction_block">
                   <div class="transaction_block__header">
@@ -408,23 +454,22 @@
                 </div>
               </div>
 -->
-              <div class="card">
-                <div class="table-responsive">
-                  <table class="table" id="TransactionsTable">
-                    <tr>
-                      <th>Transaction</th>
-                      <th>From</th>
-                      <th>To</th>
-                      <th>Amount</th>
-                      <th style="width: 100px;">Timestamp</th>
-                      <th style="width: 100px;">Type</th>
-                    </tr>
-                  </table>
-                </div>
-              </div>
+                  <div class="card">
+                    <div class="table-responsive">
+                      <table class="table" id="TransactionsTable">
+                        <tr>
+                          <th>Transaction</th>
+                          <th>From</th>
+                          <th>To</th>
+                          <th>Amount</th>
+                          <th style="width: 100px;">Timestamp</th>
+                          <th style="width: 100px;">Type</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
 
-
-<!--
+                  <!--
               <div class="absolute-group">
                 <div class="pager">
                   <div class="row small-row align-items-center">
@@ -446,18 +491,14 @@
                 </div>
               </div>
 -->
-
+                </div>
+              </div>
             </div>
           </div>
-
-        </div>
+        </section>
       </div>
-    </section>
-  </div>
-</main>
+    </main>
 
-                 
-<%= require('html-loader?attrs=false!./partials/scripts.html') %>
-</body>
+    <%= require('html-loader?attrs=false!./partials/scripts.html') %>
+  </body>
 </html>
-

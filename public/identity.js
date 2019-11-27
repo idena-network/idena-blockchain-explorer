@@ -215,15 +215,22 @@ function updateAddressFlipsData(data) {
     tr.append(td);
 
     var Keywords = '-';
+    var icon = '';
     if (data.result[i].words != null) {
       Keywords =
         data.result[i].words.word1.name + '/' + data.result[i].words.word2.name;
+
+      if (data.result[i].wrongWords) {
+        icon = '<i class="icon icon--micro_fail"></i>';
+      } else {
+        icon = '<i class="icon icon--micro_success"></i>';
+      }
     }
-    tr.append('<td>' + Keywords + '</td>');
+    tr.append('<td>' + icon + '<span>' + Keywords + '</span></td>');
 
     var status = data.result[i].status == '' ? '-' : data.result[i].status;
     tr.append('<td>' + flipQualificationStatusFmt(status) + '</td>');
-    tr.append('<td>' + data.result[i].timestamp + '</td>');
+    tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].size + '</td>');
 
     table.append(tr);
