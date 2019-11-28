@@ -179,8 +179,18 @@ function updateFlipAnswersShortData(data) {
     updateIdentityStatus(data.result[i].address, td);
     tr.append(td);
 
-    tr.append('<td>' + data.result[i].respAnswer + '</td>');
-    //tr.append("<td>" + data.result[i].flipAnswer + "</td>");
+    var icon = '';
+    if (data.result[i].flipAnswer != 'None') {
+      if (data.result[i].respAnswer == data.result[i].flipAnswer) {
+        icon = '<i class="icon icon--micro_success"></i>';
+      } else {
+        icon = '<i class="icon icon--micro_fail"></i>';
+      }
+    }
+
+    tr.append(
+      '<td>' + icon + '<span>' + data.result[i].respAnswer + '<span></td>'
+    );
     table.append(tr);
   }
 }
@@ -220,26 +230,37 @@ function updateFlipAnswersLongData(data) {
     updateIdentityStatus(data.result[i].address, td);
     tr.append(td);
 
-    var answerText = '';
+    var icon = '';
+    if (data.result[i].flipAnswer != 'None') {
+      if (data.result[i].respAnswer == data.result[i].flipAnswer) {
+        icon = '<i class="icon icon--micro_success"></i>';
+      } else {
+        icon = '<i class="icon icon--micro_fail"></i>';
+      }
+    }
+
     if (data.result[i].respAnswer == 'Left') {
       leftAnswer++;
-      tr.append('<td>' + data.result[i].respAnswer + '</td>');
     }
     if (data.result[i].respAnswer == 'Right') {
       rightAnswer++;
-      tr.append('<td>' + data.result[i].respAnswer + '</td>');
     }
-
-    if (data.result[i].respAnswer == 'Inappropriate') {
-      //inappropriateAnswer++;
-      tr.append('<td>' + data.result[i].respAnswer + '</td>');
-    }
-
     if (data.result[i].respAnswer == 'None') {
       noneAnswer++;
-      tr.append('<td>No answer</td>');
     }
-    //tr.append("<td>" + data.result[i].flipAnswer + "</td>");
+
+    var answerText =
+      data.result[i].respAnswer == 'None'
+        ? 'No answer'
+        : data.result[i].respAnswer;
+    tr.append('<td>' + icon + '<span>' + answerText + '<span></td>');
+
+    if (data.result[i].respWrongWords) {
+      tr.append('<td>Irrelevant</td>');
+    } else {
+      tr.append('<td>Both relevant</td>');
+    }
+
     table.append(tr);
   }
 

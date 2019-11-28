@@ -66,7 +66,8 @@ function getEpochData(epoch) {
     });
 
   if (prevEpoch >= 0) {
-    u = url + 'Epoch/' + prevEpoch + '/Identities/Count';
+    u =
+      url + 'Epoch/' + prevEpoch + '/Identities/Count?states[]=Newbie,Verified';
     $.ajax({
       url: u,
       type: 'GET',
@@ -484,7 +485,7 @@ function updateZeroEpochIdentitiesData(data) {
 }
 
 function getEpochIdentitiesData(total, loaded, params) {
-  const step = 300;
+  const step = 30;
 
   if (loaded > total) {
     return;
@@ -497,7 +498,8 @@ function getEpochIdentitiesData(total, loaded, params) {
     '/Identities?skip=' +
     loaded +
     '&limit=' +
-    step;
+    step +
+    '&states[]=Newbie,Verified';
   $.ajax({
     url: u,
     type: 'GET',
@@ -518,7 +520,13 @@ function updateEpochIdentitiesData(data, total, loaded, params) {
 
   var valid_identities_table = $('#IdentitiesTable');
 
-  //addShowMoreTableButton(  valid_identities_table, getEpochIdentitiesData, total, loaded, params);
+  addShowMoreTableButton(
+    valid_identities_table,
+    getEpochIdentitiesData,
+    total,
+    loaded,
+    params
+  );
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
