@@ -255,12 +255,15 @@ function updateFlipAnswersLongData(data) {
         : data.result[i].respAnswer;
     tr.append('<td>' + icon + '<span>' + answerText + '<span></td>');
 
-    if (data.result[i].respWrongWords) {
-      tr.append('<td>Irrelevant</td>');
+    if (data.result[i].respAnswer == 'None') {
+      tr.append('<td>-</td>');
     } else {
-      tr.append('<td>Both relevant</td>');
+      if (data.result[i].respWrongWords) {
+        tr.append('<td>Irrelevant</td>');
+      } else {
+        tr.append('<td>Both relevant</td>');
+      }
     }
-
     table.append(tr);
   }
 

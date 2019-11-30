@@ -39,7 +39,8 @@ function updateBlockData(data) {
   $('#BlockHeight')[0].textContent = data.result.height;
   $('#BlockTxCount')[0].textContent = data.result.txCount;
   $('#BlockValidators')[0].textContent = data.result.validatorsCount;
-  $('#VRFthreshold')[0].textContent = data.result.vrfProposerThreshold;
+  $('#VRFthreshold')[0].textContent =
+    data.result.proposerVrfScore + ' / ' + data.result.vrfProposerThreshold;
 
   if (data.result.proposer) {
     $('#BlockProposer span')[0].textContent =

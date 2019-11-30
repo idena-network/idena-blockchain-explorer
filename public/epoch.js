@@ -795,6 +795,14 @@ function updateEpochBlocksData(data, total, loaded, params) {
       '<td>' +
         (data.result[i].proposer == ''
           ? '-'
+          : precise6(data.result[i].proposerVrfScore)) +
+        '</td>'
+    );
+
+    tr.append(
+      '<td>' +
+        (data.result[i].proposer == ''
+          ? '-'
           : precise6(data.result[i].vrfProposerThreshold)) +
         '</td>'
     );
