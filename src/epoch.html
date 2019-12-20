@@ -124,7 +124,7 @@
                         aria-controls="identities"
                         aria-selected="true"
                       >
-                        <h3>Accounts</h3>
+                        <h3>Identities</h3>
                       </a>
                     </li>
 
@@ -308,7 +308,15 @@
                           >
                             Activation
                           </th>
-                          <th>Invited account</th>
+                          <th>Invited identity</th>
+
+                          <th
+                            style="width: 160px;"
+                            data-toggle="tooltip"
+                            title="Validation result of the invited person"
+                          >
+                            Validation
+                          </th>
                         </tr>
                       </table>
                     </div>
@@ -363,12 +371,18 @@
                             data-toggle="tooltip"
                             title="Mininum score for the block proposer selection"
                           >
-                            Issuer<br />threshold
+                            Proposing<br />threshold
                           </th>
                           <th>Created</th>
-                          <th>Transactions</th>
-                          <th>Minted,<br/>DNA</th>
-                          <th>Burnt,<br/>DNA</th>
+                          <th>Size,<br />bytes</th>
+                          <th
+                            data-toggle="tooltip"
+                            title="Number of transactions"
+                          >
+                            Txs
+                          </th>
+                          <th>Minted,<br />DNA</th>
+                          <th>Burnt,<br />DNA</th>
                         </tr>
                       </table>
                     </div>

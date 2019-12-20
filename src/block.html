@@ -22,28 +22,61 @@
           <div class="row">
             <div class="col-12 col-sm-6">
               <div class="section__group">
+
                 <div class="control-label">Height:</div>
                 <div class="text_block" id="BlockHeight">-</div>
                 <hr>
+
+
+                <div class="control-label">Epoch:</div>
+                <div class="text_block"><a href="" id="BlockEpoch">-</a></div>
+                <hr>
+
                 <div class="control-label">Issuer:</div>
                 <div class="text_block"><a id="BlockProposer"><img class="user-pic" width="32" src=""></img><span>-<span></a></div>
+
                 <hr>
-                <div class="control-label" data-toggle="tooltip" title="Verifiable random score of the issuer / Mininum threshold for block proposer selection">Issuer score / threshold:</div>
-                <div class="text_block" id="VRFthreshold">-</div>
- 
+                <div class="control-label">Trasactions:</div>
+                <div class="text_block" id="BlockTxCount">-</div>
+
+                <hr>
+                <div class="control-label">Block size, bytes:</div>
+                <div class="text_block" id="BlockFullSize">-</div>
+
+                <hr>
+                <div class="control-label">Transacions size, bytes:</div>
+                <div class="text_block" id="BlockTxsSize">-</div>
+
               </div>
             </div>
             <div class="col-12 col-sm-6">
               <div class="section__group">
+
+
                 <div class="control-label">Created:</div>
                 <div class="text_block" id="BlockCreated">-</div>
                 <hr>
-                <div class="control-label">Validators:</div>
+                <div class="control-label" data-toggle="tooltip" title="Committee size validating the block">Validators:</div>
                 <div class="text_block" id="BlockValidators">-</div>
+
                 <hr>
-                <div class="control-label">Trasactions:</div>
-                <div class="text_block" id="BlockTxCount">-</div>
+                <div class="control-label" data-toggle="tooltip" title="Verifiable random score of the issuer">Issuer score:</div>
+                <div class="text_block" id="VRFscore">-</div>
+
+                <hr>
+                <div class="control-label" data-toggle="tooltip" title="Mininum threshold for the block proposer selection">Proposer selection threshold:</div>
+                <div class="text_block" id="VRFthreshold">-</div>
+
+                <hr>
+                <div class="control-label" data-toggle="tooltip" title="DNA per byte">Fee rate:</div>
+                <div class="text_block" id="FeeRate">-</div>
+
+                <hr>
+                <div class="control-label"></div>
+                <div class="text_block"></div>
+
               </div>
+
             </div>
           </div>
         </div>

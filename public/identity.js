@@ -478,7 +478,7 @@ function updateIdentityInvitesData(data) {
       "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
         data.result[i].hash +
         "'>" +
-        data.result[i].hash.substr(0, 14) +
+        data.result[i].hash.substr(0, 8) +
         '...</a></div>'
     );
     tr.append(td);
@@ -492,7 +492,7 @@ function updateIdentityInvitesData(data) {
         "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
           activation +
           "'>" +
-          data.result[i].hash.substr(0, 14) +
+          data.result[i].hash.substr(0, 10) +
           '...</a></div>'
       );
       tr.append(td);
@@ -509,7 +509,7 @@ function updateIdentityInvitesData(data) {
         "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
           data.result[i].activationAuthor +
           "'>" +
-          data.result[i].activationAuthor.substr(0, 14) +
+          data.result[i].activationAuthor.substr(0, 10) +
           '...</a></div>'
       );
       tr.append(td);
@@ -518,6 +518,14 @@ function updateIdentityInvitesData(data) {
       tr.append('<td>-</td>');
       tr.append('<td>-</td>');
     }
+
+    var validationResult = '-';
+    if (data.result[i].state != '') {
+      validationResult =
+        data.result[i].state == 'Undefined' ? 'Failed' : 'Successful';
+    }
+    tr.append('<td>' + validationResult + '</td>');
+
     table.append(tr);
   }
 }

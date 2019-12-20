@@ -181,7 +181,7 @@ function getEpochData(epoch) {
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      updateEpochInvitationsData(data);
+      updateEpochInvitationsData(data, epoch);
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -272,8 +272,7 @@ function updateEpochFlipSubmissionsData(data, total, loaded, params) {
         '<div class="user-pic"><img src="' +
           src +
           '" alt="pic"width="44" height="44"></div>'
-      );
-      //URL.revokeObjectURL(src);
+      );      
     } else {
       td.append(
         '<div class="user-pic"><img src="./images/flip_icn.png' +
@@ -331,7 +330,7 @@ function updateEpochCountData(data, epoch) {
   }
 }
 
-function updateEpochInvitationsData(data) {
+function updateEpochInvitationsData(data, currEpoch) {
   var table = $('#InvitationsTable');
   table
     .find('td')
@@ -361,12 +360,12 @@ function updateEpochInvitationsData(data) {
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
         data.result[i].author +
-        "'>" +
+        "#invites'>" +
         data.result[i].author.substr(0, 15) +
         '...</a></div>'
     );
     tr.append(td);
-    //        tr.append("<td>" + data.result[i].timestamp + "</td>");
+    //tr.append("<td>" + data.result[i].timestamp + "</td>");
 
     var activation = data.result[i].activationHash;
     if (activation != '') {
@@ -398,6 +397,14 @@ function updateEpochInvitationsData(data) {
       tr.append('<td>Not activated</td>');
       tr.append('<td>-</td>');
     }
+
+    var validationResult = '-';
+
+    if (data.result[i].state != '') {
+      validationResult =
+        data.result[i].state == 'Undefined' ? 'Failed' : 'Successful';
+    }
+    tr.append('<td>' + validationResult + '</td>');
     table.append(tr);
   }
 }
@@ -798,17 +805,14 @@ function updateEpochBlocksData(data, total, loaded, params) {
           : precise6(data.result[i].proposerVrfScore)) +
         '</td>'
     );
-
+    tr.append('<td>' + precise6(data.result[i].vrfProposerThreshold) + '</td>');
+    tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
+    tr.append('<td>' + data.result[i].fullSize + '</td>');
     tr.append(
       '<td>' +
-        (data.result[i].proposer == ''
-          ? '-'
-          : precise6(data.result[i].vrfProposerThreshold)) +
+        (data.result[i].txCount == 0 ? '-' : data.result[i].txCount) +
         '</td>'
     );
-
-    tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
-    tr.append('<td>' + data.result[i].txCount + '</td>');
 
     var minted, burnt;
     minted = data.result[i].coins.minted;

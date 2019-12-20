@@ -200,8 +200,13 @@ function updateRewardsData(data, total, loaded, params) {
           data.result[i].rewards[j].balance * 1 +
           data.result[i].rewards[j].stake * 1;
       }
-      if (data.result[i].rewards[j].type == 'Invitations') {
+      if (
+        data.result[i].rewards[j].type == 'Invitations' ||
+        data.result[i].rewards[j].type == 'Invitations2' ||
+        data.result[i].rewards[j].type == 'Invitations3'
+      ) {
         InvitationsReward =
+          InvitationsReward +
           data.result[i].rewards[j].balance * 1 +
           data.result[i].rewards[j].stake * 1;
       }

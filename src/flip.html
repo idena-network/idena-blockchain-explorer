@@ -13,6 +13,18 @@
         <h1 class="section_main__title">Flip</h1>
         <h3 class="section_main__subtitle"><span id="FlipId">...</span></h3>
       </div>
+
+      <div class="button-group">
+        <a href="#" class="btn btn-secondary btn-small" id="prev-flip-btn">
+          <i class="icon icon--thin_arrow_left"></i>
+          <span>Previous flip</span>
+        </a>
+
+        <a class="btn btn-secondary btn-small" id="next-flip-btn">
+          <span>Next flip</span>
+          <i class="icon icon--thin_arrow_right"></i>
+        </a>
+      </div>
     </section>
 
 
@@ -74,8 +86,10 @@
                 <div class="control-label">Author:</div>
                 <div class="text_block"><a href="" id="FlipAuthor"><img class="user-pic" width="32" src=""></img><span>-<span></a></div>
                 <hr>
-                <div class="control-label">Created:</div>
-                <div class="text_block" id="FlipCreated">-</div>
+
+                <div class="control-label">Epoch:</div>
+                <div class="text_block"><a href="" id="FlipEpoch">-</a></div>
+
                 <hr>
                 <div class="control-label">Size:</div>
                 <div class="text_block" id="FlipSize">-</div>
@@ -85,8 +99,8 @@
             <div class="col-12 col-sm-6">
               <div class="section__group">
 
-                <div class="control-label">Epoch:</div>
-                <div class="text_block"><a href="" id="FlipEpoch">-</a></div>
+                <div class="control-label">Created:</div>
+                <div class="text_block" id="FlipCreated">-</div>
                 <hr>
                 <div class="control-label">Block:</div>
                 <div class="text_block"><a href="" id="FlipBlock">-</a></div>
@@ -184,8 +198,8 @@
                 <div class="table-responsive">
                   <table class="table" id="FlipCommitteeTable">
                     <tr>
-                      <th>Account</th>
-                      <th style="width: 190px;" data-toggle="tooltip" title="Account status before the validation">Status</th>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Identity status before the validation">Status</th>
                       <th style="width: 140px;" data-toggle="tooltip" title="Answer given on qualification session">Answer</th>
                       <th style="width: 140px;" data-toggle="tooltip" title="Relevance to the keywords vote">Keywords<br/>relevance</th>
                     </tr>
@@ -219,7 +233,7 @@
                     aria-controls="validation"
                     aria-selected="true"
                   >
-                    <h3>Challenged accounts</h3>
+                    <h3>Challenged identities</h3>
                   </a>
                 </li>
               </ul>
@@ -234,8 +248,8 @@
                 <div class="table-responsive">
                   <table class="table" id="FlipIdentitiesTable">
                     <tr>
-                      <th>Account</th>
-                      <th style="width: 190px;" data-toggle="tooltip" title="Account status before the validation">Status</th>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Identity status before the validation">Status</th>
                       <th style="width: 140px;" data-toggle="tooltip" title="Answer given on validation session">Answer</th>
                     </tr>
                   </table>

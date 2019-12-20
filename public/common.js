@@ -7,6 +7,13 @@ function frac(n) {
 
 function precise2(x) {
   return Math.round(x * 100) / 100;
+  /* 
+  var v = Math.round(x * 100) / 100;
+  const s = String(v).split('.')[1] || 0;
+  if (s == '') return v;
+  if (s.length == 1) return v + '0';
+  if (s.length == 0) return v + '.00';
+ */
 }
 
 function precise6(x) {
@@ -34,6 +41,14 @@ function flipQualificationStatusFmt(status) {
 function identityStatusFmt(s) {
   if (!s) return '';
   if (s == 'Undefined') return 'Not validated';
+  return s;
+}
+
+function rewardTypeFmt(s) {
+  if (!s) return '';
+  if (s == 'Invitations') return 'Invitation (1st validation)';
+  if (s == 'Invitations2') return 'Invitaion (2nd validation)';
+  if (s == 'Invitations3') return 'Invitaion (3rd validation)';
   return s;
 }
 

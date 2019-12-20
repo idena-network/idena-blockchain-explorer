@@ -35,12 +35,22 @@ function updateBlockData(data) {
     return;
   }
 
+  $('#BlockEpoch')[0].textContent = epochFmt(data.result.epoch);
+  $('#BlockEpoch')[0].href = './epoch?epoch=' + data.result.epoch + '#blocks';
+
   $('#BlockId')[0].textContent = data.result.hash;
   $('#BlockHeight')[0].textContent = data.result.height;
   $('#BlockTxCount')[0].textContent = data.result.txCount;
+  $('#BlockFullSize')[0].textContent = data.result.fullSize;
+  $('#BlockTxsSize')[0].textContent = data.result.bodySize;
+  $('#FeeRate')[0].textContent = data.result.feeRate;
+
   $('#BlockValidators')[0].textContent = data.result.validatorsCount;
-  $('#VRFthreshold')[0].textContent =
-    data.result.proposerVrfScore + ' / ' + data.result.vrfProposerThreshold;
+  $('#VRFscore')[0].textContent = data.result.proposerVrfScore
+    ? data.result.proposerVrfScore
+    : '-';
+
+  $('#VRFthreshold')[0].textContent = data.result.vrfProposerThreshold;
 
   if (data.result.proposer) {
     $('#BlockProposer span')[0].textContent =

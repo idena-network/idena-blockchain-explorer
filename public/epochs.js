@@ -95,7 +95,11 @@ function updateEpochsData(data) {
     return;
   }
 
-  var lastVerifiedElement, lastValidationDateElement, lastRewardsElement;
+  var lastVerifiedElement,
+    lastValidationDateElement,
+    lastRewardsElement,
+    lastTotalMinedElement;
+  var lastMined = 0;
   for (var i = 0; i < data.result.length - 1; i++) {
     if (i == 1) {
       $('#ValidatedTotal')[0].textContent = data.result[i].validatedCount;
@@ -115,8 +119,11 @@ function updateEpochsData(data) {
       lastValidationDateElement.find('a')[0].textContent = dateFmt(
         data.result[i].validationTime
       );
-      lastRewardsElement.find('a')[0].textContent = precise2(
-        data.result[i].rewards.total
+      lastRewards = data.result[i].rewards.total;
+      lastRewardsElement.find('a')[0].textContent = precise2(lastRewards);
+
+      lastTotalMinedElement[0].textContent = precise2(
+        lastRewards * 1 + lastMined * 1
       );
     }
 
@@ -133,11 +140,12 @@ function updateEpochsData(data) {
 
     var minted, burnt;
 
-    minted = data.result[i].coins.minted;
+    minted = data.result[i].coins.minted - data.result[i].rewards.total;
+    lastMined = minted;
     burnt = data.result[i].coins.burnt;
 
     if (frac(minted) > 99) {
-      minted = precise2(minted) + '';
+      minted = precise2(minted);
     }
     if (frac(burnt) > 99) {
       burnt = precise2(burnt) + '';
@@ -146,8 +154,10 @@ function updateEpochsData(data) {
     lastRewardsElement = $(
       "<td><a href='./rewards?epoch=" + data.result[i].epoch + "'></a></td>"
     );
-//TODO:    tr.append(lastRewardsElement);
-    tr.append("<td align='right'>" + dnaFmt(minted, '') + '</td>');
+    lastTotalMinedElement = $('<td></td>');
+    tr.append(lastRewardsElement);
+    tr.append(lastTotalMinedElement);
+    //tr.append("<td align='right'>" + dnaFmt(minted, '') + '</td>');
     tr.append("<td align='right'>" + dnaFmt(burnt, '') + '</td>');
 
     table.append(tr);

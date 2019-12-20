@@ -60,6 +60,37 @@ function getFlipData(flip) {
       console.error(u + ', error:' + error);
     }
   });
+
+  u = url + 'Flip/' + flip + '/Epoch/AdjacentFlips';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateAdjacentFlips(data);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateAdjacentFlips(data) {
+  if (data.result == null) return;
+
+  const prevFlip = data.result.prev && data.result.prev.value;
+  const nextFlip = data.result.next && data.result.next.value;
+
+  if (prevFlip) {
+    $('#prev-flip-btn')[0].href = path + '?flip=' + prevFlip;
+  } else {
+    $('#prev-flip-btn')[0].setAttribute('disabled', '');
+  }
+  if (nextFlip) {
+    $('#next-flip-btn')[0].href = path + '?flip=' + nextFlip;
+  } else {
+    $('#next-flip-btn')[0].setAttribute('disabled', '');
+  }
 }
 
 function updateIdentityStatus(identity, element) {
@@ -101,11 +132,13 @@ function updateFlipData(data) {
     $('#FlipAnswer')[0].textContent = data.result.answer;
   }
 
+  /*
   if (data.result.answer == 'Left') {
     $('#FlipImgLeft').addClass('active');
   } else if (data.result.answer == 'Right') {
     $('#FlipImgRight').addClass('active');
   }
+*/
 
   $('#FlipAuthor span')[0].textContent =
     data.result.author.substr(0, 30) + '...';

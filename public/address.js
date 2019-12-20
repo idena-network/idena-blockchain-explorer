@@ -250,7 +250,9 @@ function updateAddressRewardsData(data) {
       );
       tr.append(td);
 
-      tr.append('<td>' + data.result[i].rewards[j].type + '</td>');
+      tr.append(
+        '<td>' + rewardTypeFmt(data.result[i].rewards[j].type) + '</td>'
+      );
       tr.append(
         "<td align='right'>" +
           dnaFmt(data.result[i].rewards[j].balance, '') +
