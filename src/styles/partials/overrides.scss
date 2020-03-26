@@ -517,6 +517,10 @@ p {
     padding: rem(15px 30px 15px) 0;
   }
 
+  td .flags {
+    display: inline-flex;
+  }
+
   .user-pic {
     margin-top: rem(-10px);
     margin-bottom: rem(-10px);

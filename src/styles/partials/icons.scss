@@ -84,9 +84,16 @@
 .icon--info:before {
   content: '\e915';
 }
+
 .icon--laptop:before {
   content: '\e916';
 }
+
+.icon--laptop-red:before {
+  content: '\e916';
+  color: red;
+}
+
 .icon--exit:before {
   content: '\e917';
 }

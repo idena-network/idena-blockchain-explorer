@@ -64,13 +64,46 @@ function getValidationData(epoch) {
     }
   });
 
-  u = url + 'Epoch/' + prevEpoch + '/Identities?skip=0&limit=200';
+  u = url + 'Epoch/' + prevEpoch + '/Identities/Count?states[]=Undefined';
   $.ajax({
     url: u,
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      updateValidationIdentitiesData(data, prevEpoch);
+      getFailedValidationIdentitiesData(data.result, 0, { prevEpoch });
+      $('#FailedValidationIdentities')[0].textContent = data.result;
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+
+  u =
+    url +
+    'Epoch/' +
+    prevEpoch +
+    '/Identities/Count?states[]=Newbie,Verified,Human';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      getValidationIdentitiesData(data.result, 0, { prevEpoch });
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+
+  u =
+    url + 'Epoch/' + prevEpoch + '/Identities/Count?states[]=Suspended,Zombie';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      getSuspendedValidationIdentitiesData(data.result, 0, { prevEpoch });
+      $('#MissedValidationIdentities')[0].textContent = data.result;
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -129,24 +162,176 @@ function updateValidationEpochData(data) {
   $('#ValidationDate')[0].textContent = dateFmt(data.result.validationTime);
 }
 
-function updateValidationIdentitiesData(data, epoch) {
-  var nextEpoch = epoch * 1 + 1;
-  var valid_identities_table = $('#IdentitiesTable');
-  var failed_identities_table = $('#FailedIdentities');
-  valid_identities_table
-    .find('td')
-    .parent()
-    .remove();
-  failed_identities_table
-    .find('td')
-    .parent()
-    .remove();
+function getValidationIdentitiesData(total, loaded, params) {
+  const step = loaded == 0 ? 30 : 100;
+
+  if (loaded > total) {
+    return;
+  }
+  u =
+    url +
+    'Epoch/' +
+    params.prevEpoch +
+    '/Identities?skip=' +
+    loaded +
+    '&limit=' +
+    step +
+    '&states[]=Newbie,Verified,Human';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateValidationIdentitiesData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateValidationIdentitiesData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
 
-  var FailedValidationCount = 0;
-  var MissedValidationCount = 0;
+  var valid_identities_table = $('#IdentitiesTable');
+
+  addShowMoreTableButton(
+    valid_identities_table,
+    getValidationIdentitiesData,
+    total,
+    loaded,
+    params
+  );
+
+  var nextEpoch = params.prevEpoch * 1 + 1;
+
+  //var FailedValidationCount = 0;
+  //var MissedValidationCount = 0;
+
+  for (var i = 0; i < data.result.length; i++) {
+    var tr = $('<tr/>');
+    var td = $('<td/>');
+    td.append(
+      '<div class="user-pic"><img src="https://robohash.org/' +
+        data.result[i].address.toLowerCase() +
+        '" alt="pic"width="32"></div>'
+    );
+    td.append(
+      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+        data.result[i].address +
+        "'>" +
+        data.result[i].address.substr(0, 15) +
+        '...</a></div>'
+    );
+    tr.append(td);
+
+    var longScoreTxt = '-',
+      shortScoreTxt = '-',
+      totalScoreTxt = '-';
+    if (data.result[i].longAnswers.flipsCount > 0)
+      longScoreTxt =
+        data.result[i].longAnswers.point +
+        ' out of ' +
+        data.result[i].longAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].longAnswers.point /
+            data.result[i].longAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+    if (data.result[i].shortAnswers.flipsCount > 0)
+      shortScoreTxt =
+        data.result[i].shortAnswers.point +
+        ' out of ' +
+        data.result[i].shortAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].shortAnswers.point /
+            data.result[i].shortAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+    if (data.result[i].totalShortAnswers.flipsCount > 0)
+      totalScoreTxt =
+        data.result[i].totalShortAnswers.point +
+        ' out of ' +
+        data.result[i].totalShortAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].totalShortAnswers.point /
+            data.result[i].totalShortAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+
+    tr.append('<td>' + data.result[i].prevState + '</td>');
+    tr.append('<td>' + data.result[i].state + '</td>');
+    tr.append('<td>' + shortScoreTxt + '</td>');
+
+    if (data.result[i].prevState == 'Candidate')
+      tr.append('<td>' + longScoreTxt + '</td>');
+    else tr.append('<td>' + longScoreTxt + '</td>');
+
+    tr.append(
+      "<td><a href='./answers?epoch=" +
+        nextEpoch +
+        '&identity=' +
+        data.result[i].address +
+        "'><i class='icon icon--thin_arrow_right'></a></td>"
+    );
+    valid_identities_table.append(tr);
+  }
+}
+
+function getFailedValidationIdentitiesData(total, loaded, params) {
+  const step = loaded == 0 ? 30 : 100;
+  if (loaded > total) {
+    return;
+  }
+  u =
+    url +
+    'Epoch/' +
+    params.prevEpoch +
+    '/Identities?skip=' +
+    loaded +
+    '&limit=' +
+    step +
+    '&states[]=Undefined'; //,Suspended,Zombie
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateFailedValidationIdentitiesData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateFailedValidationIdentitiesData(data, total, loaded, params) {
+  if (data.result == null) {
+    return;
+  }
+
+  var failed_identities_table = $('#FailedIdentities');
+
+  addShowMoreTableButton(
+    failed_identities_table,
+    getFailedValidationIdentitiesData,
+    total,
+    loaded,
+    params
+  );
+
+  var nextEpoch = params.prevEpoch * 1 + 1;
+
+  //var FailedValidationCount = 0;
+  //var MissedValidationCount = 0;
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
@@ -225,7 +410,177 @@ function updateValidationIdentitiesData(data, epoch) {
           data.result[i].address +
           "'><i class='icon icon--thin_arrow_right'></a></td>"
       );
-      valid_identities_table.append(tr);
+      //valid_identities_table.append(tr);
+    } else {
+      tr.append('<td>' + data.result[i].prevState + '</td>');
+      //todo authorScore:        tr.append("<td>" + precise2(data.result[i].authorScore*100) + "%</td>");
+
+      if (data.result[i].prevState == 'Invite') {
+        tr.append('<td>-</td>');
+        tr.append('<td>-</td>');
+        tr.append('<td>' + 'Not activated' + '</td>');
+      } else {
+        tr.append('<td>' + shortScoreTxt + '</td>');
+        tr.append('<td>' + longScoreTxt + '</td>');
+
+        if (data.result[i].missed) {
+          if (data.result[i].shortAnswers.flipsCount > 0) {
+            tr.append('<td>Late submission</td>');
+          } else {
+            if (data.result[i].requiredFlips > data.result[i].madeFlips)
+              tr.append('<td>Not allowed</td>');
+            else tr.append('<td>Missed validation</td>');
+          }
+          //MissedValidationCount++;
+        } else {
+          tr.append('<td>Wrong answers</td>');
+          //FailedValidationCount++;
+        }
+      }
+      tr.append(
+        "<td><a href='./answers?epoch=" +
+          nextEpoch +
+          '&identity=' +
+          data.result[i].address +
+          "'><i class='icon icon--thin_arrow_right'></a></td>"
+      );
+      failed_identities_table.append(tr);
+    }
+  }
+  //$('#FailedValidationIdentities')[0].textContent = FailedValidationCount;
+  //$('#MissedValidationIdentities')[0].textContent = MissedValidationCount;
+}
+
+function getSuspendedValidationIdentitiesData(total, loaded, params) {
+  const step = loaded == 0 ? 30 : 100;
+  if (loaded > total) {
+    return;
+  }
+  u =
+    url +
+    'Epoch/' +
+    params.prevEpoch +
+    '/Identities?skip=' +
+    loaded +
+    '&limit=' +
+    step +
+    '&states[]=Suspended,Zombie';
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateSuspendedValidationIdentitiesData(
+        data,
+        total,
+        loaded + step,
+        params
+      );
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+}
+
+function updateSuspendedValidationIdentitiesData(data, total, loaded, params) {
+  if (data.result == null) {
+    return;
+  }
+
+  var suspended_identities_table = $('#SuspendedIdentities');
+
+  addShowMoreTableButton(
+    suspended_identities_table,
+    getSuspendedValidationIdentitiesData,
+    total,
+    loaded,
+    params
+  );
+
+  var nextEpoch = params.prevEpoch * 1 + 1;
+
+  //var FailedValidationCount = 0;
+  //var MissedValidationCount = 0;
+
+  for (var i = 0; i < data.result.length; i++) {
+    var tr = $('<tr/>');
+    var td = $('<td/>');
+    td.append(
+      '<div class="user-pic"><img src="https://robohash.org/' +
+        data.result[i].address.toLowerCase() +
+        '" alt="pic"width="32"></div>'
+    );
+    td.append(
+      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+        data.result[i].address +
+        "'>" +
+        data.result[i].address.substr(0, 15) +
+        '...</a></div>'
+    );
+    tr.append(td);
+
+    var longScoreTxt = '-',
+      shortScoreTxt = '-',
+      totalScoreTxt = '-';
+    if (data.result[i].longAnswers.flipsCount > 0)
+      longScoreTxt =
+        data.result[i].longAnswers.point +
+        ' out of ' +
+        data.result[i].longAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].longAnswers.point /
+            data.result[i].longAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+    if (data.result[i].shortAnswers.flipsCount > 0)
+      shortScoreTxt =
+        data.result[i].shortAnswers.point +
+        ' out of ' +
+        data.result[i].shortAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].shortAnswers.point /
+            data.result[i].shortAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+    if (data.result[i].totalShortAnswers.flipsCount > 0)
+      totalScoreTxt =
+        data.result[i].totalShortAnswers.point +
+        ' out of ' +
+        data.result[i].totalShortAnswers.flipsCount +
+        ' (' +
+        precise2(
+          (data.result[i].totalShortAnswers.point /
+            data.result[i].totalShortAnswers.flipsCount) *
+            100
+        ) +
+        '%)';
+
+    if (
+      data.result[i].state != 'Undefined' &&
+      data.result[i].state != 'Suspended' &&
+      data.result[i].state != 'Zombie'
+    ) {
+      tr.append('<td>' + data.result[i].prevState + '</td>');
+      tr.append('<td>' + data.result[i].state + '</td>');
+      tr.append('<td>' + shortScoreTxt + '</td>');
+
+      if (data.result[i].prevState == 'Candidate')
+        tr.append('<td>' + longScoreTxt + '</td>');
+      else tr.append('<td>' + longScoreTxt + '</td>');
+
+      tr.append(
+        "<td><a href='./answers?epoch=" +
+          nextEpoch +
+          '&identity=' +
+          data.result[i].address +
+          "'><i class='icon icon--thin_arrow_right'></a></td>"
+      );
+      //valid_identities_table.append(tr);
     } else {
       tr.append('<td>' + data.result[i].prevState + '</td>');
       //todo authorScore:        tr.append("<td>" + precise2(data.result[i].authorScore*100) + "%</td>");
@@ -246,10 +601,10 @@ function updateValidationIdentitiesData(data, epoch) {
               tr.append('<td>Not allowed</td>');
             else tr.append('<td>Missed validation</td>');
           }
-          MissedValidationCount++;
+          //MissedValidationCount++;
         } else {
           tr.append('<td>Wrong answers</td>');
-          FailedValidationCount++;
+          //FailedValidationCount++;
         }
       }
       tr.append(
@@ -259,15 +614,15 @@ function updateValidationIdentitiesData(data, epoch) {
           data.result[i].address +
           "'><i class='icon icon--thin_arrow_right'></a></td>"
       );
-      failed_identities_table.append(tr);
+      suspended_identities_table.append(tr);
     }
   }
-  $('#FailedValidationIdentities')[0].textContent = FailedValidationCount;
-  $('#MissedValidationIdentities')[0].textContent = MissedValidationCount;
+  //$('#FailedValidationIdentities')[0].textContent = FailedValidationCount;
+  //$('#MissedValidationIdentities')[0].textContent = MissedValidationCount;
 }
 
 function getEpochFlipsData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -319,7 +674,11 @@ function updateEpochFlipsData(data, total, loaded, params) {
       td.append(
         '<div class="user-pic"><img src="' +
           src +
-          '" alt="pic"width="44" height="44"></div>'
+          '" alt="pic"width="44" height="44">' +
+          (data.result[i].withPrivatePart
+            ? '<div class="locked_sign"><i class="icon icon--lock"></i></div>'
+            : '') +
+          '</img></div>'
       );
       //URL.revokeObjectURL(src);
     } else {
@@ -403,7 +762,7 @@ function updateEpochFlipsData(data, total, loaded, params) {
     wordsScore =
       data.result[i].wrongWordsVotes === 0
         ? '-'
-        : -data.result[i].wrongWordsVotes;
+        : data.result[i].wrongWordsVotes;
     tr.append('<td>' + wordsScore + '</td>');
 
     table.append(tr);

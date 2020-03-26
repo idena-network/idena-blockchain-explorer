@@ -122,7 +122,7 @@ function updateRewardsSummary(data, epoch) {
 }
 
 function getIdentityRewardsData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -172,9 +172,9 @@ function updateRewardsData(data, total, loaded, params) {
         '" alt="pic"width="32"></div>'
     );
     td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+      "<div class='text_block text_block--ellipsis'><a href='./address?address=" +
         data.result[i].address +
-        "'>" +
+        "#rewards'>" +
         data.result[i].address.substr(0, 12) +
         '...</a></div>'
     );
@@ -220,8 +220,11 @@ function updateRewardsData(data, total, loaded, params) {
     }
     var canDoFlips =
       data.result[i].prevState == 'Verified' ||
+      data.result[i].prevState == 'Human' ||
       data.result[i].prevState == 'Newbie';
-    var canDoInvite = data.result[i].prevState == 'Verified';
+    var canDoInvite =
+      data.result[i].prevState == 'Verified' ||
+      data.result[i].prevState == 'Human';
     tr.append(
       '<td>' +
         (ValidationReward == 0 ? '-' : precise6(ValidationReward)) +

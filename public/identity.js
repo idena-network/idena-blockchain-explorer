@@ -306,7 +306,7 @@ function updateIdentityEpochsData(data, identity) {
 
     var state = data.result[i].state;
 
-    if (state != 'Verified' && state != 'Newbie') {
+    if (state != 'Verified' && state != 'Newbie' && state != 'Human') {
       tr.append('<td>' + identityStatusFmt(state) + '</td>');
 
       if (data.result[i].missed) {
@@ -322,7 +322,7 @@ function updateIdentityEpochsData(data, identity) {
               "'><i class='icon icon--thin_arrow_right'></a></td>"
           );
         } else {
-          if (data.result[i].requiredFlips != data.result[i].madeFlips) {
+          if (data.result[i].requiredFlips > data.result[i].madeFlips) {
             tr.append('<td>-</td>');
             tr.append('<td>-</td>');
             tr.append('<td>Not allowed</td>');
@@ -412,12 +412,12 @@ function updateIdentityData(data) {
   if (data.result == null) {
     return;
   }
-  if (data.result.state == 'Verified') {
+  if (data.result.state == 'Human') {
     $('#IdentityAvatar div').append('<i class="icon icon--status"></i>');
   }
   $('#IdentityStatus')[0].textContent = identityStatusFmt(data.result.state);
 
-  if (data.result.state == 'Newbie' || data.result.state == 'Verified')
+  if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human')
     $('.onlineMiner').removeClass('hidden');
 
   $('#IdentitySolvedFlips')[0].textContent =
@@ -474,11 +474,15 @@ function updateIdentityInvitesData(data) {
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
     var td = $('<td/>');
+
+    tr.append('<td><a href="./epoch?epoch='+data.result[i].epoch+'#invitations">' + epochFmt(data.result[i].epoch) + '</a></td>');
+
+
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
         data.result[i].hash +
         "'>" +
-        data.result[i].hash.substr(0, 8) +
+        data.result[i].hash.substr(0, 5) +
         '...</a></div>'
     );
     tr.append(td);
@@ -492,7 +496,7 @@ function updateIdentityInvitesData(data) {
         "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
           activation +
           "'>" +
-          data.result[i].hash.substr(0, 10) +
+          data.result[i].hash.substr(0, 8) +
           '...</a></div>'
       );
       tr.append(td);
@@ -509,7 +513,7 @@ function updateIdentityInvitesData(data) {
         "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
           data.result[i].activationAuthor +
           "'>" +
-          data.result[i].activationAuthor.substr(0, 10) +
+          data.result[i].activationAuthor.substr(0, 7) +
           '...</a></div>'
       );
       tr.append(td);

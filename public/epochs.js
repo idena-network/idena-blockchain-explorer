@@ -43,7 +43,7 @@ function getEpochsData() {
     }
   });
 
-  getBalancesData(100, 0);
+  getBalancesData(1000, 0);
 
   u = url + 'OnlineMiners/Count';
   $.ajax({
@@ -165,7 +165,7 @@ function updateEpochsData(data) {
 }
 
 function getMinersActivity(total, loaded) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -230,7 +230,7 @@ function undateMinersCount(data) {
 }
 
 function getBalancesData(total, loaded) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -305,7 +305,7 @@ function undateCoinsData(data) {
 }
 
 const getMining24Data = function(total, loaded) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;

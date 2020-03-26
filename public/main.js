@@ -207,6 +207,14 @@ $(document).ready(function () {
     }
   }
 
+  if (path == "/reward") {
+    title = title + 'Identity validation reward';
+    if (!(p.identity === undefined) && !(p.epoch === undefined)) {
+      initIdentityReward(p.identity, p.epoch);
+      title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
+    }
+
+  }
 
   if (path == "/") {
     initEpochs();
@@ -267,13 +275,13 @@ $("#SearchBtn").click(function () {
       }
       for (var i = 0; i < data.result.length; i++) {
         if (data.result[i].Name == 'Address')
-          location.href = './address?address=' + txt;
+          location.href = './address?address=' + data.result[i].Value;
         if (data.result[i].Name == 'Block')
-          location.href = './block?block=' + txt;
+          location.href = './block?block=' + data.result[i].Value;
         if (data.result[i].Name == 'Flip')
-          location.href = './flip?flip=' + txt;
+          location.href = './flip?flip=' + data.result[i].Value;
         if (data.result[i].Name == 'Transaction')
-          location.href = './tx?tx=' + txt;
+          location.href = './tx?tx=' + data.result[i].Value;
       }
     },
     error: function (request, error) {

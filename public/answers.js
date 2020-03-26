@@ -150,6 +150,11 @@ function updateAnswersData(data, table) {
     tr.append(td);
 
     tr.append('<td>' + score + '</td>');
+
+    tr.append(
+      '<td>' + (data.result[i].respWrongWords ? 'Reported' : '-') + '</td>'
+    );
+
     table.append(tr);
   }
 }
@@ -159,11 +164,11 @@ function updateIdentityAnswersData(data) {
     return;
   }
 
-  if (data.result.state == 'Verified') {
+  if (data.result.state == 'Human') {
     $('#IdentityAvatar div').append('<i class="icon icon--status"></i>');
   }
 
-  if (data.result.state == 'Newbie' || data.result.state == 'Verified') {
+  if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human') {
     $('#ValidationStatus')[0].textContent = 'Successful validation';
   } else {
     $('#ValidationStatus')[0].textContent = 'Validation failed';
@@ -172,7 +177,7 @@ function updateIdentityAnswersData(data) {
   if (data.result.prevState == 'Invite') {
     $('#ValidationAllowed')[0].textContent = 'No (invitation is not activated)';
   } else {
-    if (data.result.madeFlips == data.result.requiredFlips) {
+    if (data.result.madeFlips >= data.result.requiredFlips) {
       $('#ValidationAllowed')[0].textContent = 'Yes';
     } else {
       $('#ValidationAllowed')[0].textContent =
@@ -227,7 +232,7 @@ function updateIdentityAnswersData(data) {
       }
     }
   } else {
-    if (data.result.state == 'Newbie' || data.result.state == 'Verified') {
+    if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human') {
       $('#ValidationResult')[0].textContent = 'Successful';
     } else {
       $('#ValidationResult')[0].textContent = 'Wrong answers';

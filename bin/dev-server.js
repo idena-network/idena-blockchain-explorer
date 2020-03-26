@@ -74,6 +74,22 @@ app.get('/rewards', function (req, res, next) {
   })
 })
 
+app.get('/reward', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'reward.html')
+
+  compiler.outputFileSystem.readFile(file,  (err, result) => {
+    if (err) {
+      return next(err)
+    }
+
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
+
+
+
 app.get('/epoch', function (req, res, next) {
   const file = path.join(compiler.outputPath, 'epoch.html')
 

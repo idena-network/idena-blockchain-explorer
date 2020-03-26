@@ -68,11 +68,11 @@
                 </div>
                 <div class="col-12 col-sm-4 bordered-col">
                   <h3 class="info_block__accent" id="FailedValidationIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Identities given wrong answers">Failed validation</div>
+                  <div class="control-label" data-toggle="tooltip" title="Killed identities or candidates, wasted invitations">Killed</div>
                 </div>
                 <div class="col-12 col-sm-4 bordered-col">
                   <h3 class="info_block__accent" id="MissedValidationIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Identities missed validation or submitted too late">Missed validation</div>
+                  <div class="control-label" data-toggle="tooltip" title="Verified identities missed validation or submitted too late (Suspended/Zombie)">Suspended</div>
                 </div>
               </div>
             </div>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-12 col-sm-3 bordered-col">
             <h3 class="info_block__accent" id="AbuseFlips">-</h3>
-            <div class="control-label" data-toggle="tooltip" title="Penalized flips irrelevant to keywords">Irrelevant</div>
+            <div class="control-label" data-toggle="tooltip" title="Bad flips irrelevant to keywords, having inappropriate content, labels on top of the images showing the right order or text needed to solve the flip">Bad flips</div>
                 </div>
               </div>
             </div>
@@ -123,6 +123,7 @@
                     <h3>Validated</h3>
                   </a>
                 </li>
+
                 <li class="nav-item">
                   <a
                     class="nav-link"
@@ -133,9 +134,24 @@
                     aria-controls="killed"
                     aria-selected="false"
                   >
-                    <h3>Failed</h3>
+                    <h3>Killed</h3>
                   </a>
                 </li>
+
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="suspended-tab"
+                    data-toggle="tab"
+                    href="#suspended"
+                    role="tab"
+                    aria-controls="suspended"
+                    aria-selected="false"
+                  >
+                    <h3>Suspended</h3>
+                  </a>
+                </li>
+
 
                 <li class="nav-item">
                   <a
@@ -231,7 +247,7 @@
                       <th style="width: 120px;" data-toggle="tooltip" title="Number of identities being challenged with the flip on short/long session">Short  <br>Long</th>
                       <th style="width: 100px;" data-toggle="tooltip" title="Agreed answer">Answer</th>
                       <th style="width: 80px;" data-toggle="tooltip" title="Qualification committee consensus about the flip">Consensus</th>
-                      <th style="width: 80px;" data-toggle="tooltip" title="Votes for irrelevant keywords">Key words score</th>
+                      <th style="width: 80px;" data-toggle="tooltip" title="Votes for bad flip">Bad flip<br/>reported</th>
                     </tr>
                     <tr>
 
@@ -276,56 +292,33 @@
                       <th style="width: 190px;">Failure reason</th>
                       <th style="width: 100px;">Details</th>
                     </tr>
-<!--
-                    <tr>
-                      <td>
-                        <div class="user-pic">
-                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
-                        </div>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="user-pic">
-                          <img src="http://lorempixel.com/32/32/" alt="pic" width="32">
-                        </div>
-                        <div class="text_block text_block--ellipsis">
-                          <a href="">3f339ea8903f339ea3f30x994cf4cccf6463a90</a>
-                        </div>
-                      </td>
-                    </tr>
--->
                   </table>
                 </div>
               </div>
-
-<!--
-              <div class="absolute-group">
-                <div class="pager">
-                  <div class="row small-row align-items-center">
-                    <div class="col-auto small-col">
-                      <div class="control-label">20–30 of 90</div>
-                    </div>
-                    <div class="col-auto small-col">
-                      <div class="button-group">
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_left"></i>
-                        </button>
-                        <button type="button" disabled class="btn btn-secondary btn-icon">
-                          <i class="icon icon--thin_arrow_right"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
--->
-
             </div>
           </div>
+
+
+
+          <div class="tab-pane" id="suspended" role="tabpanel" aria-labelledby="suspended-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="SuspendedIdentities">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Status before the validation session">Previous<br/>status</th>
+                      <th style="width: 140px;">Validation<br>score</th>
+                      <th style="width: 140px;">Qualification<br>score</th>
+                      <th style="width: 190px;">Failure reason</th>
+                      <th style="width: 100px;">Details</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>

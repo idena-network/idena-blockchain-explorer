@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="en">
+<%= require('html-loader?attrs=false!./partials/head.html') %>
+
+<body>
+<%= require('html-loader?attrs=false!./partials/header.html') %>
+
+<main class="main">
+  <div class="container">
+
+
+      <section class="section section_main">
+        <div class="row">
+          <div class="col-auto">
+
+            <div class="section_main__image" id="IdentityAvatar">
+              <img src="" alt="pic" width="160">
+              <div class="verified_sign">
+                </i class="icon icon--status">
+              </div>
+            </div>
+
+          </div>
+          <div class="col">
+            <div class="section_main__group">
+              <h1 class="section_main__title" >
+                <span>Identity rewards for epoch </span><span id="EpochId">...</span>
+              </h1>
+              <div class="section_main__subtitle"><span id="IdentityAddress">...</span></div>
+
+              <div class="section_main__subtitle" id="ValidationStatus">...</div>
+            </div>
+<!--
+            <button type="button" class="btn btn-small btn-primary">
+              <i class="icon icon--back"></i><span>Back to identity</span>
+            </button>
+            <a href="#" class="btn btn-secondary btn-small" id="ValidationResult">
+              <i class="icon icon--report"></i>
+              <span>Epoch validation results</span>
+            </a>
+-->
+              <a
+                type="button"
+                class="btn btn-small btn-primary"
+                id="BalanceAddress"
+              >
+                <i class="icon icon--coins"></i>
+                <span>Address details</span>
+              </a>
+
+          </div>
+        </div>
+      </section>
+
+
+
+      <section class="section section_details">
+        <h3>Details</h3>
+        <div class="card">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Identity:</div>
+                <div class="text_block text_block--break"><a href="" id="DetailsIdentityId">-</a></div>
+                <hr>
+
+                <div class="control-label">Status:</div>
+                <div class="text_block" id="AfterValidationStatus">-</div>
+                <hr>
+
+                <div class="control-label">Validation result:</div>
+                <div class="text_block" id="ValidationResult">-</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+
+                <div class="control-label">Rewards for epoch:</div>
+                <div class="text_block"><a href="" id="DetailsEpochId">-</a></div>
+                <hr>
+
+                <div class="control-label">Status before the validation:</div>
+                <div class="text_block" id="BeforeValidationStatus">-</div>
+                <hr>
+
+                <div class="control-label">Penalized:</div>
+                <div class="text_block" id="ValidationAllowed">-</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+<!--
+
+      <section class="section section_details">
+        <h3>Details</h3>
+        <div class="card">
+          <div class="row">
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Epoch number:</div>
+                <div class="text_block text_block--break" id="DetailsEpochId">-</div>
+                <hr>
+                <div class="control-label">Validation block height:</div>
+                <div class="text_block" id="FirstBlock">-</div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <div class="section__group">
+                <div class="control-label">Start:</div>
+                <div class="text_block" id="EpochStart">-</div>
+                <hr>
+                <div class="control-label">End:</div>
+                <div class="text_block" id="EpochEnd">-</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+-->
+
+      <section class="section section_info">
+        <div class="row">
+
+          <div class="col-12 col-sm-4">
+            <h1>Total reward</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row">
+
+                  <div class="col-12 col-sm-12 bordered-col">
+                    <h3 class="info_block__accent"><span id="TotalRewards">-</span></h3>
+                    <div class="control-label" data-toggle="tooltip" title="Total reward fund (including the fundation reward and zero wallet)">Total</div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-8">
+            <h1>Rewards</h1>
+            <div class="card">
+              <div class="info_block">
+                <div class="row" id="BalanceSection">
+
+
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="ValidationReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for succesfull validation">Validation reward</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="FlipsReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for qualified flips">Flips reward</div>
+                  </div>
+                  <div class="col-12 col-sm-4 bordered-col">
+                    <h3 class="info_block__accent" id="InvitationsReward">-</h3>
+                    <div class="control-label" data-toggle="tooltip" title="Fund for validated invitations">Invitations reward</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+      </section>
+
+
+
+    <section class="section section_tabs">
+      <div class="tabs" data-tabs="true">
+        <div class="section__header">
+          <div class="row align-items-center justify-content-between">
+            <div class="col">
+              <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                  <a
+                    class="nav-link active"
+                    id="flips-rewards-tab"
+                    data-toggle="tab"
+                    href="#flipsrewards"
+                    role="tab"
+                    aria-controls="flipsrewards"
+                    aria-selected="true"
+                  >
+                    <h3>Flips rewards</h3>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="invitationsrewards-tab"
+                    data-toggle="tab"
+                    href="#invitationsrewards"
+                    role="tab"
+                    aria-controls="invitationsrewards"
+                    aria-selected="true"
+                  >
+                    <h3>Invitations rewards</h3>
+                  </a>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane active" id="flipsrewards" role="tabpanel" aria-labelledby="flipsrewards-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FlipsRewardsTable">
+
+                      <tr>
+                        <th>Flip</th>
+                        <th data-toggle="tooltip" title="">Keywords</th>
+                        <th
+                          data-toggle="tooltip"
+                          title="Flips qualification status"
+                        >
+                          Status
+                        </th>
+                        <th style="width: 100px;">Reward</th>
+                        <th style="width: 100px;">Details</th>
+                      </tr>
+
+
+
+                  </table>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="tab-pane" id="invitationsrewards" role="tabpanel" aria-labelledby="invitationsrewards-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="InvitationsRewardsTable">
+                    <tr>
+                        <th>Epoch</th>
+                        <th
+                          data-toggle="tooltip"
+                          title="Invitation transaction"
+                        >
+                          Invitation
+                        </th>
+                        <th>Issued</th>
+                        <th
+                          data-toggle="tooltip"
+                          title="Activation transaction"
+                        >
+                          Activation
+                        </th>
+                        <th>Activated</th>
+                        <th data-toggle="tooltip" title="">Invited identity</th>
+
+                        <th
+                          style="width: 160px;"
+                          data-toggle="tooltip"
+                          title="Validation result of the invited person"
+                        >
+                          Validation
+                        </th>
+
+                        <th
+                          style="width: 160px;"
+                        >
+                          Reward
+                        </th>
+
+                        <th
+                          style="width: 160px;"
+                        >
+                          Details
+                        </th>
+
+
+                    </tr>
+                    <tr>
+
+                  </table>
+                </div>
+              </div>
+
+<!--
+              <div class="absolute-group">
+                <div class="pager">
+                  <div class="row small-row align-items-center">
+                    <div class="col-auto small-col">
+                      <div class="control-label">1–10 of 40</div>
+                    </div>
+                    <div class="col-auto small-col">
+                      <div class="button-group">
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_left"></i>
+                        </button>
+                        <button type="button" disabled class="btn btn-secondary btn-icon">
+                          <i class="icon icon--thin_arrow_right"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+-->
+            </div>
+          </div>
+
+          <div class="tab-pane" id="rewards" role="tabpanel" aria-labelledby="rewards-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FailedIdentities">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Status before the validation session">Previous<br/>status</th>
+                      <th style="width: 140px;">Validation<br>score</th>
+                      <th style="width: 140px;">Qualification<br>score</th>
+                      <th style="width: 190px;">Failure reason</th>
+                      <th style="width: 100px;">Details</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+                 
+<%= require('html-loader?attrs=false!./partials/scripts.html') %>
+</body>
+</html>
+

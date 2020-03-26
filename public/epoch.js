@@ -67,7 +67,10 @@ function getEpochData(epoch) {
 
   if (prevEpoch >= 0) {
     u =
-      url + 'Epoch/' + prevEpoch + '/Identities/Count?states[]=Newbie,Verified';
+      url +
+      'Epoch/' +
+      prevEpoch +
+      '/Identities/Count?states[]=Newbie,Verified,Human';
     $.ajax({
       url: u,
       type: 'GET',
@@ -218,7 +221,7 @@ function getEpochData(epoch) {
 }
 
 function getEpochFlipSubmissionsData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -272,7 +275,7 @@ function updateEpochFlipSubmissionsData(data, total, loaded, params) {
         '<div class="user-pic"><img src="' +
           src +
           '" alt="pic"width="44" height="44"></div>'
-      );      
+      );
     } else {
       td.append(
         '<div class="user-pic"><img src="./images/flip_icn.png' +
@@ -419,7 +422,9 @@ function updateEpochIdentityStatesSummaryData(data) {
     var state = data.result[i].value;
     valid =
       valid +
-      (state == 'Newbie' || state == 'Verified' ? data.result[i].count : 0);
+      (state == 'Newbie' || state == 'Verified' || state == 'Human'
+        ? data.result[i].count
+        : 0);
   }
 
   if (path == '/validation') {
@@ -492,7 +497,7 @@ function updateZeroEpochIdentitiesData(data) {
 }
 
 function getEpochIdentitiesData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -506,7 +511,7 @@ function getEpochIdentitiesData(total, loaded, params) {
     loaded +
     '&limit=' +
     step +
-    '&states[]=Newbie,Verified';
+    '&states[]=Newbie,Verified,Human';
   $.ajax({
     url: u,
     type: 'GET',
@@ -641,7 +646,7 @@ function updateEpochBlocksCountData(data) {
 }
 
 function getEpochTxsData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -732,7 +737,7 @@ function updateEpochTxsData(data, total, loaded, params) {
 }
 
 function getEpochBlocksData(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -790,7 +795,7 @@ function updateEpochBlocksData(data, total, loaded, params) {
         "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
           data.result[i].proposer +
           "'>" +
-          data.result[i].proposer.substr(0, 15) +
+          data.result[i].proposer.substr(0, 8) +
           '...</a></div>'
       );
       tr.append(td);
@@ -806,6 +811,58 @@ function updateEpochBlocksData(data, total, loaded, params) {
         '</td>'
     );
     tr.append('<td>' + precise6(data.result[i].vrfProposerThreshold) + '</td>');
+
+    //Flags
+    var flags = data.result[i].flags;
+    if (flags == null) {
+      tr.append('<td>-</td>');
+    } else {
+      var td = $('<td/>');
+      //      var div = $('<div class="flags"/>');
+      for (j = 0; j < flags.length; j++) {
+        if (flags[j] == 'FlipLotteryStarted')
+          td.append(
+            "<i class='icon icon--timer' data-toggle='tooltip' title='Flip lottery is started'/>"
+          );
+        if (flags[j] == 'ShortSessionStarted')
+          td.append(
+            "<i class='icon icon--timer' data-toggle='tooltip' title='Short session is started'/>"
+          );
+        if (flags[j] == 'LongSessionStarted')
+          td.append(
+            "<i class='icon icon--timer' data-toggle='tooltip' title='Long session is started'/>"
+          );
+        if (flags[j] == 'AfterLongSessionStarted')
+          td.append(
+            "<i class='icon icon--timer' data-toggle='tooltip' title='Long session is finished'/>"
+          );
+        if (flags[j] == 'ValidationFinished')
+          td.append(
+            "<i class='icon icon--timer' data-toggle='tooltip' title='Validation session is finished'/>"
+          );
+
+        if (flags[j] == 'IdentityUpdate')
+          td.append(
+            "<i class='icon icon--menu_contacts' data-toggle='tooltip' title='List of mining identities is updated'/>"
+          );
+
+        if (flags[j] == 'OfflinePropose')
+          td.append(
+            "<i class='icon icon--laptop' data-toggle='tooltip' title='Offline penalty is proposed'/>"
+          );
+        if (flags[j] == 'OfflineCommit')
+          td.append(
+            "<i class='icon icon--laptop-red' data-toggle='tooltip' title='Offline penalty is confirmed'/>"
+          );
+
+        if (flags[j] == 'Snapshot')
+          td.append(
+            "<i class='icon icon--photo' data-toggle='tooltip' title='Snapshot is produced'/>"
+          );
+      }
+      //      td.append(div);
+      tr.append(td);
+    }
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].fullSize + '</td>');
     tr.append(
@@ -830,4 +887,5 @@ function updateEpochBlocksData(data, total, loaded, params) {
 
     table.append(tr);
   }
+  $('[data-toggle="tooltip"]').tooltip();
 }

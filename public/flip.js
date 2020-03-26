@@ -166,7 +166,8 @@ function updateFlipData(data) {
 
     if (data.result.wrongWords) {
       $('#KeywordRelevance span')[0].textContent =
-        'Flip is marked as irrelevant to the keywords and penalized';
+        'The flip was reported as irrelevant to keywords or having inappropriate content, labels on top of the images showing the right order or text needed to solve the flip';
+
       $('#KeywordRelevance i').addClass('icon--micro_fail');
     } else {
       $('#KeywordRelevance span')[0].textContent =
@@ -242,6 +243,7 @@ function updateFlipAnswersLongData(data) {
     rightAnswer = 0,
     //inappropriateAnswer = 0,
     noneAnswer = 0;
+  epoch = FlipEpoch * 1 + 1;
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
     var td = $('<td/>');
@@ -251,9 +253,11 @@ function updateFlipAnswersLongData(data) {
         '" alt="pic"width="32"></div>'
     );
     td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+      "<div class='text_block text_block--ellipsis'><a href='./answers?epoch=" +
+        epoch +
+        '&identity=' +
         data.result[i].address +
-        "'>" +
+        "#long-session'>" +
         data.result[i].address +
         '</a></div>'
     );
@@ -292,9 +296,9 @@ function updateFlipAnswersLongData(data) {
       tr.append('<td>-</td>');
     } else {
       if (data.result[i].respWrongWords) {
-        tr.append('<td>Irrelevant</td>');
+        tr.append('<td>Reported</td>');
       } else {
-        tr.append('<td>Both relevant</td>');
+        tr.append('<td>-</td>');
       }
     }
     table.append(tr);
@@ -310,7 +314,10 @@ function updateFlipContent(data) {
     return;
   }
 
-  //    if (data.result.Pics.length>0)
+  if (data.result.LeftOrder==null){
+    $('#FlipTitle')[0].textContent = "Flip (encrypted content)"
+  }
+
   //      $(".section_flips").removeClass('hidden');
   for (var i = 0; i < data.result.Pics.length; i++) {
     var buffArray = new Uint8Array(
@@ -321,13 +328,22 @@ function updateFlipContent(data) {
     );
     var lposition = -1,
       rposition = -1;
-    for (var j = 0; j < data.result.Pics.length; j++) {
-      if (data.result.LeftOrder[j] == i) lposition = j;
-      if (data.result.RightOrder[j] == i) rposition = j;
+
+    if (data.result.LeftOrder==null){
+      lposition = (i==0?0:-1)
+      rposition = (i==1?0:-1);
+    } else {
+      for (var j = 0; j < data.result.Pics.length; j++) {
+        if (data.result.LeftOrder[j] == i) lposition = j;
+        if (data.result.RightOrder[j] == i) rposition = j;
+      }
     }
+
     var src = URL.createObjectURL(
       new Blob([buffArray], { type: 'image/jpeg' })
     );
+
+
     if (lposition >= 0) $('#FlipImageL' + lposition)[0].src = src;
     if (rposition >= 0) $('#FlipImageR' + rposition)[0].src = src;
   }

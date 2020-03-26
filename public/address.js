@@ -66,7 +66,7 @@ function getAddressData(address) {
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      updateAddressRewardsData(data);
+      updateAddressRewardsData(address, data);
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -106,7 +106,7 @@ function updateAddressIdentityData(data) {
   $('#AddressOwner img')[0].src =
     'https://robohash.org/' + data.result.address.toLowerCase();
   $('#AddressOwner')[0].href = './identity?identity=' + data.result.address;
-  $('#OwnerState')[0].textContent = data.result.state;
+  $('#OwnerState')[0].textContent = identityStatusFmt(data.result.state);
 }
 
 function updateAddressData(data) {
@@ -119,7 +119,7 @@ function updateAddressData(data) {
 }
 
 const getAddressTxsData = function(total, loaded, params) {
-  const step = 30;
+  const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
     return;
@@ -208,11 +208,15 @@ function updateAddressTxsData(data, total, loaded, params) {
     }
     tr.append(td);
 
+    var amount = data.result[i].amount;
+
+    if (amount == 0 && typeof data.result[i].transfer != 'undefined') {
+      amount = data.result[i].transfer;
+    }
+
     tr.append(
       "<td align='right'>" +
-        (data.result[i].amount == 0
-          ? '-'
-          : dnaFmt(precise6(data.result[i].amount), '')) +
+        (amount == 0 ? '-' : dnaFmt(precise6(amount), '')) +
         '</td>'
     );
 
@@ -222,7 +226,7 @@ function updateAddressTxsData(data, total, loaded, params) {
   }
 }
 
-function updateAddressRewardsData(data) {
+function updateAddressRewardsData(address, data) {
   if (data.result == null) {
     return;
   }
@@ -242,8 +246,11 @@ function updateAddressRewardsData(data) {
       var td = $('<td/>');
       var epoch = data.result[i].epoch + 1;
       td.append(
-        "<div class='text_block text_block--ellipsis'><a href='./rewards?epoch=" +
+        //        "<div class='text_block text_block--ellipsis'><a href='./reward?epoch=" +
+        "<div class='text_block text_block--ellipsis'><a href='./epoch?epoch=" +
           epoch +
+          '&identity=' +
+          address +
           "'>" +
           epochFmt(epoch) +
           '</a></div>'

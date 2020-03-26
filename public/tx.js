@@ -53,7 +53,13 @@ function updateTxData(data) {
     $('#TxTo')[0].href = './address?address=' + data.result.to;
   }
 
-  $('#TxAmount')[0].textContent = data.result.amount;
+
+  var amount = data.result.amount
+  if (amount == 0 && (typeof(data.result.transfer) != "undefined") ) {
+    amount = data.result.transfer
+  }
+
+  $('#TxAmount')[0].textContent = amount;
   $('#TxSize')[0].textContent = data.result.size;
   $('#TxFee')[0].textContent = data.result.fee;
   $('#TxFeeLimit')[0].textContent = data.result.maxFee;

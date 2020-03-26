@@ -1,4 +1,4 @@
-var url = 'https://api2.idena.io/api/';
+var url = 'https://api.idena.io/api/';
 var path = '';
 
 function frac(n) {
@@ -47,8 +47,10 @@ function identityStatusFmt(s) {
 function rewardTypeFmt(s) {
   if (!s) return '';
   if (s == 'Invitations') return 'Invitation (1st validation)';
-  if (s == 'Invitations2') return 'Invitaion (2nd validation)';
-  if (s == 'Invitations3') return 'Invitaion (3rd validation)';
+  if (s == 'Invitations2') return 'Invitation (2nd validation)';
+  if (s == 'Invitations3') return 'Invitation (3rd validation)';
+  if (s == 'SavedInvite') return 'Non-spent invitation';
+  if (s == 'SavedInviteWin') return 'Non-spent invitation with lottery reward';
   return s;
 }
 

@@ -203,6 +203,26 @@
   }
 }
 
+
+.locked_sign {
+  position: absolute;
+  background-color: $white;
+  bottom: rem(16px);
+  width: rem(25px);
+  height: rem(25px);
+  top: 0;
+  left: rem(30px);
+  color: $primary;
+  text-align: center;
+  border-radius: 100px;
+  z-index: 4;
+
+  .icon {
+    font-size: rem(22px);
+  }
+}
+
+
 .transaction_block {
   padding-top: rem(15px);
   padding-bottom: rem(15px);
