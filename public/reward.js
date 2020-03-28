@@ -16,12 +16,28 @@ function initIdentityReward(identity, epoch) {
 
 function getIdentityRewardData(identity, epoch) {
   var u = url + 'Epoch/' + epoch + '/Identity/' + identity;
+
   $.ajax({
     url: u,
     type: 'GET',
     dataType: 'json',
     success: function(data) {
       updateIdentityRewardData(data);
+
+      var u =
+        url + '/Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips';
+      $.ajax({
+        url: u,
+        type: 'GET',
+        dataType: 'json',
+        success: function(flipData) {
+          updateIdentityFlipsRewardsData(flipData);
+          updateAppendEmptyFlipsRewardsData(data);
+        },
+        error: function(request, error) {
+          console.error(u + ', error:' + error);
+        }
+      });
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -35,19 +51,6 @@ function getIdentityRewardData(identity, epoch) {
     dataType: 'json',
     success: function(data) {
       updateIdentityEpochRewardsData(data);
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
-    }
-  });
-
-  var u = url + '/Address/' + identity + '/Flips?skip=0&limit=100';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      updateIdentityFlipsRewardsData(data);
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -218,6 +221,41 @@ function updateIdentityFlipsRewardsData(data) {
     tr.append('<td>' + flipQualificationStatusFmt(status) + '</td>');
     tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
     tr.append('<td>' + data.result[i].size + '</td>');
+
+    table.append(tr);
+  }
+}
+
+function updateAppendEmptyFlipsRewardsData(data) {
+  if (data.result == null) {
+    return;
+  }
+  var table = $('#FlipsRewardsTable');
+
+  const cnt = data.result.availableFlips - data.result.madeFlips;
+
+  for (var i = 0; i < cnt; i++) {
+    var tr = $('<tr/>');
+
+    var td = $('<td/>');
+    td.append(
+      '<div class="user-pic"><img src="./images/flip_icn.png' +
+        '" alt="pic" width="44"></div>'
+    );
+
+    td.append(
+      "<div class='text_block text_block--ellipsis'>Flip was not submitted</div>"
+    );
+    tr.append(td);
+
+    var Keywords = '-';
+    var icon = '';
+    tr.append('<td>' + icon + '<span>' + Keywords + '</span></td>');
+
+    var status = '-';
+    tr.append('<td>' + flipQualificationStatusFmt(status) + '</td>');
+    tr.append('<td>-</td>');
+    tr.append('<td>-</td>');
 
     table.append(tr);
   }

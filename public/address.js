@@ -246,8 +246,8 @@ function updateAddressRewardsData(address, data) {
       var td = $('<td/>');
       var epoch = data.result[i].epoch + 1;
       td.append(
-        //        "<div class='text_block text_block--ellipsis'><a href='./reward?epoch=" +
-        "<div class='text_block text_block--ellipsis'><a href='./epoch?epoch=" +
+        "<div class='text_block text_block--ellipsis'><a href='./reward?epoch=" +
+          //"<div class='text_block text_block--ellipsis'><a href='./epoch?epoch=" +
           epoch +
           '&identity=' +
           address +
