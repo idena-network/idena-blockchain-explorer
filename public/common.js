@@ -30,6 +30,7 @@ function epochFmt(epoch) {
 }
 
 function dnaFmt(amount, curency = 'DNA') {
+  if (amount == 0) return '-';
   return Number(amount).toLocaleString() + ' ' + curency;
 }
 
@@ -52,6 +53,31 @@ function rewardTypeFmt(s) {
   if (s == 'SavedInvite') return 'Non-spent invitation';
   if (s == 'SavedInviteWin') return 'Non-spent invitation with lottery reward';
   return s;
+}
+
+function getApiData(querry, onSuccess, skip, limit) {
+  if (querry == '') return;
+  var u = url + querry;
+  //url + querry + (!skip || !limit) ? '' : '?skip=' + skip + '&limit=' + limit;
+  if (typeof skip != 'undefined' && typeof limit != 'undefined') {
+    var u = u + '?skip=' + skip + '&limit=' + limit;
+  }
+
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      if (onSuccess == null) {
+        console.error('getApiData error: onSuccess() is not defined');
+      } else {
+        onSuccess(data);
+      }
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
 }
 
 var localeFmt;

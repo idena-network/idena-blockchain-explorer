@@ -14,61 +14,95 @@ function initIdentityReward(identity, epoch) {
   $('#BalanceAddress')[0].href = '/address?address=' + identity + '#rewards';
 }
 
+function reward_getRewardsData(epoch, onSuccess) {
+  getApiData('Epoch/' + epoch + '/RewardsSummary', data => {
+    onSuccess(data);
+  });
+}
+
+function reward_getIdentityData(epoch, identity, onSuccess) {
+  getApiData('Epoch/' + epoch + '/Identity/' + identity, data => {
+    onSuccess(data);
+  });
+}
+
+function reward_IdentityFlipsRewardsData(epoch, identity, onSuccess) {
+  getApiData(
+    'Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips',
+    data => {
+      onSuccess(data);
+    }
+  );
+}
+
 function getIdentityRewardData(identity, epoch) {
-  var u = url + 'Epoch/' + epoch + '/Identity/' + identity;
+  getApiData(
+    'Epoch/' + epoch + '/Identity/' + identity + '/Authors/Bad',
+    penaltyReasonData => {
+      updatePenaltyReasonData(penaltyReasonData);
 
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      updateIdentityRewardData(data);
+      reward_getRewardsData(epoch, epochRewardData => {
+        reward_getIdentityData(epoch, identity, identityData => {
+          reward_IdentityFlipsRewardsData(epoch, identity, flipData => {
+            updateIdentityRewardData(identityData);
+            updateAppendEmptyFlipsRewardsData(
+              identityData,
+              epochRewardData,
+              penaltyReasonData
+            );
+            updateIdentityFlipsRewardsData(
+              flipData,
+              epochRewardData,
+              penaltyReasonData
+            );
 
-      var u =
-        url + '/Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips';
-      $.ajax({
-        url: u,
-        type: 'GET',
-        dataType: 'json',
-        success: function(flipData) {
-          updateIdentityFlipsRewardsData(flipData);
-          updateAppendEmptyFlipsRewardsData(data);
-        },
-        error: function(request, error) {
-          console.error(u + ', error:' + error);
-        }
+            getApiData('Identity/' + identity + '/Age', identityAgeData => {
+              getApiData(
+                'Epoch/' + epoch + '/Identity/' + identity + '/Rewards',
+                data => {
+                  updateIdentityEpochRewardsData(
+                    data,
+                    penaltyReasonData,
+                    epochRewardData,
+                    identityAgeData,
+                    identityData
+                  );
+                }
+              );
+            });
+          });
+        });
       });
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
     }
-  });
+  );
 
-  u = url + 'Identity/' + identity + '/EpochRewards?skip=0&limit=100'; //todo epoch fliter
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      updateIdentityEpochRewardsData(data);
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
-    }
-  });
-
-  var u = url + '/Identity/' + identity + '/Invites?skip=0&limit=100';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
+  getApiData(
+    'Identity/' + identity + '/Invites',
+    data => {
       updateIdentityInvitesRewardsData(data);
     },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
+    0,
+    100
+  );
+}
+
+function updatePenaltyReasonData(data) {
+  var icon = 'icon--micro_fail';
+
+  if (data.result == null) {
+    $('#Penalized')[0].textContent = 'No';
+    icon = 'icon--micro_success';
+  } else {
+    const reason = data.result.reason;
+    if (reason == 'WrongWords') {
+      $('#Penalized')[0].textContent = 'Yes (flip was reported)';
+    } else if (reason == 'QualifiedByNone') {
+      $('#Penalized')[0].textContent = 'Yes (flip was not available)';
+    } else if (reason == 'NoQualifiedFlips') {
+      $('#Penalized')[0].textContent = 'Yes (non of the flips are qualified)';
     }
-  });
+  }
+  $('#PenalizedIcon').addClass(icon);
 }
 
 function updateIdentityRewardData(data) {
@@ -125,43 +159,82 @@ function updateIdentityRewardData(data) {
   }
 }
 
-function updateIdentityEpochRewardsData(data) {
-  if (data.result == null) {
-    return;
-  }
+function updateIdentityEpochRewardsData(
+  data,
+  penaltyReasonData,
+  epochRewardData,
+  identityAgeData,
+  identityData
+) {
+  var missedInvitationsReward = 0,
+    missedValidationReward = 0,
+    missedFlipsReward = 0;
 
-  var i = 0;
   var InvitationsReward = 0,
     ValidationReward = 0,
     FlipsReward = 0;
-  for (var j = 0; j < data.result[i].rewards.length; j++) {
-    var tr = $('<tr/>');
-    var td = $('<td/>');
 
-    var s = data.result[i].rewards[j].type;
-    var v =
-      data.result[i].rewards[j].stake * 1 +
-      data.result[i].rewards[j].balance * 1;
+  if (penaltyReasonData.result != null) {
+    //Penalized
 
-    if (s == 'Invitations') InvitationsReward = InvitationsReward + v;
-    if (s == 'Invitations2') InvitationsReward = InvitationsReward + v;
-    if (s == 'Invitations3') InvitationsReward = InvitationsReward + v;
-    if (s == 'SavedInvite') InvitationsReward = InvitationsReward + v;
-    if (s == 'SavedInviteWin') InvitationsReward = InvitationsReward + v;
-    if (s == 'Flips') FlipsReward = FlipsReward + v;
-    if (s == 'Validation') ValidationReward = ValidationReward + v;
+    missedInvitationsReward = epochRewardData.result.invitationsShare;
+    missedFlipsReward =
+      epochRewardData.result.flipsShare * identityData.result.availableFlips;
+    missedValidationReward =
+      Math.pow(epochRewardData.result.validationShare * 1, 0.33) *
+      identityAgeData.result;
+  } else {
+    if (data.result == null) {
+      return;
+    }
+
+    missedFlipsReward =
+      epochRewardData.result.flipsShare *
+      (identityData.result.availableFlips - identityData.result.madeFlips);
+
+    for (var i = 0; i < data.result.length; i++) {
+      const tr = $('<tr/>');
+      const td = $('<td/>');
+
+      const s = data.result[i].type;
+      const v = data.result[i].stake * 1 + data.result[i].balance * 1;
+
+      if (s == 'Invitations') InvitationsReward = InvitationsReward + v;
+      if (s == 'Invitations2') InvitationsReward = InvitationsReward + v;
+      if (s == 'Invitations3') InvitationsReward = InvitationsReward + v;
+      if (s == 'SavedInvite') InvitationsReward = InvitationsReward + v;
+      if (s == 'SavedInviteWin') InvitationsReward = InvitationsReward + v;
+      if (s == 'Flips') FlipsReward = FlipsReward + v;
+      if (s == 'Validation') ValidationReward = ValidationReward + v;
+    }
   }
 
   $('#ValidationReward')[0].textContent = dnaFmt(ValidationReward);
   $('#FlipsReward')[0].textContent = dnaFmt(FlipsReward);
   $('#InvitationsReward')[0].textContent = dnaFmt(InvitationsReward);
 
-  var total = InvitationsReward * 1 + FlipsReward * 1 + ValidationReward * 1;
+  const total = InvitationsReward * 1 + FlipsReward * 1 + ValidationReward * 1;
   $('#TotalRewards')[0].textContent = dnaFmt(total);
+
+  $('#MissedValidationReward')[0].textContent = dnaFmt(missedValidationReward);
+  $('#MissedFlipsReward')[0].textContent = dnaFmt(missedFlipsReward);
+  $('#MissedInvitationsReward')[0].textContent = dnaFmt(
+    missedInvitationsReward
+  );
+
+  const missedTotal =
+    missedInvitationsReward * 1 +
+    missedFlipsReward * 1 +
+    missedValidationReward * 1;
+  $('#MissedTotalRewards')[0].textContent = dnaFmt(missedTotal);
 }
 
-function updateIdentityFlipsRewardsData(data) {
-  if (data.result == null) {
+function updateIdentityFlipsRewardsData(
+  data,
+  epochRewardData,
+  penaltyReasonData
+) {
+  if (epochRewardData.result == null || data.result == null) {
     return;
   }
   var table = $('#FlipsRewardsTable');
@@ -219,15 +292,33 @@ function updateIdentityFlipsRewardsData(data) {
 
     var status = data.result[i].status == '' ? '-' : data.result[i].status;
     tr.append('<td>' + flipQualificationStatusFmt(status) + '</td>');
-    tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
-    tr.append('<td>' + data.result[i].size + '</td>');
+
+    var flipReward = data.result[i].rewarded
+      ? epochRewardData.result.flipsShare
+      : 0;
+
+    var missingFlipReward = data.result[i].rewarded
+      ? 0
+      : epochRewardData.result.flipsShare;
+    tr.append('<td>' + dnaFmt(flipReward, '') + '</td>');
+    tr.append(
+      '<td style="color: red">' + dnaFmt(missingFlipReward, '') + '</td>'
+    );
+
+    const reason =
+      penaltyReasonData.result == null ? '-' : 'Validation penalty';
+    tr.append('<td>' + reason + '</td>');
 
     table.append(tr);
   }
 }
 
-function updateAppendEmptyFlipsRewardsData(data) {
-  if (data.result == null) {
+function updateAppendEmptyFlipsRewardsData(
+  data,
+  epochRewardData,
+  penaltyReasonData
+) {
+  if (epochRewardData.result == null || data.result == null) {
     return;
   }
   var table = $('#FlipsRewardsTable');
@@ -254,8 +345,17 @@ function updateAppendEmptyFlipsRewardsData(data) {
 
     var status = '-';
     tr.append('<td>' + flipQualificationStatusFmt(status) + '</td>');
-    tr.append('<td>-</td>');
-    tr.append('<td>-</td>');
+
+    var flipReward = 0;
+    var missingFlipReward = epochRewardData.result.flipsShare;
+    tr.append('<td>' + dnaFmt(flipReward, '') + '</td>');
+    tr.append(
+      '<td style="color: red">' + dnaFmt(missingFlipReward, '') + '</td>'
+    );
+
+    const reason =
+      penaltyReasonData.result != null ? '-' : 'Missing extra flip';
+    tr.append('<td>' + reason + '</td>');
 
     table.append(tr);
   }

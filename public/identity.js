@@ -134,13 +134,15 @@ function getIdentityData(identity) {
     }
   });
 
-  var u = url + '/Identity/' + identity + '/Invites?skip=0&limit=100';
+  //  var u = url + '/Identity/' + identity + '/Invites?skip=0&limit=100';
+  var u = url + '/Identity/' + identity + '/Invites/Count';
   $.ajax({
     url: u,
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      updateIdentityInvitesData(data);
+      //updateIdentityInvitesData(data);
+      getIdentityInvitesData(data.result, 0, { identity });
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -417,7 +419,11 @@ function updateIdentityData(data) {
   }
   $('#IdentityStatus')[0].textContent = identityStatusFmt(data.result.state);
 
-  if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human')
+  if (
+    data.result.state == 'Newbie' ||
+    data.result.state == 'Verified' ||
+    data.result.state == 'Human'
+  )
     $('.onlineMiner').removeClass('hidden');
 
   $('#IdentitySolvedFlips')[0].textContent =
@@ -461,22 +467,55 @@ function updateOnlineMiningStatus(data) {
     data.result.penalty == 0 ? '-' : dnaFmt(precise6(data.result.penalty));
 }
 
-function updateIdentityInvitesData(data) {
-  var table = $('#IdentityInvitesTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+const getIdentityInvitesData = function(total, loaded, params) {
+  const step = loaded == 0 ? 30 : 100;
+
+  if (loaded > total) {
+    return;
+  }
+
+  //' + identity + '//Count';
+
+  u =
+    url +
+    'Identity/' +
+    params.identity +
+    '/Invites?skip=' +
+    loaded +
+    '&limit=' +
+    step;
+  $.ajax({
+    url: u,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      updateIdentityInvitesData(data, total, loaded + step, params);
+    },
+    error: function(request, error) {
+      console.error(u + ', error:' + error);
+    }
+  });
+};
+
+function updateIdentityInvitesData(data, total, loaded, params) {
   if (data.result == null) {
     return;
   }
+
+  var table = $('#IdentityInvitesTable');
+  addShowMoreTableButton(table, getIdentityInvitesData, total, loaded, params);
 
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
     var td = $('<td/>');
 
-    tr.append('<td><a href="./epoch?epoch='+data.result[i].epoch+'#invitations">' + epochFmt(data.result[i].epoch) + '</a></td>');
-
+    tr.append(
+      '<td><a href="./epoch?epoch=' +
+        data.result[i].epoch +
+        '#invitations">' +
+        epochFmt(data.result[i].epoch) +
+        '</a></td>'
+    );
 
     td.append(
       "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
