@@ -39,9 +39,15 @@
               <span>Epoch validation results</span>
             </a>
 -->
+
+            <a class="btn btn-secondary btn-small" id="ValidationResultLink">
+              <i class="icon icon--report"></i>
+              <span>Validation result</span>
+            </a>
+
               <a
                 type="button"
-                class="btn btn-small btn-primary"
+                class="btn btn-small btn-secondary"
                 id="BalanceAddress"
               >
                 <i class="icon icon--coins"></i>
@@ -124,11 +130,11 @@
 
 -->
 
-      <section class="section section_info">
+      <section class="section section_info" id="RewardSection">
         <div class="row">
 
           <div class="col-12 col-sm-4">
-            <h1>Total reward</h1>
+            <h3>Total reward</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row">
@@ -144,7 +150,7 @@
           </div>
 
           <div class="col-12 col-sm-8">
-            <h1>Rewards paid  </h1>
+            <h3>Rewards paid  </h3>
             <div class="card">
               <div class="info_block">
                 <div class="row" id="BalanceSection">
@@ -174,18 +180,18 @@
 
 
 
-      <section class="section section_info">
+      <section class="section section_info" id="MissedRewardSection">
         <div class="row">
 
           <div class="col-12 col-sm-4">
-            <h1>Missing rewards</h1>
+            <h3>Missing rewards</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row">
 
                   <div class="col-12 col-sm-12 bordered-col">
                     <h3 class="info_block__accent"><span style="color: red" id="MissedTotalRewards">-</span></h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total reward fund (including the fundation reward and zero wallet)">Total</div>
+                    <div class="control-label" data-toggle="tooltip" title="Total rewards missing">Total</div>
                   </div>
 
                 </div>
@@ -194,7 +200,7 @@
           </div>
 
           <div class="col-12 col-sm-8">
-            <h1>Rewards not paid</h1>
+            <h3>Rewards not paid</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row" id="BalanceSection">
@@ -202,15 +208,15 @@
 
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedValidationReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Fund for succesfull validation">Validation reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missing reward for succesfull validation">Validation reward</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedFlipsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Fund for qualified flips">Flips reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missing rewards for flips">Flips reward</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedInvitationsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Fund for validated invitations">Invitations reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missing rewards invitations">Invitations reward</div>
                   </div>
                 </div>
               </div>
@@ -300,14 +306,7 @@
                         >
                           Invitation
                         </th>
-                        <th>Issued</th>
-                        <th
-                          data-toggle="tooltip"
-                          title="Activation transaction"
-                        >
-                          Activation
-                        </th>
-                        <th>Activated</th>
+
                         <th data-toggle="tooltip" title="">Invited identity</th>
 
                         <th
@@ -318,17 +317,9 @@
                           Validation
                         </th>
 
-                        <th
-                          style="width: 160px;"
-                        >
-                          Reward
-                        </th>
-
-                        <th
-                          style="width: 160px;"
-                        >
-                          Details
-                        </th>
+                        <th style="width: 100px;">Reward </br>paid, DNA</th>
+                        <th style="width: 100px;">Missing</br>reward, DNA</th>
+                        <th style="width: 100px;">Details</th>
 
 
                     </tr>

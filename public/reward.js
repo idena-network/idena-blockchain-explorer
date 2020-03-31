@@ -1,6 +1,9 @@
+var totalInvitationMissedReward = 0;
+
 function initIdentityReward(identity, epoch) {
   getIdentityRewardData(identity, epoch - 1);
   $('#IdentityAddress')[0].textContent = identity;
+
   $('#EpochId')[0].textContent = epochFmt(epoch);
 
   $('#DetailsEpochId')[0].textContent = epochFmt(epoch);
@@ -12,27 +15,8 @@ function initIdentityReward(identity, epoch) {
     'https://robohash.org/' + identity.toLowerCase();
 
   $('#BalanceAddress')[0].href = '/address?address=' + identity + '#rewards';
-}
-
-function reward_getRewardsData(epoch, onSuccess) {
-  getApiData('Epoch/' + epoch + '/RewardsSummary', data => {
-    onSuccess(data);
-  });
-}
-
-function reward_getIdentityData(epoch, identity, onSuccess) {
-  getApiData('Epoch/' + epoch + '/Identity/' + identity, data => {
-    onSuccess(data);
-  });
-}
-
-function reward_IdentityFlipsRewardsData(epoch, identity, onSuccess) {
-  getApiData(
-    'Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips',
-    data => {
-      onSuccess(data);
-    }
-  );
+  $('#ValidationResultLink')[0].href =
+    './answers?epoch=' + epoch + '&identity=' + identity;
 }
 
 function getIdentityRewardData(identity, epoch) {
@@ -41,48 +25,76 @@ function getIdentityRewardData(identity, epoch) {
     penaltyReasonData => {
       updatePenaltyReasonData(penaltyReasonData);
 
-      reward_getRewardsData(epoch, epochRewardData => {
-        reward_getIdentityData(epoch, identity, identityData => {
-          reward_IdentityFlipsRewardsData(epoch, identity, flipData => {
-            updateIdentityRewardData(identityData);
-            updateAppendEmptyFlipsRewardsData(
-              identityData,
-              epochRewardData,
-              penaltyReasonData
-            );
-            updateIdentityFlipsRewardsData(
-              flipData,
-              epochRewardData,
-              penaltyReasonData
-            );
-
-            getApiData('Identity/' + identity + '/Age', identityAgeData => {
+      getApiData('Epoch/' + epoch + '/RewardsSummary', epochRewardData => {
+        //
+        getApiData('Epoch/' + epoch + '/Identity/' + identity, identityData => {
+          // Invitations
+          getApiData(
+            'Epoch/' + epoch + '/Identity/' + identity + '/RewardedInvites',
+            rewardedInvitesData => {
+              //availableInvitesData
               getApiData(
-                'Epoch/' + epoch + '/Identity/' + identity + '/Rewards',
-                data => {
-                  updateIdentityEpochRewardsData(
-                    data,
-                    penaltyReasonData,
-                    epochRewardData,
-                    identityAgeData,
-                    identityData
+                'Epoch/' +
+                  epoch +
+                  '/Identity/' +
+                  identity +
+                  '/AvailableInvites',
+                availableInvitesData => {
+                  getApiData(
+                    'Epoch/' +
+                      epoch +
+                      '/Identity/' +
+                      identity +
+                      '/SavedInviteRewards',
+                    savedInviteData => {
+                      updateIdentityInvitesRewardsData(
+                        epoch,
+                        rewardedInvitesData,
+                        epochRewardData,
+                        penaltyReasonData,
+                        identityData,
+                        availableInvitesData,
+                        savedInviteData
+                      );
+
+                      getApiData(
+                        'Epoch/' + epoch + '/Identity/' + identity + '/Rewards',
+                        identityRewardsData => {
+                          updateIdentityEpochRewardsData(
+                            epoch,
+                            identityRewardsData,
+                            penaltyReasonData,
+                            epochRewardData,
+                            identityData
+                          );
+                        }
+                      );
+                    }
                   );
                 }
               );
-            });
-          });
+            }
+          );
+          // Flips
+          getApiData(
+            'Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips',
+            flipData => {
+              updateIdentityRewardData(identityData);
+              updateAppendEmptyFlipsRewardsData(
+                identityData,
+                epochRewardData,
+                penaltyReasonData
+              );
+              updateIdentityFlipsRewardsData(
+                flipData,
+                epochRewardData,
+                penaltyReasonData
+              );
+            }
+          );
         });
       });
     }
-  );
-
-  getApiData(
-    'Identity/' + identity + '/Invites',
-    data => {
-      updateIdentityInvitesRewardsData(data);
-    },
-    0,
-    100
   );
 }
 
@@ -97,7 +109,7 @@ function updatePenaltyReasonData(data) {
     if (reason == 'WrongWords') {
       $('#Penalized')[0].textContent = 'Yes (flip was reported)';
     } else if (reason == 'QualifiedByNone') {
-      $('#Penalized')[0].textContent = 'Yes (flip was not available)';
+      $('#Penalized')[0].textContent = 'Yes (no qualified flips)';
     } else if (reason == 'NoQualifiedFlips') {
       $('#Penalized')[0].textContent = 'Yes (non of the flips are qualified)';
     }
@@ -132,19 +144,11 @@ function updateIdentityRewardData(data) {
   );
 
   if (data.result.missed) {
+    //$('#RewardSection').addClass('hidden');
     if (data.result.shortAnswers.flipsCount > 0) {
       $('#ValidationResult')[0].textContent = 'Late submission';
-      $('#ShortInTime')[0].textContent = 'Late';
-      $('#LongInTime')[0].textContent = 'Late';
     } else {
       $('#ValidationResult')[0].textContent = 'Missed validation';
-      if (data.result.approved) {
-        $('#ShortInTime')[0].textContent = 'Not accomplished';
-        $('#LongInTime')[0].textContent = 'No answers';
-      } else {
-        $('#ShortInTime')[0].textContent = 'Missing';
-        $('#LongInTime')[0].textContent = 'Missing';
-      }
     }
   } else {
     if (
@@ -160,12 +164,21 @@ function updateIdentityRewardData(data) {
 }
 
 function updateIdentityEpochRewardsData(
+  epoch,
   data,
   penaltyReasonData,
   epochRewardData,
-  identityAgeData,
   identityData
 ) {
+  if (
+    identityData.result == null ||
+    (identityData.result.state != 'Newbie' &&
+      identityData.result.state != 'Verified' &&
+      identityData.result.state != 'Human')
+  ) {
+    return;
+  }
+
   var missedInvitationsReward = 0,
     missedValidationReward = 0,
     missedFlipsReward = 0;
@@ -174,24 +187,28 @@ function updateIdentityEpochRewardsData(
     ValidationReward = 0,
     FlipsReward = 0;
 
-  if (penaltyReasonData.result != null) {
+  var age = epoch - identityData.result.birthEpoch + 1;
+
+  if (penaltyReasonData.result != null && epochRewardData.result != null) {
     //Penalized
 
-    missedInvitationsReward = epochRewardData.result.invitationsShare;
-    missedFlipsReward =
-      epochRewardData.result.flipsShare * identityData.result.availableFlips;
+    missedInvitationsReward = totalInvitationMissedReward;
     missedValidationReward =
-      Math.pow(epochRewardData.result.validationShare * 1, 0.33) *
-      identityAgeData.result;
-  } else {
-    if (data.result == null) {
-      return;
+      Math.pow(age * 1, 1 / 3) * epochRewardData.result.validationShare;
+  }
+
+  if (identityData.result != null && epochRewardData.result != null) {
+    if (
+      identityData.result.state != 'Newbie' &&
+      identityData.result.state != 'Verified' &&
+      identityData.result.state != 'Human'
+    ) {
+      missedValidationReward =
+        Math.pow(age * 1, 1 / 3) * epochRewardData.result.validationShare;
     }
+  }
 
-    missedFlipsReward =
-      epochRewardData.result.flipsShare *
-      (identityData.result.availableFlips - identityData.result.madeFlips);
-
+  if (data.result != null) {
     for (var i = 0; i < data.result.length; i++) {
       const tr = $('<tr/>');
       const td = $('<td/>');
@@ -209,6 +226,11 @@ function updateIdentityEpochRewardsData(
     }
   }
 
+  missedFlipsReward =
+    epochRewardData.result.flipsShare * identityData.result.availableFlips -
+    FlipsReward;
+  missedFlipsReward = missedFlipsReward < 0 ? 0 : missedFlipsReward;
+
   $('#ValidationReward')[0].textContent = dnaFmt(ValidationReward);
   $('#FlipsReward')[0].textContent = dnaFmt(FlipsReward);
   $('#InvitationsReward')[0].textContent = dnaFmt(InvitationsReward);
@@ -219,11 +241,11 @@ function updateIdentityEpochRewardsData(
   $('#MissedValidationReward')[0].textContent = dnaFmt(missedValidationReward);
   $('#MissedFlipsReward')[0].textContent = dnaFmt(missedFlipsReward);
   $('#MissedInvitationsReward')[0].textContent = dnaFmt(
-    missedInvitationsReward
+    totalInvitationMissedReward
   );
 
   const missedTotal =
-    missedInvitationsReward * 1 +
+    totalInvitationMissedReward * 1 +
     missedFlipsReward * 1 +
     missedValidationReward * 1;
   $('#MissedTotalRewards')[0].textContent = dnaFmt(missedTotal);
@@ -361,16 +383,41 @@ function updateAppendEmptyFlipsRewardsData(
   }
 }
 
-function updateIdentityInvitesRewardsData(data) {
+function updateIdentityInvitesRewardsData(
+  epoch,
+  data,
+  epochRewardData,
+  penaltyReasonData,
+  identityData,
+  availableInvitesData,
+  savedInviteData
+) {
   var table = $('#InvitationsRewardsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+
   if (data.result == null) {
     return;
   }
+  if (epochRewardData.result == null) {
+    return;
+  }
+  if (identityData.result == null) {
+    return;
+  }
+  if (availableInvitesData.result == null) {
+    return;
+  }
 
+  if (
+    identityData.result.state != 'Newbie' &&
+    identityData.result.state != 'Verified' &&
+    identityData.result.state != 'Human'
+  ) {
+    return;
+  }
+
+  var prev1EpochInviteActivated = 0;
+  var prev2EpochInviteActivated = 0;
+  var prev3EpochInviteActivated = 0;
   for (var i = 0; i < data.result.length; i++) {
     var tr = $('<tr/>');
     var td = $('<td/>');
@@ -392,21 +439,25 @@ function updateIdentityInvitesRewardsData(data) {
     );
     tr.append(td);
 
-    tr.append('<td>' + timeFmt(data.result[i].timestamp) + '</td>');
-
     var activation = data.result[i].activationHash;
+    var killing = data.result[i].killInviteeHash != null;
+
+    if (killing || !activation) {
+      continue;
+    }
+
+    if (data.result[i].epoch == epoch && activation != '') {
+      prev1EpochInviteActivated++;
+    }
+    if (data.result[i].epoch == epoch - 1 && activation != '') {
+      prev2EpochInviteActivated++;
+    }
+    if (data.result[i].epoch == epoch - 2 && activation != '') {
+      prev3EpochInviteActivated++;
+    }
+
     if (activation != '') {
       var td = $('<td/>');
-      td.append(
-        "<div class='text_block text_block--ellipsis'><a href='./tx?tx=" +
-          activation +
-          "'>" +
-          data.result[i].hash.substr(0, 8) +
-          '...</a></div>'
-      );
-      tr.append(td);
-
-      tr.append('<td>' + timeFmt(data.result[i].activationTimestamp) + '</td>');
 
       var td = $('<td/>');
       td.append(
@@ -424,17 +475,156 @@ function updateIdentityInvitesRewardsData(data) {
       tr.append(td);
     } else {
       tr.append('<td>Not activated</td>');
-      tr.append('<td>-</td>');
-      tr.append('<td>-</td>');
     }
 
     var validationResult = '-';
+    var isValidated = false;
     if (data.result[i].state != '') {
-      validationResult =
-        data.result[i].state == 'Undefined' ? 'Failed' : 'Successful';
+      if (
+        data.result[i].state == 'Newbie' ||
+        data.result[i].state == 'Human' ||
+        data.result[i].state == 'Verified'
+      ) {
+        validationResult = 'Successful';
+        isValidated = true;
+      } else {
+        validationResult = 'Failed';
+      }
     }
     tr.append('<td>' + validationResult + '</td>');
 
+    var rewardCoef = 3;
+    if (data.result[i].epoch == epoch - 1) {
+      rewardCoef = rewardCoef * 3;
+    } else if (data.result[i].epoch == epoch - 2) {
+      rewardCoef = rewardCoef * 6;
+    }
+
+    var invitationReward = epochRewardData.result.invitationsShare * rewardCoef;
+    var missingInvitationReward = 0;
+    var reason = '-';
+
+    if (isValidated && penaltyReasonData.result != null) {
+      reason = 'Validation penalty';
+      missingInvitationReward = invitationReward;
+      totalInvitationMissedReward =
+        totalInvitationMissedReward + missingInvitationReward * 1;
+      invitationReward = 0;
+    } else if (!isValidated) {
+      reason = 'Invitee failed';
+      missingInvitationReward = invitationReward;
+      totalInvitationMissedReward =
+        totalInvitationMissedReward + missingInvitationReward * 1;
+      invitationReward = 0;
+    }
+
+    tr.append('<td>' + dnaFmt(invitationReward, '') + '</td>');
+    tr.append(
+      '<td style="color: red">' + dnaFmt(missingInvitationReward, '') + '</td>'
+    );
+    tr.append('<td>' + reason + '</td>');
     table.append(tr);
+  }
+
+  //Append saved invitations
+  var s = 0;
+
+  for (var i = 0; i < availableInvitesData.result.length; i++) {
+    var tr = $('<tr/>');
+    var td = $('<td/>');
+
+    tr.append(
+      '<td><a href="./epoch?epoch=' +
+        availableInvitesData.result[i].epoch +
+        '#invitations">' +
+        epochFmt(availableInvitesData.result[i].epoch) +
+        '</a></td>'
+    );
+
+    tr.append('<td>Saved invititation</td>');
+    tr.append('<td>-</td>');
+    tr.append('<td>-</td>');
+
+    // Suvaed invitations in the current epoch
+    if (availableInvitesData.result[i].epoch == epoch) {
+      for (
+        j = 0;
+        j < availableInvitesData.result[i].invites - prev1EpochInviteActivated;
+        j++
+      ) {
+        var invitationReward = epochRewardData.result.invitationsShare;
+        var missingInvitationReward = invitationReward;
+
+        if (savedInviteData.result[s].value == 'SavedInvite') {
+          missingInvitationReward = missingInvitationReward * 2;
+        }
+        if (savedInviteData.result[s].value == 'SavedInviteWin') {
+          invitationReward = invitationReward * 2;
+        }
+
+        totalInvitationMissedReward =
+          totalInvitationMissedReward + missingInvitationReward * 1;
+
+        tr.append('<td>' + dnaFmt(invitationReward, '') + '</td>');
+        tr.append(
+          '<td style="color: red">' +
+            dnaFmt(missingInvitationReward, '') +
+            '</td>'
+        );
+        tr.append('<td>Missed invitation</td>');
+        table.append(tr);
+        s++;
+      }
+    }
+
+    // Suvaed invitations in the epoch-1
+    if (availableInvitesData.result[i].epoch == epoch - 1) {
+      for (
+        j = 0;
+        j < availableInvitesData.result[i].invites - prev2EpochInviteActivated;
+        j++
+      ) {
+        var invitationReward = 0;
+        var missingInvitationReward =
+          epochRewardData.result.invitationsShare * 3 * 3;
+
+        totalInvitationMissedReward =
+          totalInvitationMissedReward + missingInvitationReward * 1;
+
+        tr.append('<td>' + dnaFmt(invitationReward, '') + '</td>');
+        tr.append(
+          '<td style="color: red">' +
+            dnaFmt(missingInvitationReward, '') +
+            '</td>'
+        );
+        tr.append('<td>Missed invitation</td>');
+        table.append(tr);
+      }
+    }
+
+    // Suvaed invitations in the epoch - 2
+    if (availableInvitesData.result[i].epoch == epoch - 2) {
+      for (
+        j = 0;
+        j < availableInvitesData.result[i].invites - prev3EpochInviteActivated;
+        j++
+      ) {
+        var invitationReward = 0;
+        var missingInvitationReward =
+          epochRewardData.result.invitationsShare * 3 * 3 * 3;
+
+        totalInvitationMissedReward =
+          totalInvitationMissedReward + missingInvitationReward * 1;
+
+        tr.append('<td>' + dnaFmt(invitationReward, '') + '</td>');
+        tr.append(
+          '<td style="color: red">' +
+            dnaFmt(missingInvitationReward, '') +
+            '</td>'
+        );
+        tr.append('<td>Missed invitation</td>');
+        table.append(tr);
+      }
+    }
   }
 }

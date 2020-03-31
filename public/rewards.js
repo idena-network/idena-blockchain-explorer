@@ -31,7 +31,7 @@ function getRewardsData(epoch) {
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      getIdentityRewardsData(data.result, 0, { prevEpoch });
+      getIdentityRewardsData(data.result, 0, { epoch, prevEpoch });
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -44,7 +44,7 @@ function getRewardsData(epoch) {
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      updateBadAuthors(data);
+      updateBadAuthors(epoch, data);
     },
     error: function(request, error) {
       console.error(u + ', error:' + error);
@@ -66,7 +66,7 @@ function getRewardsData(epoch) {
     });
 }
 
-function updateBadAuthors(data) {
+function updateBadAuthors(epoch, data) {
   if (data.result == null) {
     return;
   }
@@ -82,9 +82,11 @@ function updateBadAuthors(data) {
         '" alt="pic"width="32"></div>'
     );
     td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+      "<div class='text_block text_block--ellipsis'><a href='./reward?identity=" +
         data.result[i].address +
-        "#flips'>" +
+        '&epoch=' +
+        epoch +
+        "'>" +
         data.result[i].address.substr(0, 20) +
         '...</a></div>'
     );
@@ -172,9 +174,11 @@ function updateRewardsData(data, total, loaded, params) {
         '" alt="pic"width="32"></div>'
     );
     td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./address?address=" +
+      "<div class='text_block text_block--ellipsis'><a href='./reward?identity=" +
         data.result[i].address +
-        "#rewards'>" +
+        '&epoch=' +
+        params.epoch +
+        "'>" +
         data.result[i].address.substr(0, 12) +
         '...</a></div>'
     );

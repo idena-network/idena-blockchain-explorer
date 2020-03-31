@@ -11,6 +11,9 @@ function initIdentityAnswers(identity, epoch) {
 
   $('#IdentityAvatar img')[0].src =
     'https://robohash.org/' + identity.toLowerCase();
+
+  $('#RewardsPaidLink')[0].href =
+    './reward?epoch=' + epoch + '&identity=' + identity;
 }
 
 function getIdentityAnswersData(identiy, epoch) {
@@ -168,10 +171,15 @@ function updateIdentityAnswersData(data) {
     $('#IdentityAvatar div').append('<i class="icon icon--status"></i>');
   }
 
-  if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human') {
+  if (
+    data.result.state == 'Newbie' ||
+    data.result.state == 'Verified' ||
+    data.result.state == 'Human'
+  ) {
     $('#ValidationStatus')[0].textContent = 'Successful validation';
   } else {
     $('#ValidationStatus')[0].textContent = 'Validation failed';
+    $('#RewardsPaidLink').addClass('hidden');
   }
 
   if (data.result.prevState == 'Invite') {
@@ -232,7 +240,11 @@ function updateIdentityAnswersData(data) {
       }
     }
   } else {
-    if (data.result.state == 'Newbie' || data.result.state == 'Verified' || data.result.state == 'Human') {
+    if (
+      data.result.state == 'Newbie' ||
+      data.result.state == 'Verified' ||
+      data.result.state == 'Human'
+    ) {
       $('#ValidationResult')[0].textContent = 'Successful';
     } else {
       $('#ValidationResult')[0].textContent = 'Wrong answers';

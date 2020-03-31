@@ -303,13 +303,13 @@ function updateIdentityEpochsData(data, identity) {
             100
         ) +
         '%)';
-    //        if (data.result[i].totalShortAnswers.flipsCount>0)
-    //         totalScoreTxt=data.result[i].totalShortAnswers.point +" out of "+data.result[i].totalShortAnswers.flipsCount +" ("+precise2(data.result[i].totalShortAnswers.point/data.result[i].totalShortAnswers.flipsCount*100) + "%)";
 
     var state = data.result[i].state;
 
     if (state != 'Verified' && state != 'Newbie' && state != 'Human') {
       tr.append('<td>' + identityStatusFmt(state) + '</td>');
+
+      tr.append('<td>-</td>');
 
       if (data.result[i].missed) {
         if (data.result[i].shortAnswers.flipsCount > 0) {
@@ -362,6 +362,18 @@ function updateIdentityEpochsData(data, identity) {
       }
     } else {
       tr.append('<td>' + data.result[i].state + '</td>');
+
+      const reward = data.result[i].totalValidationReward; //data.result[i].reward
+      tr.append(
+        '<td><a href="./reward?epoch=' +
+          nextEpoch +
+          '&identity=' +
+          identity +
+          '">' +
+          dnaFmt(reward, '') +
+          '</a></td>'
+      );
+
       tr.append('<td>' + shortScoreTxt + '</td>');
       tr.append('<td>' + longScoreTxt + '</td>');
       tr.append('<td>Successful</td>');
