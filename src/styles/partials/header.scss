@@ -7,8 +7,23 @@
   @media (#{$max_phones--big}) {
 
   }
+
+
+  .form_search {
+    font-size: 0;
+    margin-left: 30%;
+    margin-right: 30%;
+
+    @media (#{$max_phones--big}) {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
 }
 
 .header_logo {
   font-size: 0;
 }
+
+

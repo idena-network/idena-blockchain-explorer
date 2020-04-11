@@ -109,7 +109,7 @@ function updatePenaltyReasonData(data) {
     if (reason == 'WrongWords') {
       $('#Penalized')[0].textContent = 'Yes (flip was reported)';
     } else if (reason == 'QualifiedByNone') {
-      $('#Penalized')[0].textContent = 'Yes (no qualified flips)';
+      $('#Penalized')[0].textContent = 'Yes (flip was not availalbe)';
     } else if (reason == 'NoQualifiedFlips') {
       $('#Penalized')[0].textContent = 'Yes (non of the flips are qualified)';
     }
@@ -304,7 +304,10 @@ function updateIdentityFlipsRewardsData(
       Keywords =
         data.result[i].words.word1.name + '/' + data.result[i].words.word2.name;
 
-      if (data.result[i].wrongWords) {
+      if (
+        data.result[i].wrongWords ||
+        data.result[i].status == 'QualifiedByNone'
+      ) {
         icon = '<i class="icon icon--micro_fail"></i>';
       } else {
         icon = '<i class="icon icon--micro_success"></i>';

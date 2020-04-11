@@ -144,7 +144,8 @@ function updateFlipData(data) {
     data.result.author.substr(0, 30) + '...';
   $('#FlipAuthor img')[0].src =
     'https://robohash.org/' + data.result.author.toLowerCase();
-  $('#FlipAuthor')[0].href = './identity?identity=' + data.result.author;
+  $('#FlipAuthor')[0].href =
+    './identity?identity=' + data.result.author + '#flips';
 
   $('#FlipTx')[0].textContent = data.result.txHash.substr(0, 35) + '...';
   $('#FlipTx')[0].href = './tx?tx=' + data.result.txHash;
@@ -164,9 +165,15 @@ function updateFlipData(data) {
     $('#Keyword2')[0].textContent = data.result.words.word2.name;
     $('#Keyword2Descr')[0].textContent = data.result.words.word2.desc;
 
-    if (data.result.wrongWords) {
-      $('#KeywordRelevance span')[0].textContent =
+    if (data.result.wrongWords || data.result.status == 'QualifiedByNone') {
+      var reason =
         'The flip was reported as irrelevant to keywords or having inappropriate content, labels on top of the images showing the right order or text needed to solve the flip';
+
+      if (data.result.status == 'QualifiedByNone')
+        reason =
+          'The flip was not available for the network during the validation';
+
+      $('#KeywordRelevance span')[0].textContent = reason;
 
       $('#KeywordRelevance i').addClass('icon--micro_fail');
     } else {
@@ -214,6 +221,7 @@ function updateFlipAnswersShortData(data) {
     tr.append(td);
 
     var icon = '';
+
     if (data.result[i].flipAnswer != 'None') {
       if (data.result[i].respAnswer == data.result[i].flipAnswer) {
         icon = '<i class="icon icon--micro_success"></i>';
@@ -314,8 +322,8 @@ function updateFlipContent(data) {
     return;
   }
 
-  if (data.result.LeftOrder==null){
-    $('#FlipTitle')[0].textContent = "Flip (encrypted content)"
+  if (data.result.LeftOrder == null) {
+    $('#FlipTitle')[0].textContent = 'Flip (encrypted content)';
   }
 
   //      $(".section_flips").removeClass('hidden');
@@ -329,9 +337,9 @@ function updateFlipContent(data) {
     var lposition = -1,
       rposition = -1;
 
-    if (data.result.LeftOrder==null){
-      lposition = (i==0?0:-1)
-      rposition = (i==1?0:-1);
+    if (data.result.LeftOrder == null) {
+      lposition = i == 0 ? 0 : -1;
+      rposition = i == 1 ? 0 : -1;
     } else {
       for (var j = 0; j < data.result.Pics.length; j++) {
         if (data.result.LeftOrder[j] == i) lposition = j;
@@ -342,7 +350,6 @@ function updateFlipContent(data) {
     var src = URL.createObjectURL(
       new Blob([buffArray], { type: 'image/jpeg' })
     );
-
 
     if (lposition >= 0) $('#FlipImageL' + lposition)[0].src = src;
     if (rposition >= 0) $('#FlipImageR' + rposition)[0].src = src;

@@ -222,7 +222,10 @@ function updateAddressFlipsData(data) {
       Keywords =
         data.result[i].words.word1.name + '/' + data.result[i].words.word2.name;
 
-      if (data.result[i].wrongWords) {
+      if (
+        data.result[i].wrongWords ||
+        data.result[i].status == 'QualifiedByNone'
+      ) {
         icon = '<i class="icon icon--micro_fail"></i>';
       } else {
         icon = '<i class="icon icon--micro_success"></i>';
@@ -363,14 +366,18 @@ function updateIdentityEpochsData(data, identity) {
     } else {
       tr.append('<td>' + data.result[i].state + '</td>');
 
-      const reward = data.result[i].totalValidationReward; //data.result[i].reward
+      var reward = data.result[i].totalValidationReward;
+
+      reward = reward == 0 ? 'Not paid' : dnaFmt(reward, '');
+
+      console.log(reward == 0);
       tr.append(
         '<td><a href="./reward?epoch=' +
           nextEpoch +
           '&identity=' +
           identity +
           '">' +
-          dnaFmt(reward, '') +
+          reward +
           '</a></td>'
       );
 

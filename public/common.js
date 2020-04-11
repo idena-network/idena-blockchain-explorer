@@ -1,4 +1,4 @@
-var url = 'https://api.idena.io/api/';
+var url = 'https://api.idena.org/api/';
 var path = '';
 
 function frac(n) {
@@ -35,7 +35,7 @@ function dnaFmt(amount, curency = 'DNA') {
 }
 
 function flipQualificationStatusFmt(status) {
-  if (status == 'QualifiedByNone') return 'Not qualified';
+  if (status == 'QualifiedByNone') return 'Not available';
   return status;
 }
 
@@ -337,7 +337,7 @@ function addShowMoreTableButton(table, onClickFunction, total, loaded, param) {
     table
       .parent()
       .append(
-        '<a style="position: absolute; left:45%" onClick=\'this.remove(); ' +
+        '<a onClick=\' $(this).addClass("disabled"); ' +
           onClickFunction.name +
           '(' +
           total +
@@ -345,7 +345,7 @@ function addShowMoreTableButton(table, onClickFunction, total, loaded, param) {
           loaded +
           ', ' +
           p +
-          ');\' class="btn btn-secondary btn-small"><span>Show more (' +
+          '); this.remove(); \' class="btn show-more-btn btn-secondary btn-small"><span>Show more (' +
           loaded +
           ' out of ' +
           total +

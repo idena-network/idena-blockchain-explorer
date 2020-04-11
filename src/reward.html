@@ -26,9 +26,9 @@
               <h1 class="section_main__title" >
                 <span>Identity rewards for epoch </span><span id="EpochId">...</span>
               </h1>
-              <div class="section_main__subtitle"><span id="IdentityAddress">...</span></div>
+              <h3 class="section_main__subtitle"><span id="IdentityAddress">...</span></h3>
 
-              <div class="section_main__subtitle" id="ValidationStatus">...</div>
+              <h3 class="section_main__subtitle" id="ValidationStatus">...</h3>
             </div>
 <!--
             <button type="button" class="btn btn-small btn-primary">
@@ -40,10 +40,13 @@
             </a>
 -->
 
-            <a class="btn btn-secondary btn-small" id="ValidationResultLink">
-              <i class="icon icon--report"></i>
-              <span>Validation result</span>
-            </a>
+
+
+            <div class="button-group">
+              <a class="btn btn-secondary btn-small" id="ValidationResultLink">
+                <i class="icon icon--report"></i>
+                <span>Validation results</span>
+              </a>
 
               <a
                 type="button"
@@ -53,6 +56,7 @@
                 <i class="icon icon--coins"></i>
                 <span>Address details</span>
               </a>
+            </div>
 
           </div>
         </div>
@@ -162,11 +166,11 @@
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="FlipsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Reward for qualified flips">Flips reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Reward for qualified flips">Flip reward</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" id="InvitationsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Reward for validated invitations">Invitations reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Reward for validated invitations">Invitation reward</div>
                   </div>
                 </div>
               </div>
@@ -184,14 +188,14 @@
         <div class="row">
 
           <div class="col-12 col-sm-4">
-            <h3>Missing rewards</h3>
+            <h3>Missed rewards</h3>
             <div class="card">
               <div class="info_block">
                 <div class="row">
 
                   <div class="col-12 col-sm-12 bordered-col">
                     <h3 class="info_block__accent"><span style="color: red" id="MissedTotalRewards">-</span></h3>
-                    <div class="control-label" data-toggle="tooltip" title="Total rewards missing">Total</div>
+                    <div class="control-label" data-toggle="tooltip" title="Total rewards missed">Total</div>
                   </div>
 
                 </div>
@@ -208,15 +212,15 @@
 
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedValidationReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Missing reward for succesfull validation">Validation reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missed reward for succesfull validation">Validation reward</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedFlipsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Missing rewards for flips">Flips reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missed rewards for flips">Flip reward</div>
                   </div>
                   <div class="col-12 col-sm-4 bordered-col">
                     <h3 class="info_block__accent" style="color: red" id="MissedInvitationsReward">-</h3>
-                    <div class="control-label" data-toggle="tooltip" title="Missing rewards invitations">Invitations reward</div>
+                    <div class="control-label" data-toggle="tooltip" title="Missed rewards invitations">Invitation reward</div>
                   </div>
                 </div>
               </div>
@@ -281,7 +285,7 @@
                           Status
                         </th>
                         <th style="width: 100px;">Reward </br>paid, DNA</th>
-                        <th style="width: 100px;">Missing</br>reward, DNA</th>
+                        <th style="width: 100px;">Missed</br>reward, DNA</th>
                         <th style="width: 100px;">Details</th>
                       </tr>
 
@@ -318,7 +322,7 @@
                         </th>
 
                         <th style="width: 100px;">Reward </br>paid, DNA</th>
-                        <th style="width: 100px;">Missing</br>reward, DNA</th>
+                        <th style="width: 100px;">Missed</br>reward, DNA</th>
                         <th style="width: 100px;">Details</th>
 
 

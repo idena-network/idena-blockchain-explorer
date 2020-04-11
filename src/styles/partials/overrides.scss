@@ -44,6 +44,7 @@ h5,
   font-weight: $font-weight-semi;
   color: inherit;
   line-height: normal;
+  word-break: break-all;
 }
 
 h1,
@@ -427,6 +428,14 @@ p {
   -webkit-overflow-scrolling: touch;
 }
 
+.show-more-btn {
+  position: absolute; 
+  left:40%;
+    @media (#{$max_phones--big}) {
+      left:20%;
+    }
+}
+
 .card {
   color: $dark;
   background-color: $white;
@@ -537,7 +546,8 @@ p {
 }
 
 .button-group {
-  white-space: nowrap;
+  //white-space: nowrap;
+  line-height: 45px;
   font-size: 0;
 
   .btn + .btn {
