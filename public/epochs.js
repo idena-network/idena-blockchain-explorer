@@ -8,39 +8,18 @@ function getEpochsData() {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochsData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
-  });
-  /*
-  u = url + 'Epochs/Count';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      //update...(data);
     },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
-    }
   });
-*/
 
-  u = url + 'Coins';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      undateCoinsData(data);
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
-    }
+  getApiData('Coins', (coinsCata) => {
+    getApiData('CirculatingSupply?format=short', (circulationData) => {
+      undateCoinsData(coinsCata, circulationData);
+    });
   });
 
   getBalancesData(1000, 0);
@@ -50,12 +29,12 @@ function getEpochsData() {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       undateMinersCount(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'OnlineIdentities/Count';
@@ -63,12 +42,12 @@ function getEpochsData() {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getMinersActivity(data.result, 0);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'TotalLatestMiningRewards/count';
@@ -76,21 +55,25 @@ function getEpochsData() {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getMining24Data(data.result, 0);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
+  });
+
+  getApiData('Epoch/Last', (epochLast) => {
+    if (epochLast.result == null) return;
+
+    $('#ValidationResult')[0].href =
+      './validation?epoch=' + epochLast.result.epoch;
   });
 }
 
 function updateEpochsData(data) {
   var table = $('#EpochsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  table.find('td').parent().remove();
   if (data.result == null) {
     return;
   }
@@ -176,12 +159,12 @@ function getMinersActivity(total, loaded) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       undateMinersActivity(data, total, loaded + step);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -241,12 +224,12 @@ function getBalancesData(total, loaded) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       undateBalancesData(data, total, loaded + step);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -292,19 +275,29 @@ function undateBalancesData(data, total, loaded) {
   }
 }
 
-function undateCoinsData(data) {
-  if (data.result == null) {
+function undateCoinsData(coinsCata, circulationData) {
+  if (coinsCata.result == null) {
+    return;
+  }
+
+  if (circulationData.result == null) {
     return;
   }
 
   $('#TotalSupply')[0].textContent = dnaFmt(
-    precise2(data.result.totalBalance * 1 + data.result.totalStake * 1)
+    precise2(
+      coinsCata.result.totalBalance * 1 + coinsCata.result.totalStake * 1
+    )
   );
-  $('#TotalStaked')[0].textContent = dnaFmt(precise2(data.result.totalStake));
-  $('#TotalBurnt')[0].textContent = dnaFmt(precise2(data.result.burnt));
+  //$('#TotalStaked')[0].textContent = dnaFmt(precise2(coinsCata.result.totalStake));
+  $('#TotalBurnt')[0].textContent = dnaFmt(precise2(coinsCata.result.burnt));
+
+  $('#CirculationSupply')[0].textContent = dnaFmt(
+    precise2(circulationData.result)
+  );
 }
 
-const getMining24Data = function(total, loaded) {
+const getMining24Data = function (total, loaded) {
   const step = loaded == 0 ? 30 : 100;
 
   if (loaded > total) {
@@ -316,12 +309,12 @@ const getMining24Data = function(total, loaded) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateMining24Data(data, total, loaded + step);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 };
 

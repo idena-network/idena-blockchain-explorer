@@ -111,6 +111,11 @@ const commonConfig = {
       filename: 'rewards.html',
     }),
 
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/circulation.html'),
+      hash: false,
+      filename: 'circulation.html',
+    }),
 
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/reward.html'),

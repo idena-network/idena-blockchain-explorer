@@ -1,5 +1,4 @@
-"use strict";
-
+'use strict';
 
 function getAllUrlParams(url) {
   let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
@@ -12,10 +11,9 @@ function getAllUrlParams(url) {
     for (let i = 0; i < arr.length; i++) {
       let a = arr[i].split('=');
       let paramName = a[0];
-      let paramValue = typeof (a[1]) === 'undefined' ? true : a[1];
+      let paramValue = typeof a[1] === 'undefined' ? true : a[1];
 
       if (paramName.match(/\[(\d+)?\]$/)) {
-
         let key = paramName.replace(/\[(\d+)?\]/, '');
         if (!obj[key]) obj[key] = [];
 
@@ -41,12 +39,12 @@ function getAllUrlParams(url) {
   return obj;
 }
 
-
-
 window.addEventListener('DOMContentLoaded', function () {
   // START OF: is mobile =====
   function isMobile() {
-    return (/Android|iPhone|iPad|iPod|BlackBerry/i).test(navigator.userAgent || navigator.vendor || window.opera);
+    return /Android|iPhone|iPad|iPod|BlackBerry/i.test(
+      navigator.userAgent || navigator.vendor || window.opera
+    );
   }
   // ===== END OF: is mobile
 
@@ -58,7 +56,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     if (isMobile()) {
       BODY.addClass('body--mobile');
-      $('video').remove()
+      $('video').remove();
     } else {
       BODY.addClass('body--desktop');
     }
@@ -68,20 +66,22 @@ window.addEventListener('DOMContentLoaded', function () {
   let $btnAgree = $('.btn_agree');
 
   $btnAgree.on('click', function () {
-    $(this).closest('.badge_fixed').remove()
+    $(this).closest('.badge_fixed').remove();
   });
 
   function initInputBlur() {
     $('.form_subscribe').each(function () {
-      $(this).find('.form-control').on('blur', function (event) {
-        let inputValue = this.value;
-        if (inputValue) {
-          this.classList.add('value-exists');
-        } else {
-          this.classList.remove('value-exists');
-        }
-      });
-    })
+      $(this)
+        .find('.form-control')
+        .on('blur', function (event) {
+          let inputValue = this.value;
+          if (inputValue) {
+            this.classList.add('value-exists');
+          } else {
+            this.classList.remove('value-exists');
+          }
+        });
+    });
   }
 
   initInputBlur();
@@ -89,16 +89,19 @@ window.addEventListener('DOMContentLoaded', function () {
   let token = getAllUrlParams().confirmationToken;
 
   function postData(data) {
-    fetch(`https://api.mc2.com.de/api/EmailConfirmation/Confirm?confirmationToken=${data}`, {
-      method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: { 'Content-type': 'application/x-www-form-urlencoded' },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: `?confirmationToken=${data}`,
-    })
+    fetch(
+      `https://api.mc2.com.de/api/EmailConfirmation/Confirm?confirmationToken=${data}`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+        redirect: 'follow',
+        referrer: 'no-referrer',
+        body: `?confirmationToken=${data}`,
+      }
+    )
       .then(function (response) {
         if (!response.ok) {
           throw Error(response.statusText);
@@ -108,32 +111,30 @@ window.addEventListener('DOMContentLoaded', function () {
       .then(function (response) {
         console.log('Request succeeded with OK response');
 
-        window.location.href = '/verified.html'
+        window.location.href = '/verified.html';
       })
       .catch(function (error) {
         console.error('Request failed', error);
 
-        window.location.href = '/404.html'
+        window.location.href = '/404.html';
       });
   }
 
-  if (token && token !== "") {
-    postData(token)
-  } else if (!BODY.is(":visible")) {
+  if (token && token !== '') {
+    postData(token);
+  } else if (!BODY.is(':visible')) {
     BODY.show();
   }
 });
 
-
 $(document).ready(function () {
-
   $('[data-toggle="tooltip"]').tooltip();
   path = window.location.pathname;
 
   var p = getAllUrlParams();
   var title = '';
 
-  if (path == "/identity") {
+  if (path == '/identity') {
     title = title + 'Identity';
     if (!(p.identity === undefined)) {
       initIdentity(p.identity);
@@ -141,7 +142,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/address") {
+  if (path == '/address') {
     title = title + 'Address';
     if (!(p.address === undefined)) {
       initAddress(p.address);
@@ -149,7 +150,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/epoch") {
+  if (path == '/epoch') {
     title = title + 'Epoch';
     if (!(p.epoch === undefined)) {
       initEpoch(p.epoch);
@@ -157,7 +158,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/validation") {
+  if (path == '/validation') {
     title = title + 'Validation result';
     if (!(p.epoch === undefined)) {
       initValidation(p.epoch);
@@ -165,7 +166,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/flip") {
+  if (path == '/flip') {
     title = title + 'Flip';
     if (!(p.flip === undefined)) {
       initFlip(p.flip);
@@ -173,7 +174,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/block") {
+  if (path == '/block') {
     title = title + 'Block';
     if (!(p.block === undefined)) {
       initBlock(p.block);
@@ -181,17 +182,15 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/answers") {
+  if (path == '/answers') {
     title = title + 'Identity validation';
     if (!(p.identity === undefined) && !(p.epoch === undefined)) {
       initIdentityAnswers(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
     }
-
   }
 
-
-  if (path == "/tx") {
+  if (path == '/tx') {
     title = title + 'Transaction';
     if (!(p.tx === undefined)) {
       initTransaction(p.tx);
@@ -199,7 +198,7 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/rewards") {
+  if (path == '/rewards') {
     title = title + 'Validation session rewards';
     if (!(p.epoch === undefined)) {
       initRewards(p.epoch);
@@ -207,57 +206,52 @@ $(document).ready(function () {
     }
   }
 
-  if (path == "/reward") {
+  if (path == '/reward') {
     title = title + 'Identity validation reward';
     if (!(p.identity === undefined) && !(p.epoch === undefined)) {
       initIdentityReward(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
     }
-
   }
 
-  if (path == "/") {
+  if (path == '/circulation') {
+    title = title + 'Idena (DNA) circulation supply';
+    initCirculation();
+  }
+
+  if (path == '/') {
     initEpochs();
     title = 'Idena Explorer';
-  } else
-    title = title + ' | Idena Explorer';
-
+  } else title = title + ' | Idena Explorer';
 
   $('title').text(title);
 
-
-
   if (document.location.hash != '') {
     var viewelem = $('a[href="' + document.location.hash + '"]')[0]; //tab click
-    if (viewelem) viewelem.click()
+    if (viewelem) viewelem.click();
   }
 });
-
 
 $('a.nav-link[data-toggle="tab"]').on('click', function (e) {
   //alert($(this)[0].attr('href'))
-  history.replaceState(undefined, undefined, $(this)[0].href)
-})
+  history.replaceState(undefined, undefined, $(this)[0].href);
+});
 
-
-
-
-
-$("#SearchInput").keyup(function (e) {
+$('#SearchInput').keyup(function (e) {
   //  const isValidEmail = $(this)[0].checkValidity();
   //  isValidEmail ? Btn[0].disabled = false : Btn[0].disabled = true;
-  const Btn = $(this).parent().parent().find(".btn");
+  const Btn = $(this).parent().parent().find('.btn');
   if (e.which === 13) {
-    Btn[0].click()
+    Btn[0].click();
   }
 });
 
-
-
-$("#SearchBtn").click(function () {
-  const input = $("#SearchInput")[0];
+$('#SearchBtn').click(function () {
+  const input = $('#SearchInput')[0];
   const txt = input.value;
-  if (txt == '') { return; }
+  if (txt == '') {
+    return;
+  }
 
   input.setAttribute('disabled', '');
 
@@ -285,10 +279,7 @@ $("#SearchBtn").click(function () {
       }
     },
     error: function (request, error) {
-      alert("Oops, something went wrong: " + error);
-    }
+      alert('Oops, something went wrong: ' + error);
+    },
   });
 });
-
-
-
