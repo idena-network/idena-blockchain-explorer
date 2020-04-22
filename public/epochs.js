@@ -292,7 +292,7 @@ function undateCoinsData(coinsCata, circulationData) {
   //$('#TotalStaked')[0].textContent = dnaFmt(precise2(coinsCata.result.totalStake));
   $('#TotalBurnt')[0].textContent = dnaFmt(precise2(coinsCata.result.burnt));
 
-  $('#CirculationSupply')[0].textContent = dnaFmt(
+  $('#CirculatingSupply')[0].textContent = dnaFmt(
     precise2(circulationData.result)
   );
 }

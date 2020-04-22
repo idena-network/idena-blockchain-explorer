@@ -533,28 +533,31 @@ function updateIdentityInvitesRewardsData(
   var s = 0;
 
   for (var i = 0; i < availableInvitesData.result.length; i++) {
-    var tr = $('<tr/>');
-    var td = $('<td/>');
 
-    tr.append(
-      '<td><a href="./epoch?epoch=' +
-        availableInvitesData.result[i].epoch +
-        '#invitations">' +
-        epochFmt(availableInvitesData.result[i].epoch) +
-        '</a></td>'
-    );
-
-    tr.append('<td>Saved invititation</td>');
-    tr.append('<td>-</td>');
-    tr.append('<td>-</td>');
-
-    // Suvaed invitations in the current epoch
+    // Saved invitations in the current epoch
     if (availableInvitesData.result[i].epoch == epoch) {
+
       for (
         j = 0;
         j < availableInvitesData.result[i].invites - prev1EpochInviteActivated;
         j++
       ) {
+
+
+        var tr = $('<tr/>');
+        var td = $('<td/>');
+
+        tr.append(
+        '<td><a href="./epoch?epoch=' +
+          availableInvitesData.result[i].epoch +
+          '#invitations">' +
+          epochFmt(availableInvitesData.result[i].epoch) +
+          '</a></td>'
+        );
+        tr.append('<td>Saved invititation</td>');
+        tr.append('<td>-</td>');
+        tr.append('<td>-</td>');
+
         var invitationReward = epochRewardData.result.invitationsShare;
         var missingInvitationReward = invitationReward;
 
@@ -580,13 +583,29 @@ function updateIdentityInvitesRewardsData(
       }
     }
 
-    // Suvaed invitations in the epoch-1
+    // Saved invitations in the epoch-1
     if (availableInvitesData.result[i].epoch == epoch - 1) {
+
       for (
         j = 0;
         j < availableInvitesData.result[i].invites - prev2EpochInviteActivated;
         j++
       ) {
+
+      var tr = $('<tr/>');
+      var td = $('<td/>');
+
+      tr.append(
+      '<td><a href="./epoch?epoch=' +
+        availableInvitesData.result[i].epoch +
+        '#invitations">' +
+        epochFmt(availableInvitesData.result[i].epoch) +
+        '</a></td>'
+      );
+      tr.append('<td>Saved invititation</td>');
+      tr.append('<td>-</td>');
+      tr.append('<td>-</td>');
+
         var invitationReward = 0;
         var missingInvitationReward =
           epochRewardData.result.invitationsShare * 3 * 3;
@@ -605,13 +624,29 @@ function updateIdentityInvitesRewardsData(
       }
     }
 
-    // Suvaed invitations in the epoch - 2
+    // Saved invitations in the epoch - 2
     if (availableInvitesData.result[i].epoch == epoch - 2) {
       for (
         j = 0;
         j < availableInvitesData.result[i].invites - prev3EpochInviteActivated;
         j++
       ) {
+
+
+      var tr = $('<tr/>');
+      var td = $('<td/>');
+
+      tr.append(
+      '<td><a href="./epoch?epoch=' +
+        availableInvitesData.result[i].epoch +
+        '#invitations">' +
+        epochFmt(availableInvitesData.result[i].epoch) +
+        '</a></td>'
+      );
+      tr.append('<td>Saved invititation</td>');
+      tr.append('<td>-</td>');
+      tr.append('<td>-</td>');
+
         var invitationReward = 0;
         var missingInvitationReward =
           epochRewardData.result.invitationsShare * 3 * 3 * 3;

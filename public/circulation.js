@@ -19,7 +19,7 @@ function undateVestingData(coinsData, circulationData) {
     return;
   }
 
-  $('#CirculationSupply')[0].textContent = dnaFmt(
+  $('#CirculatingSupply')[0].textContent = dnaFmt(
     precise2(circulationData.result),
     ''
   );
@@ -88,13 +88,13 @@ function undateVestingData(coinsData, circulationData) {
     },
     {
       address: '0xcbb98843270812eeCE07BFb82d26b4881a33aA91',
-      name: 'Foundation weallet addresses',
+      name: 'Foundation wallet address',
       date: '-',
       descr: '',
     },
     {
       address: '0x4d60dC6A2CbA8c3EF1Ba5e1Eba5c12c54cEE6B61',
-      name: 'Previous foundation weallet addresses',
+      name: 'Previous foundation wallet address',
       date: '-',
       descr: '',
     },

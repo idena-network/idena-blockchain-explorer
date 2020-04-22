@@ -215,7 +215,7 @@ $(document).ready(function () {
   }
 
   if (path == '/circulation') {
-    title = title + 'Idena (DNA) circulation supply';
+    title = title + 'Idena (DNA) circulating supply';
     initCirculation();
   }
 
