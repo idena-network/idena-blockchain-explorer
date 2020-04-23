@@ -11,13 +11,13 @@ function prepareFlipData(flip) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateFlipData(data);
       getFlipData(flip);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -27,12 +27,12 @@ function getFlipData(flip) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateFlipAnswersShortData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Flip/' + flip + '/Answers/Long?skip=0&limit=100';
@@ -40,12 +40,12 @@ function getFlipData(flip) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateFlipAnswersLongData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Flip/' + flip + '/Content';
@@ -53,12 +53,12 @@ function getFlipData(flip) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateFlipContent(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Flip/' + flip + '/Epoch/AdjacentFlips';
@@ -66,12 +66,12 @@ function getFlipData(flip) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateAdjacentFlips(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -99,15 +99,15 @@ function updateIdentityStatus(identity, element) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       if (data.result == null) {
         return;
       }
       element[0].textContent = data.result.prevState;
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -184,6 +184,13 @@ function updateFlipData(data) {
   } else {
     $('#Keyword1Descr')[0].textContent = 'No keywords available';
     $('#Keyword2Descr')[0].textContent = 'No keywords available';
+    if (data.result.wrongWords || data.result.status == 'QualifiedByNone') {
+      var reason =
+        'The flip was reported as having inappropriate content, labels on top of the images showing the right order or text needed to solve the flip';
+
+      $('#KeywordRelevance span')[0].textContent = reason;
+      $('#KeywordRelevance i').addClass('icon--micro_fail');
+    }
   }
 
   $('#IrrelevantKeywordsScore')[0].textContent = data.result.wrongWordsVotes;
@@ -191,10 +198,7 @@ function updateFlipData(data) {
 
 function updateFlipAnswersShortData(data) {
   var table = $('#FlipIdentitiesTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  table.find('td').parent().remove();
   if (data.result == null) {
     return;
   }
@@ -239,10 +243,7 @@ function updateFlipAnswersShortData(data) {
 
 function updateFlipAnswersLongData(data) {
   var table = $('#FlipCommitteeTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  table.find('td').parent().remove();
   if (data.result == null) {
     return;
   }
@@ -332,7 +333,7 @@ function updateFlipContent(data) {
       data.result.Pics[i]
         .substring(2)
         .match(/.{1,2}/g)
-        .map(byte => parseInt(byte, 16))
+        .map((byte) => parseInt(byte, 16))
     );
     var lposition = -1,
       rposition = -1;
