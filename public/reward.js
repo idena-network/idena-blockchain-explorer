@@ -22,77 +22,84 @@ function initIdentityReward(identity, epoch) {
 function getIdentityRewardData(identity, epoch) {
   getApiData(
     'Epoch/' + epoch + '/Identity/' + identity + '/Authors/Bad',
-    penaltyReasonData => {
+    (penaltyReasonData) => {
       updatePenaltyReasonData(penaltyReasonData);
 
-      getApiData('Epoch/' + epoch + '/RewardsSummary', epochRewardData => {
+      getApiData('Epoch/' + epoch + '/RewardsSummary', (epochRewardData) => {
         //
-        getApiData('Epoch/' + epoch + '/Identity/' + identity, identityData => {
-          // Invitations
-          getApiData(
-            'Epoch/' + epoch + '/Identity/' + identity + '/RewardedInvites',
-            rewardedInvitesData => {
-              //availableInvitesData
-              getApiData(
-                'Epoch/' +
-                  epoch +
-                  '/Identity/' +
-                  identity +
-                  '/AvailableInvites',
-                availableInvitesData => {
-                  getApiData(
-                    'Epoch/' +
-                      epoch +
-                      '/Identity/' +
-                      identity +
-                      '/SavedInviteRewards',
-                    savedInviteData => {
-                      updateIdentityInvitesRewardsData(
-                        epoch,
-                        rewardedInvitesData,
-                        epochRewardData,
-                        penaltyReasonData,
-                        identityData,
-                        availableInvitesData,
-                        savedInviteData
-                      );
+        getApiData(
+          'Epoch/' + epoch + '/Identity/' + identity,
+          (identityData) => {
+            // Invitations
+            getApiData(
+              'Epoch/' + epoch + '/Identity/' + identity + '/RewardedInvites',
+              (rewardedInvitesData) => {
+                //availableInvitesData
+                getApiData(
+                  'Epoch/' +
+                    epoch +
+                    '/Identity/' +
+                    identity +
+                    '/AvailableInvites',
+                  (availableInvitesData) => {
+                    getApiData(
+                      'Epoch/' +
+                        epoch +
+                        '/Identity/' +
+                        identity +
+                        '/SavedInviteRewards',
+                      (savedInviteData) => {
+                        updateIdentityInvitesRewardsData(
+                          epoch,
+                          rewardedInvitesData,
+                          epochRewardData,
+                          penaltyReasonData,
+                          identityData,
+                          availableInvitesData,
+                          savedInviteData
+                        );
 
-                      getApiData(
-                        'Epoch/' + epoch + '/Identity/' + identity + '/Rewards',
-                        identityRewardsData => {
-                          updateIdentityEpochRewardsData(
-                            epoch,
-                            identityRewardsData,
-                            penaltyReasonData,
-                            epochRewardData,
-                            identityData
-                          );
-                        }
-                      );
-                    }
-                  );
-                }
-              );
-            }
-          );
-          // Flips
-          getApiData(
-            'Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips',
-            flipData => {
-              updateIdentityRewardData(identityData);
-              updateAppendEmptyFlipsRewardsData(
-                identityData,
-                epochRewardData,
-                penaltyReasonData
-              );
-              updateIdentityFlipsRewardsData(
-                flipData,
-                epochRewardData,
-                penaltyReasonData
-              );
-            }
-          );
-        });
+                        getApiData(
+                          'Epoch/' +
+                            epoch +
+                            '/Identity/' +
+                            identity +
+                            '/Rewards',
+                          (identityRewardsData) => {
+                            updateIdentityEpochRewardsData(
+                              epoch,
+                              identityRewardsData,
+                              penaltyReasonData,
+                              epochRewardData,
+                              identityData
+                            );
+                          }
+                        );
+                      }
+                    );
+                  }
+                );
+              }
+            );
+            // Flips
+            getApiData(
+              'Epoch/' + epoch + '/Identity/' + identity + '/RewardedFlips',
+              (flipData) => {
+                updateIdentityRewardData(identityData);
+                updateAppendEmptyFlipsRewardsData(
+                  identityData,
+                  epochRewardData,
+                  penaltyReasonData
+                );
+                updateIdentityFlipsRewardsData(
+                  flipData,
+                  epochRewardData,
+                  penaltyReasonData
+                );
+              }
+            );
+          }
+        );
       });
     }
   );
@@ -270,7 +277,7 @@ function updateIdentityFlipsRewardsData(
         data.result[i].icon
           .substring(2)
           .match(/.{1,2}/g)
-          .map(byte => parseInt(byte, 16))
+          .map((byte) => parseInt(byte, 16))
       );
       var src = URL.createObjectURL(
         new Blob([buffArray], { type: 'image/jpeg' })
@@ -529,47 +536,37 @@ function updateIdentityInvitesRewardsData(
     table.append(tr);
   }
 
-  //Append saved invitations
-  var s = 0;
-
   for (var i = 0; i < availableInvitesData.result.length; i++) {
-
     // Saved invitations in the current epoch
-    if (availableInvitesData.result[i].epoch == epoch) {
-
-      for (
-        j = 0;
-        j < availableInvitesData.result[i].invites - prev1EpochInviteActivated;
-        j++
-      ) {
-
-
+    //Append saved invitations
+    if (
+      availableInvitesData.result[i].epoch == epoch &&
+      savedInviteData.result
+    ) {
+      for (j = 0; j < savedInviteData.result.length; j++) {
         var tr = $('<tr/>');
         var td = $('<td/>');
 
         tr.append(
-        '<td><a href="./epoch?epoch=' +
-          availableInvitesData.result[i].epoch +
-          '#invitations">' +
-          epochFmt(availableInvitesData.result[i].epoch) +
-          '</a></td>'
+          '<td><a href="./epoch?epoch=' +
+            availableInvitesData.result[i].epoch +
+            '#invitations">' +
+            epochFmt(availableInvitesData.result[i].epoch) +
+            '</a></td>'
         );
-        tr.append('<td>Saved invititation</td>');
+        tr.append('<td>Saved invititation reward</td>');
         tr.append('<td>-</td>');
         tr.append('<td>-</td>');
 
         var invitationReward = epochRewardData.result.invitationsShare;
         var missingInvitationReward = invitationReward;
 
-        if (savedInviteData.result[s].value == 'SavedInvite') {
-          missingInvitationReward = missingInvitationReward * 2;
+        if (savedInviteData.result[j].value == 'SavedInvite') {
+          missingInvitationReward = missingInvitationReward * 2; //not a winner => x2
         }
-        if (savedInviteData.result[s].value == 'SavedInviteWin') {
-          invitationReward = invitationReward * 2;
+        if (savedInviteData.result[j].value == 'SavedInviteWin') {
+          invitationReward = invitationReward * 2; //winner => x2
         }
-
-        totalInvitationMissedReward =
-          totalInvitationMissedReward + missingInvitationReward * 1;
 
         tr.append('<td>' + dnaFmt(invitationReward, '') + '</td>');
         tr.append(
@@ -578,33 +575,35 @@ function updateIdentityInvitesRewardsData(
             '</td>'
         );
         tr.append('<td>Missed invitation</td>');
-        table.append(tr);
-        s++;
+
+        for (k = 0; k < savedInviteData.result[j].count; k++) {
+          table.append(tr.clone());
+          totalInvitationMissedReward =
+            totalInvitationMissedReward + missingInvitationReward * 1;
+        }
       }
     }
 
     // Saved invitations in the epoch-1
     if (availableInvitesData.result[i].epoch == epoch - 1) {
-
       for (
         j = 0;
         j < availableInvitesData.result[i].invites - prev2EpochInviteActivated;
         j++
       ) {
+        var tr = $('<tr/>');
+        var td = $('<td/>');
 
-      var tr = $('<tr/>');
-      var td = $('<td/>');
-
-      tr.append(
-      '<td><a href="./epoch?epoch=' +
-        availableInvitesData.result[i].epoch +
-        '#invitations">' +
-        epochFmt(availableInvitesData.result[i].epoch) +
-        '</a></td>'
-      );
-      tr.append('<td>Saved invititation</td>');
-      tr.append('<td>-</td>');
-      tr.append('<td>-</td>');
+        tr.append(
+          '<td><a href="./epoch?epoch=' +
+            availableInvitesData.result[i].epoch +
+            '#invitations">' +
+            epochFmt(availableInvitesData.result[i].epoch) +
+            '</a></td>'
+        );
+        tr.append('<td>Saved invititation</td>');
+        tr.append('<td>-</td>');
+        tr.append('<td>-</td>');
 
         var invitationReward = 0;
         var missingInvitationReward =
@@ -631,21 +630,19 @@ function updateIdentityInvitesRewardsData(
         j < availableInvitesData.result[i].invites - prev3EpochInviteActivated;
         j++
       ) {
+        var tr = $('<tr/>');
+        var td = $('<td/>');
 
-
-      var tr = $('<tr/>');
-      var td = $('<td/>');
-
-      tr.append(
-      '<td><a href="./epoch?epoch=' +
-        availableInvitesData.result[i].epoch +
-        '#invitations">' +
-        epochFmt(availableInvitesData.result[i].epoch) +
-        '</a></td>'
-      );
-      tr.append('<td>Saved invititation</td>');
-      tr.append('<td>-</td>');
-      tr.append('<td>-</td>');
+        tr.append(
+          '<td><a href="./epoch?epoch=' +
+            availableInvitesData.result[i].epoch +
+            '#invitations">' +
+            epochFmt(availableInvitesData.result[i].epoch) +
+            '</a></td>'
+        );
+        tr.append('<td>Saved invititation</td>');
+        tr.append('<td>-</td>');
+        tr.append('<td>-</td>');
 
         var invitationReward = 0;
         var missingInvitationReward =
