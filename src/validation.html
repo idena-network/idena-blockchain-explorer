@@ -67,8 +67,8 @@
                   <div class="control-label" data-toggle="tooltip" title="Successfully validated identities">Total validated</div>
                 </div>
                 <div class="col-12 col-sm-4 bordered-col">
-                  <h3 class="info_block__accent" id="FailedValidationIdentities">-</h3>
-                  <div class="control-label" data-toggle="tooltip" title="Killed identities or candidates, wasted invitations">Killed</div>
+                  <h3 class="info_block__accent"><span id="FailedValidationIdentities">-</span>/<span id="FailedValidationCandidates">-</span></h3>
+                  <div class="control-label" data-toggle="tooltip" title="Killed identities/Failed candidates">Killed/Wasted</div>
                 </div>
                 <div class="col-12 col-sm-4 bordered-col">
                   <h3 class="info_block__accent" id="MissedValidationIdentities">-</h3>
@@ -135,6 +135,20 @@
                     aria-selected="false"
                   >
                     <h3>Killed</h3>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a
+                    class="nav-link"
+                    id="wasted-tab"
+                    data-toggle="tab"
+                    href="#wasted"
+                    role="tab"
+                    aria-controls="wasted"
+                    aria-selected="false"
+                  >
+                    <h3>Failed candidates</h3>
                   </a>
                 </li>
 
@@ -298,6 +312,26 @@
             </div>
           </div>
 
+
+
+          <div class="tab-pane" id="wasted" role="tabpanel" aria-labelledby="wasted-tab">
+            <div class="section__group">
+              <div class="card">
+                <div class="table-responsive">
+                  <table class="table" id="FailedCandidates">
+                    <tr>
+                      <th>Identity</th>
+                      <th style="width: 190px;" data-toggle="tooltip" title="Status before the validation session">Previous<br/>status</th>
+                      <th style="width: 140px;">Validation<br>score</th>
+                      <th style="width: 140px;">Qualification<br>score</th>
+                      <th style="width: 190px;">Failure reason</th>
+                      <th style="width: 100px;">Details</th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
 
 
           <div class="tab-pane" id="suspended" role="tabpanel" aria-labelledby="suspended-tab">

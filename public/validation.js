@@ -17,12 +17,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateValidationEpochData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch + '/FlipStatesSummary';
@@ -30,12 +30,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochFlipsStatesSummaryData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch + '/FlipAnswersSummary';
@@ -43,12 +43,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochFlipsAnswersSummaryData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch + '/IdentityStatesSummary';
@@ -56,27 +56,41 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochIdentityStatesSummaryData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
-  u = url + 'Epoch/' + prevEpoch + '/Identities/Count?states[]=Undefined';
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-      getFailedValidationIdentitiesData(data.result, 0, { prevEpoch });
+  getApiData(
+    'Epoch/' +
+      prevEpoch +
+      '/Identities/Count?states[]=Undefined&prevStates[]=Newbie,Verified,Human,Suspended,Zombie',
+    (data) => {
+      getFailedValidationIdentitiesData(data.result, 0, {
+        prevEpoch,
+        tableId: '#FailedIdentities',
+        prevStates: 'Newbie,Verified,Human,Suspended,Zombie',
+      });
       $('#FailedValidationIdentities')[0].textContent = data.result;
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
     }
-  });
+  );
+
+  getApiData(
+    'Epoch/' +
+      prevEpoch +
+      '/Identities/Count?states[]=Undefined&prevStates[]=Candidate',
+    (data) => {
+      getFailedValidationIdentitiesData(data.result, 0, {
+        prevEpoch,
+        tableId: '#FailedCandidates',
+        prevStates: 'Candidate',
+      });
+      $('#FailedValidationCandidates')[0].textContent = data.result;
+    }
+  );
 
   u =
     url +
@@ -87,12 +101,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getValidationIdentitiesData(data.result, 0, { prevEpoch });
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u =
@@ -101,13 +115,13 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getSuspendedValidationIdentitiesData(data.result, 0, { prevEpoch });
       $('#MissedValidationIdentities')[0].textContent = data.result;
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch + '/Flips/Count';
@@ -115,12 +129,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getEpochFlipsData(data.result, 0, { prevEpoch });
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch + '/FlipWrongWordsSummary';
@@ -128,12 +142,12 @@ function getValidationData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateFlipWrongWordsSummary(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -181,12 +195,12 @@ function getValidationIdentitiesData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateValidationIdentitiesData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -291,26 +305,21 @@ function getFailedValidationIdentitiesData(total, loaded, params) {
   if (loaded > total) {
     return;
   }
-  u =
-    url +
+
+  getApiData(
     'Epoch/' +
-    params.prevEpoch +
-    '/Identities?skip=' +
-    loaded +
-    '&limit=' +
-    step +
-    '&states[]=Undefined'; //,Suspended,Zombie
-  $.ajax({
-    url: u,
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
+      params.prevEpoch +
+      '/Identities?skip=' +
+      loaded +
+      '&limit=' +
+      step +
+      '&states[]=Undefined' +
+      '&prevStates[]=' +
+      params.prevStates,
+    (data) => {
       updateFailedValidationIdentitiesData(data, total, loaded + step, params);
-    },
-    error: function(request, error) {
-      console.error(u + ', error:' + error);
     }
-  });
+  );
 }
 
 function updateFailedValidationIdentitiesData(data, total, loaded, params) {
@@ -318,7 +327,7 @@ function updateFailedValidationIdentitiesData(data, total, loaded, params) {
     return;
   }
 
-  var failed_identities_table = $('#FailedIdentities');
+  var failed_identities_table = $(params.tableId);
 
   addShowMoreTableButton(
     failed_identities_table,
@@ -469,7 +478,7 @@ function getSuspendedValidationIdentitiesData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateSuspendedValidationIdentitiesData(
         data,
         total,
@@ -477,9 +486,9 @@ function getSuspendedValidationIdentitiesData(total, loaded, params) {
         params
       );
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -640,12 +649,12 @@ function getEpochFlipsData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochFlipsData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -666,7 +675,7 @@ function updateEpochFlipsData(data, total, loaded, params) {
         data.result[i].icon
           .substring(2)
           .match(/.{1,2}/g)
-          .map(byte => parseInt(byte, 16))
+          .map((byte) => parseInt(byte, 16))
       );
       var src = URL.createObjectURL(
         new Blob([buffArray], { type: 'image/jpeg' })
