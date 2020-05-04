@@ -449,7 +449,7 @@ function updateIdentityData(data) {
     data.result.totalShortAnswers.flipsCount; //shortAnswers.flipsCount; without state fork
   $('#IdentityRightAnswers')[0].textContent =
     data.result.totalShortAnswers.point; //shortAnswers.point;
-  if (data.result.shortAnswers.flipsCount > 0)
+  if (data.result.totalShortAnswers.flipsCount > 0)
     $('#IdentityScore')[0].textContent =
       precise2(
         (data.result.totalShortAnswers.point /
