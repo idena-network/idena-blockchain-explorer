@@ -1,7 +1,7 @@
 .header {
   padding: rem(8px) 0;
   margin-bottom: rem(64px);
-  overflow: hidden;
+  overflow: visible;
   z-index: 200;
 
   @media (#{$max_phones--big}) {

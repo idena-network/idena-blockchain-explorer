@@ -67,16 +67,16 @@ function getApiData(querry, onSuccess, skip, limit) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       if (onSuccess == null) {
         console.error('getApiData error: onSuccess() is not defined');
       } else {
         onSuccess(data);
       }
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -109,7 +109,7 @@ function lastSeenFmt(str) {
   if (diff >= 3600) return 'More than 1 hour';
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   localeFmt = getLocaleDateString();
 });
 
@@ -324,10 +324,45 @@ function getLocaleDateString() {
     'en-SG': 'd/M/yyyy',
     'ug-CN': 'yyyy-M-d',
     'sr-Cyrl-BA': 'd.M.yyyy',
-    'es-US': 'M/d/yyyy'
+    'es-US': 'M/d/yyyy',
   };
 
   return formats[navigator.language] || 'dd/MM/yyyy';
+}
+
+function updateURLParameter(url, param, paramVal) {
+  var TheAnchor = null;
+  var newAdditionalURL = '';
+  var tempArray = url.split('?');
+  var baseURL = tempArray[0];
+  var additionalURL = tempArray[1];
+  var temp = '';
+  if (additionalURL) {
+    var tmpAnchor = additionalURL.split('#');
+    var TheParams = tmpAnchor[0];
+    TheAnchor = tmpAnchor[1];
+    if (TheAnchor) additionalURL = TheParams;
+
+    tempArray = additionalURL.split('&');
+
+    for (var i = 0; i < tempArray.length; i++) {
+      if (tempArray[i].split('=')[0] != param) {
+        newAdditionalURL += temp + tempArray[i];
+        temp = '&';
+      }
+    }
+  } else {
+    var tmpAnchor = baseURL.split('#');
+    var TheParams = tmpAnchor[0];
+    TheAnchor = tmpAnchor[1];
+
+    if (TheParams) baseURL = TheParams;
+  }
+  if (TheAnchor) paramVal += '#' + TheAnchor;
+
+  var rows_txt = '';
+  if (paramVal != '') rows_txt = temp + '' + param + '=' + paramVal;
+  return baseURL + '?' + newAdditionalURL + rows_txt;
 }
 
 function addShowMoreTableButton(table, onClickFunction, total, loaded, param) {

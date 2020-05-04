@@ -112,6 +112,12 @@ const commonConfig = {
     }),
 
     new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './src/signin.html'),
+      hash: false,
+      filename: 'signin.html',
+    }),
+
+    new HtmlWebpackPlugin({
       template: path.resolve(__dirname, './src/circulation.html'),
       hash: false,
       filename: 'circulation.html',

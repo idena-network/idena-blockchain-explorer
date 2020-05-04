@@ -88,6 +88,21 @@ app.get('/reward', function (req, res, next) {
   })
 })
 
+app.get('/signin', function (req, res, next) {
+  const file = path.join(compiler.outputPath, 'signin.html')
+
+  compiler.outputFileSystem.readFile(file,  (err, result) => {
+    if (err) {
+      return next(err)
+    }
+
+    res.set('content-type', 'text/html')
+    res.send(result)
+    res.end()
+  })
+})
+
+
 app.get('/circulation', function (req, res, next) {
   const file = path.join(compiler.outputPath, 'circulation.html')
 

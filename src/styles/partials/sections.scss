@@ -24,10 +24,12 @@
   border-radius: 100px;
   margin-right: rem(8px);
   line-height: 0;
+  background-color: $white;
 
   img {
     border-radius: 100px;
-    box-shadow: 0 0 0 1px rgba(83, 86, 92, 0.16);
+    //box-shadow: 0 0 0 1px rgba(83, 86, 92, 0.16);
+    box-shadow: 0 2px 4px 0 rgba(83, 86, 92, 0.16);
   }
 }
 

@@ -279,6 +279,50 @@ p {
   }
 }
 
+
+.icon-logo-white {
+    content: url(/images/idena_white.svg);
+}
+
+.icon-logo-black {
+    content: url(/images/idena_black.svg);
+}
+
+
+.btn-signin {
+
+  .spinner {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 1px;
+  }
+
+  display: none;
+  @media (#{$min_phones--big}) {
+    display: block;
+  }
+
+
+  margin-left: -144px;
+  font-size: rem(12px);
+  padding: rem(15px 14px 13px 14px);
+
+  background-color: rgb(83, 86, 92);
+  color: $white;
+
+  box-shadow: 0 3px 8px 0 rgba(83, 86, 92, 0.1), 0 1px 2px 0 rgba(83, 86, 92, 0.2)  !important;
+
+  &:hover,
+  &:active {
+    color: $white !important;
+    box-shadow: 0 1px 4px 0 rgba(83, 86, 92, 0.1), 0 1px 1px 0 rgba(83, 86, 92, 0.16) !important; 
+    opacity: 0.8;
+  }
+
+
+}
+
+
 .btn-secondary {
   background-color: $white;
   color: rgb(83, 86, 92);
@@ -593,4 +637,108 @@ p {
 
 .hidden {
   display: none !important;
+}
+
+
+.user-avatar {
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    background-color: #fff;
+    right: 25px;
+    margin: 3px;    
+    box-shadow: 0 2px 4px 0 rgba(83, 86, 92, 0.06);
+    border-radius: 5px 5px 5px 5px;
+    display: none;
+    max-height: 144px;
+    z-index: 10;
+    padding: 0;
+    list-style: none;
+       
+    .brake {
+      background-color: #f5f6f7 !important;
+      padding: 0.5px !important;
+      margin: 0 10px 0 10px !important;
+    } 
+
+    li {
+      cursor: pointer;
+      padding: 0;
+
+      .btn{
+        color: rgb(83, 86, 92);       
+        padding: 20px 40px 20px 40px;
+
+        &:hover,
+        &:active {
+         opacity: 0.8;
+        }
+      }
+    }
+} 
+
+
+
+/* Spinner */ 
+
+
+@keyframes spin {
+	to { transform: rotate(1turn); }
+}
+
+.progress {
+	position: relative;
+	display: inline-block;
+	width: 5em;
+	height: 5em;
+	margin: 0;
+	font-size: 12px;
+	text-indent: 999em;
+	overflow: hidden;
+	animation: spin 1s infinite steps(8);
+}
+
+.small.progress {
+	font-size: 3px;
+}
+
+.large.progress {
+	font-size: 24px;
+}
+
+.progress:before,
+.progress:after,
+.progress > div:before,
+.progress > div:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 2.25em; 
+	width: .5em;
+	height: 1.5em;
+	border-radius: .2em;
+	background: #eee;
+	box-shadow: 0 3.5em #eee; 
+	transform-origin: 50% 2.5em;     
+}
+
+.progress:before {
+	background: #555;
+}
+
+.progress:after {
+	transform: rotate(-45deg);
+	background: #777;
+}
+
+.progress > div:before {
+	transform: rotate(-90deg);
+	background: #999;
+}
+
+.progress > div:after {
+	transform: rotate(-135deg);
+	background: #bbb;
 }

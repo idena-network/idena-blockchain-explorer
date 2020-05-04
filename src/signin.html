@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%= require('html-loader?attrs=false!./partials/head.html') %>
+
+  <body>
+    <%= require('html-loader?attrs=false!./partials/header.html') %>
+
+    <main class="main">
+      <div class="container">
+        <div class="card" style="text-align: center; height: 70vh;">
+          <div >
+          
+            <img class="icon-logo-black" width="62px" style="margin: 50px;"></img>
+
+
+        
+            <div id="StartingAppBlock">
+              <h3>Launching Idena App...</h3>
+              <div class="text_block">
+                If you do not have Idena app installed on your computer, please open <br/>
+                the <a href="https://idena.io?view=download">download page</a> to
+                install it and then try again
+              </div>
+            </div>
+
+
+            <div id="WelcomeBlock" class="hidden">
+              <h3>Idena Proof-of-Person Blockchain</h3>
+              <div class="text_block">
+                If nothing promts from browser then <a href="https://idena.io?view=download">download and install Idena app</a> 
+              </div>
+            </div>
+
+            <div id="SuccessBlock" class="hidden">
+              <h3>Idena Proof-of-Person Blockchain</h3>
+              <div class="text_block">
+                Signed in successfully
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+
+    <%= require('html-loader?attrs=false!./partials/scripts.html') %>
+  </body>
+</html>
