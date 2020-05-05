@@ -9,19 +9,18 @@ function initSignin(callback_url) {
   $('#SignInWithIdena img').addClass('hidden');
   $('#SignInWithIdena .spinner').removeClass('hidden');
 
-  const token = Cookies.get('sessionToken') || getSessionToken();
+  const token = getSessionToken();
   //Save token
   Cookies.set('sessionToken', token);
 
   const callbackUrl =
-    callback_url !== undefined && callback_url != ''
+    // TODO: remove false when client supports callback_url with params
+    false && callback_url !== undefined && callback_url != ''
       ? callback_url
-      : encodeURIComponent(
-          location.protocol +
-            '//' +
-            location.hostname +
-            (location.port ? ':' + location.port : '')
-        );
+      : location.protocol +
+        '//' +
+        location.hostname +
+        (location.port ? ':' + location.port : '');
 
   const dnaUrl = getDnaUrl(token, callbackUrl);
   window.location = dnaUrl;

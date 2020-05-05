@@ -54,13 +54,10 @@ function updateCurrentUser(address) {
     $('#currentUser').addClass('hidden');
 
     const callbackURL =
-      window.location.pathname != '/signin' ? window.location : '';
+      window.location.pathname != '/signin' ? encodeURIComponent(window.location) : '';
     $('#SignInWithIdena')[0].href = './signin?callback_url=' + callbackURL;
 
-    // TODO: remove after Idena app public release
-    if (window.location.pathname == '/signin') {
-      $('#SignInWithIdena').removeClass('hidden');
-    }
+    $('#SignInWithIdena').removeClass('hidden');
   } else {
     //Logged in
     $('#SignInWithIdena').addClass('hidden');
