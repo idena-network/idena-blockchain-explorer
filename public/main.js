@@ -55,7 +55,7 @@ $(document).ready(function () {
     initSignin(p.callback_url);
   } else if (path == '/identity') {
     title = title + 'Identity';
-    if (!(p.identity === undefined)) {
+    if (p.identity) {
       initIdentity(p.identity);
       title = title + ' ' + p.identity;
     } else {
@@ -63,7 +63,7 @@ $(document).ready(function () {
     }
   } else if (path == '/address') {
     title = title + 'Address';
-    if (!(p.address === undefined)) {
+    if (p.address) {
       initAddress(p.address);
       title = title + ' ' + p.address;
     } else {
@@ -71,7 +71,7 @@ $(document).ready(function () {
     }
   } else if (path == '/epoch') {
     title = title + 'Epoch';
-    if (!(p.epoch === undefined)) {
+    if (p.epoch) {
       initEpoch(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
     } else {
@@ -79,7 +79,7 @@ $(document).ready(function () {
     }
   } else if (path == '/validation') {
     title = title + 'Validation result';
-    if (!(p.epoch === undefined)) {
+    if (p.epoch) {
       initValidation(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
     } else {
@@ -87,7 +87,7 @@ $(document).ready(function () {
     }
   } else if (path == '/flip') {
     title = title + 'Flip';
-    if (!(p.flip === undefined)) {
+    if (p.flip) {
       initFlip(p.flip);
       title = title + ' ' + p.flip;
     } else {
@@ -95,7 +95,7 @@ $(document).ready(function () {
     }
   } else if (path == '/block') {
     title = title + 'Block';
-    if (!(p.block === undefined)) {
+    if (p.block) {
       initBlock(p.block);
       title = title + ' ' + p.block;
     } else {
@@ -103,7 +103,7 @@ $(document).ready(function () {
     }
   } else if (path == '/answers') {
     title = title + 'Identity validation';
-    if (!(p.identity === undefined) && !(p.epoch === undefined)) {
+    if (p.identity && p.epoch) {
       initIdentityAnswers(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
     } else {
@@ -119,7 +119,7 @@ $(document).ready(function () {
     }
   } else if (path == '/rewards') {
     title = title + 'Validation session rewards';
-    if (!(p.epoch === undefined)) {
+    if (p.epoch) {
       initRewards(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
     } else {
@@ -127,7 +127,7 @@ $(document).ready(function () {
     }
   } else if (path == '/reward') {
     title = title + 'Identity validation reward';
-    if (!(p.identity === undefined) && !(p.epoch === undefined)) {
+    if (p.identity && p.epoch) {
       initIdentityReward(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
     } else {
@@ -157,13 +157,10 @@ $(document).ready(function () {
 });
 
 $('a.nav-link[data-toggle="tab"]').on('click', function (e) {
-  //alert($(this)[0].attr('href'))
   history.replaceState(undefined, undefined, $(this)[0].href);
 });
 
 $('#SearchInput').keyup(function (e) {
-  //  const isValidEmail = $(this)[0].checkValidity();
-  //  isValidEmail ? Btn[0].disabled = false : Btn[0].disabled = true;
   const Btn = $(this).parent().parent().find('.btn');
   if (e.which === 13) {
     Btn[0].click();
