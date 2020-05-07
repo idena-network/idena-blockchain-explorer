@@ -29,12 +29,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochCountData(data, epoch);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + prevEpoch;
@@ -43,12 +43,12 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         updateEpochData(data);
       },
-      error: function(request, error) {
+      error: function (request, error) {
         console.error(u + ', error:' + error);
-      }
+      },
     });
 
   u = url + 'Epoch/' + prevEpoch + '/IdentityStatesSummary';
@@ -57,12 +57,12 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         updateEpochIdentityStatesSummaryData(data);
       },
-      error: function(request, error) {
+      error: function (request, error) {
         console.error(u + ', error:' + error);
-      }
+      },
     });
 
   if (prevEpoch >= 0) {
@@ -75,12 +75,12 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         getEpochIdentitiesData(data.result, 0, { prevEpoch });
       },
-      error: function(request, error) {
+      error: function (request, error) {
         console.error(u + ', error:' + error);
-      }
+      },
     });
   } else {
     u = url + 'Epoch/' + epoch + '/Identities?skip=0&limit=100';
@@ -88,12 +88,12 @@ function getEpochData(epoch) {
       url: u,
       type: 'GET',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         updateZeroEpochIdentitiesData(data);
       },
-      error: function(request, error) {
+      error: function (request, error) {
         console.error(u + ', error:' + error);
-      }
+      },
     });
   }
   /*
@@ -131,12 +131,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateNextEpochData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/FlipStatesSummary';
@@ -144,12 +144,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochFlipsStatesSummaryData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/Flips/Count';
@@ -157,12 +157,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       getEpochFlipSubmissionsData(data.result, 0, { epoch });
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/InvitesSummary';
@@ -170,12 +170,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochInvitesSummaryData(data);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/Invites?skip=0&limit=100';
@@ -183,12 +183,12 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochInvitationsData(data, epoch);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/Txs/Count';
@@ -196,13 +196,13 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochTransactionsCountData(data);
       getEpochTxsData(data.result, 0, { epoch });
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 
   u = url + 'Epoch/' + epoch + '/Blocks/Count';
@@ -210,13 +210,13 @@ function getEpochData(epoch) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochBlocksCountData(data);
       getEpochBlocksData(data.result, 0, { epoch });
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -233,12 +233,12 @@ function getEpochFlipSubmissionsData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochFlipSubmissionsData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -266,7 +266,7 @@ function updateEpochFlipSubmissionsData(data, total, loaded, params) {
         data.result[i].icon
           .substring(2)
           .match(/.{1,2}/g)
-          .map(byte => parseInt(byte, 16))
+          .map((byte) => parseInt(byte, 16))
       );
       var src = URL.createObjectURL(
         new Blob([buffArray], { type: 'image/jpeg' })
@@ -335,10 +335,7 @@ function updateEpochCountData(data, epoch) {
 
 function updateEpochInvitationsData(data, currEpoch) {
   var table = $('#InvitationsTable');
-  table
-    .find('td')
-    .parent()
-    .remove();
+  table.find('td').parent().remove();
   if (data.result == null) {
     return;
   }
@@ -438,10 +435,7 @@ function updateEpochIdentityStatesSummaryData(data) {
 
 function updateZeroEpochIdentitiesData(data) {
   var valid_identities_table = $('#IdentitiesTable');
-  valid_identities_table
-    .find('td')
-    .parent()
-    .remove();
+  valid_identities_table.find('td').parent().remove();
   if (data.result == null) {
     return;
   }
@@ -516,12 +510,12 @@ function getEpochIdentitiesData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochIdentitiesData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -657,12 +651,12 @@ function getEpochTxsData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochTxsData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
@@ -696,7 +690,7 @@ function updateEpochTxsData(data, total, loaded, params) {
         '" alt="pic"width="32"></div>'
     );
     td.append(
-      "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+      "<div class='text_block text_block--ellipsis'><a href='./address?address=" +
         from +
         "'>" +
         from.substr(0, 10) +
@@ -713,7 +707,7 @@ function updateEpochTxsData(data, total, loaded, params) {
           '" alt="pic"width="32"></div>'
       );
       td.append(
-        "<div class='text_block text_block--ellipsis'><a href='./identity?identity=" +
+        "<div class='text_block text_block--ellipsis'><a href='./address?address=" +
           to +
           "'>" +
           to.substr(0, 10) +
@@ -749,12 +743,12 @@ function getEpochBlocksData(total, loaded, params) {
     url: u,
     type: 'GET',
     dataType: 'json',
-    success: function(data) {
+    success: function (data) {
       updateEpochBlocksData(data, total, loaded + step, params);
     },
-    error: function(request, error) {
+    error: function (request, error) {
       console.error(u + ', error:' + error);
-    }
+    },
   });
 }
 
