@@ -48,100 +48,105 @@ $(document).ready(function () {
 
   initUser(p);
 
+  var isLocation404 = false;
+
   if (path == '/signin') {
     title = title + 'Sign-in with Idena app';
     initSignin(p.callback_url);
-  }
-
-  if (path == '/identity') {
+  } else if (path == '/identity') {
     title = title + 'Identity';
     if (!(p.identity === undefined)) {
       initIdentity(p.identity);
       title = title + ' ' + p.identity;
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/address') {
+  } else if (path == '/address') {
     title = title + 'Address';
     if (!(p.address === undefined)) {
       initAddress(p.address);
       title = title + ' ' + p.address;
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/epoch') {
+  } else if (path == '/epoch') {
     title = title + 'Epoch';
     if (!(p.epoch === undefined)) {
       initEpoch(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/validation') {
+  } else if (path == '/validation') {
     title = title + 'Validation result';
     if (!(p.epoch === undefined)) {
       initValidation(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/flip') {
+  } else if (path == '/flip') {
     title = title + 'Flip';
     if (!(p.flip === undefined)) {
       initFlip(p.flip);
       title = title + ' ' + p.flip;
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/block') {
+  } else if (path == '/block') {
     title = title + 'Block';
     if (!(p.block === undefined)) {
       initBlock(p.block);
       title = title + ' ' + p.block;
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/answers') {
+  } else if (path == '/answers') {
     title = title + 'Identity validation';
     if (!(p.identity === undefined) && !(p.epoch === undefined)) {
       initIdentityAnswers(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/tx') {
+  } else if (path == '/tx') {
     title = title + 'Transaction';
     if (!(p.tx === undefined)) {
       initTransaction(p.tx);
       title = title + ' ' + p.tx;
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/rewards') {
+  } else if (path == '/rewards') {
     title = title + 'Validation session rewards';
     if (!(p.epoch === undefined)) {
       initRewards(p.epoch);
       title = title + ' ' + epochFmt(p.epoch);
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/reward') {
+  } else if (path == '/reward') {
     title = title + 'Identity validation reward';
     if (!(p.identity === undefined) && !(p.epoch === undefined)) {
       initIdentityReward(p.identity, p.epoch);
       title = title + ' ' + p.identity + ' for epoch ' + epochFmt(p.epoch);
+    } else {
+      isLocation404 = true;
     }
-  }
-
-  if (path == '/circulation') {
+  } else if (path == '/circulation') {
     title = title + 'Idena (DNA) circulating supply';
     initCirculation();
-  }
-
-  if (path == '/') {
+  } else if (path == '/') {
     initEpochs();
     title = 'Idena Explorer';
-  } else title = title + ' | Idena Explorer';
+  } else {
+    title = title + ' | Idena Explorer';
+    isLocation404 = true;
+  }
+
+  if (isLocation404) {
+    window.location = './404';
+  }
 
   $('title').text(title);
 

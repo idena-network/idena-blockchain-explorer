@@ -13,16 +13,21 @@ function initSignin(callback_url) {
   //Save token
   Cookies.set('sessionToken', token);
 
+  const host =
+    location.protocol +
+    '//' +
+    location.hostname +
+    (location.port ? ':' + location.port : '');
+
   const callbackUrl =
     // TODO: remove false when client supports callback_url with params
     false && callback_url !== undefined && callback_url != ''
       ? callback_url
-      : location.protocol +
-        '//' +
-        location.hostname +
-        (location.port ? ':' + location.port : '');
+      : host;
 
-  const dnaUrl = getDnaUrl(token, callbackUrl);
+  const favIconUrl = host + '/favicon.ico';
+  const dnaUrl = getDnaUrl(token, callbackUrl, favIconUrl);
+  console.log(dnaUrl);
   window.location = dnaUrl;
 
   setTimeout(function () {
@@ -46,7 +51,7 @@ const getSessionToken = () =>
     ('x' == c ? (r = (Math.random() * 16) | 0) : (r & 0x3) | 0x8).toString(16)
   );
 
-function getDnaUrl(token, callbackUrl) {
+function getDnaUrl(token, callbackUrl, favIconUrl) {
   //Generate url for Idena app
   const dnaUrl =
     'dna://signin/v1?callback_url=' +
@@ -56,7 +61,9 @@ function getDnaUrl(token, callbackUrl) {
     '&nonce_endpoint=' +
     encodeURIComponent('https://scan.idena.io/auth/v1/start-session') +
     '&authentication_endpoint=' +
-    encodeURIComponent('https://scan.idena.io/auth/v1/authenticate');
+    encodeURIComponent('https://scan.idena.io/auth/v1/authenticate') +
+    '&favicon_url=' +
+    encodeURIComponent(favIconUrl);
 
   return dnaUrl;
 }
